@@ -32,7 +32,7 @@ function ui_draw_button_color(txt, sx, sy, w, h, c, hov_c, txt_c, brd)
 	return return_data
 }
 
-function ui_draw_button_sprite(spr, sx, sy, w, h, c, hov_c, txt_c, brd)
+function ui_draw_button_sprite(spr, spr_sub, sx, sy, w, h, c, hov_c, spr_c, spr_s, brd)
 {	
 	var mx = device_mouse_x_to_gui(0)
 	var my = device_mouse_y_to_gui(0)
@@ -57,8 +57,7 @@ function ui_draw_button_sprite(spr, sx, sy, w, h, c, hov_c, txt_c, brd)
 		}
 	}
 	
-	draw_set_color(txt_c)
-	draw_text(sx + (w / 2) - (string_width(txt) / 2), sy + (h / 2) - (string_height(txt) / 2), txt)
+	draw_sprite_ext(spr, spr_sub, sx + w / 2 - sprite_get_width(spr) / 2, sy + h / 2 - sprite_get_height(spr) / 2, spr_s, spr_s, 0, spr_c, 1)
 	
 	draw_set_color(c_white)
 	

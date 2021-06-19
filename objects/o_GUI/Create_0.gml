@@ -1,1 +1,2 @@
-display_set_gui_size(room_width, room_height)
+draw_set_font(ft_Default)
+display_set_gui_size(view_wport[0], view_hport[0])
