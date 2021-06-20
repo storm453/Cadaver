@@ -6,6 +6,7 @@
     {"id":{"name":"Util","path":"scripts/Util/Util.yy",},"order":0,},
     {"id":{"name":"UI","path":"scripts/UI/UI.yy",},"order":1,},
     {"id":{"name":"o_PlayerInventory","path":"objects/o_PlayerInventory/o_PlayerInventory.yy",},"order":1,},
+    {"id":{"name":"s_Map","path":"sprites/s_Map/s_Map.yy",},"order":13,},
     {"id":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"order":0,},
     {"id":{"name":"shdr_colour_grade","path":"shaders/shdr_colour_grade/shdr_colour_grade.yy",},"order":0,},
     {"id":{"name":"ft_Default","path":"fonts/ft_Default/ft_Default.yy",},"order":1,},

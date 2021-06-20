@@ -49,26 +49,80 @@ if(global.current_gui  != 0)
 	var buttons = 3
 	var menu_scale = 0;
 	
-	repeat(buttons)
+	repeat(round(buttons))
 	{
 		menu_scale += pad + switch_button_scale
 	}
 	
 	menu_scale += pad
 
-	var switch_x = display_get_gui_width() / 2 - menu_scale / 2
-	var switch_y = 0
-
-	ui_draw_rectangle(switch_x, switch_y, menu_scale, 50, c_red, 1, false)
-
-	ui_draw_button_color("H", switch_x, switch_y, switch_button_scale, switch_button_scale, button_color, button_s_color, c_white, false)
-
-	switch_x -= pad + switch_button_scale
+	draw_set_font(ft_Title)
+	var title = "THING";
+	var title_height = string_height(title) + pad * 2
 	
-	ui_draw_button_color("H", switch_x, switch_y, switch_button_scale, switch_button_scale, button_color, button_s_color, c_white, false)
+	var switch_x = display_get_gui_width() / 2 - (menu_scale + menu_scale / 4) / 2
+	var switch_y = 0
+	
+	ui_draw_title(selected_tab, switch_x, switch_y, menu_scale + menu_scale / 4, title_height, tab_color, c_white, false)
+	draw_set_font(ft_Default)
+
+	switch_x = display_get_gui_width() / 2 - menu_scale / 2
+	switch_y = title_height
+
+	ui_draw_rectangle(switch_x, switch_y, menu_scale, switch_button_scale + pad, menu_color, 1, false)
+
+	switch_x += pad
+
+	var button_array = array_create(buttons);
+	
+	var button_data_array = ""
+	
+	button_data_array[0] = "Inv"
+	button_data_array[1] = "Chr"
+	button_data_array[2] = "Map"
+
+	for(var i = 0; i < buttons; i++)
+	{
+		//button_array[i] = ui_draw_button_color(button_data_array[i], switch_x, switch_y, switch_button_scale, switch_button_scale, button_color, button_s_color, c_white, false)
+		button_array[i] = ui_draw_button_sprite(s_Icons, i, switch_x, switch_y, switch_button_scale, switch_button_scale, button_color, button_s_color, c_white, 0.5, false)
+		switch_x += pad + switch_button_scale
+	}
+	
+	if(button_array[0][0])
+	{
+		global.current_gui = gui.INVENTORY
+		selected_tab = "CRAFTING"
+	}	
+	
+	if(button_array[1][0])
+	{
+		global.current_gui = gui.PROFILE
+		selected_tab = "PROFILE"
+	}
+	
+	if(button_array[2][0])
+	{
+		global.current_gui = gui.CRAFTING
+		selected_tab = "MAP"
+	}
 }
 
-if(global.current_gui == gui.CRAFTING)
+function ui_draw_window(t, sx, sy, w, h)
+{
+	ui_draw_rectangle(sx, sy, w, h, menu_color, 1, false)
+	
+	draw_set_font(ft_Title)
+
+	var title_height = string_height(t)
+	
+	ui_draw_rectangle(sx, sy, w, pad * 2 + title_height, tab_color, 1, false);
+
+	draw_text(sx + pad, sy + pad, t)
+	
+	return title_height + pad * 3
+}
+
+if(global.current_gui == gui.INVENTORY)
 {
 	draw_set_font(ft_Title)
 	
@@ -83,13 +137,13 @@ if(global.current_gui == gui.CRAFTING)
 
 	start_y = display_get_gui_height() - inv_height - title_height
 	
-	ui_draw_rectangle(start_x, start_y, window_width, title_height, 0x171717, 1, false)
+	ui_draw_rectangle(start_x, start_y, window_width, title_height, tab_color, 1, false)
 
 	draw_text(start_x + pad, start_y + pad, title)
 
 	start_y = display_get_gui_height() - inv_height - window_height - title_height - pad
 
-	ui_draw_rectangle(start_x, start_y, window_width, window_height, menu_color, 1, false)
+	//Draw stuff here..
 }
 
 if(global.current_gui == gui.PROFILE)
@@ -101,16 +155,49 @@ if(global.current_gui == gui.PROFILE)
 	var start_x = display_get_gui_width() / 2 - prof_width / 2
 	var start_y = display_get_gui_height() - inv_height - window_height - pad
 
-	ui_draw_rectangle(start_x, start_y, prof_width, prof_height, menu_color, 1, false)
+	ui_draw_window("PROFILE", start_x, start_y, prof_width, prof_height)
+}
 
+if(global.current_gui == gui.CRAFTING)
+{
 	draw_set_font(ft_Title)
-
-	var title = "PROFILE";
-	var title_height = string_height(title)
 	
-	ui_draw_rectangle(start_x, start_y, prof_width, pad * 2 + title_height, 0x171717, 1, false);
+	//MAIN UI
+	var map_height = window_height + inv_width_slots_only
+	
+	var start_x = display_get_gui_width() / 2 - inv_width / 2
+	var start_y = display_get_gui_height() - inv_height - window_height - pad
 
-	draw_text(start_x + pad, start_y + pad, title)
+	var window = ui_draw_window("MAP", start_x, start_y, window_width, map_height)
+	
+	start_x += pad
+	start_y += window
+	
+	world_draw = map_height - string_height("M") - pad  * 4
+	
+	ui_draw_rectangle(start_x + window_width / 2 - world_draw / 2, start_y, world_draw, world_draw, grass_color, 1, true)
+	
+	for(var i = 0; i < world; i++)
+	{
+		for(var j = 0; j < world; j++)
+		{	
+			if(!position_empty(i * tiles, j * tiles))
+			{
+				map[i,j] = 1	
+			}
+		}
+	}
+	
+	for(var i = 0; i < world; i++)
+	{
+		for(var j = 0; j < world; j++)
+		{
+			if(map[i,j] == 1)
+			{
+				ui_draw_rectangle(start_x + (i * world_draw / world), start_y + (j * world_draw / world), world_draw / world, world_draw / world, object_color, 1, true)
+			}
+		}
+	}
 }
 
 draw_set_font(ft_Default)

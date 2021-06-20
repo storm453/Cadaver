@@ -1,8 +1,12 @@
+var shift = draw_scale * slot_size / 4
+
+player_inventory_height_slots_only = ((slots_y - 0.9) * slot_size * draw_scale) - 1
+player_inventory_height = (slots_y * slot_size * draw_scale) + shift
+
 draw_set_color(c_red);
 
 var mx = device_mouse_x_to_gui(0)
 var my = device_mouse_y_to_gui(0)
-
 
 for(var i = 0; i < slots_x; i++)
 {
@@ -12,12 +16,10 @@ for(var i = 0; i < slots_x; i++)
 
 		if(j != slots_y - 1)
 		{
-			var shift = draw_scale * slot_size / 4
-			
 			start_x = display_get_gui_width() / 2 - (slots_x  * draw_scale * slot_size) / 2
 			start_y = display_get_gui_height() - (draw_scale * slot_size * slots_y) - shift
 			
-			if(global.current_gui == gui.INVENTORY) or (global.current_gui == gui.CRAFTING)
+			if(global.current_gui == gui.INVENTORY)
 			{
 				if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, start_y + (j * slot_size * draw_scale) + slot_size * draw_scale))
 				{
@@ -31,8 +33,8 @@ for(var i = 0; i < slots_x; i++)
 		}
 		else
 		{
-			player_inventory_height = (slots_y * slot_size * draw_scale) + shift
-			player_inventory_height_slots_only = ((slots_y - 0.9) * slot_size * draw_scale) - 1
+			
+			
 	
 			if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), start_y + shift + (j * slot_size * draw_scale), start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, start_y + shift + (j * slot_size * draw_scale) + slot_size * draw_scale))
 			{
@@ -48,7 +50,7 @@ for(var i = 0; i < slots_x; i++)
 		{
 			if(j != slots_y - 1)
 			{
-				if(global.current_gui  == gui.INVENTORY) or (global.current_gui == gui.CRAFTING)
+				if(global.current_gui  == gui.INVENTORY)
 				{
 					//draw_text(start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), inv[i, j].name)
 					draw_sprite_ext(s_Items, items_list[index[0]].spr_index, start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), draw_scale, draw_scale, 0, c_white, 1);
@@ -73,7 +75,7 @@ if(in_hand != 0)
 }
 
 //info boxes they're drawn down here so they're above the slots
-if(global.current_gui  == gui.INVENTORY) or (global.current_gui == gui.CRAFTING)
+if(global.current_gui  == gui.INVENTORY)
 {
 	for(var i = 0; i < slots_x; i++)
 	{

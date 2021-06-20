@@ -57,7 +57,7 @@ function ui_draw_button_sprite(spr, spr_sub, sx, sy, w, h, c, hov_c, spr_c, spr_
 		}
 	}
 	
-	draw_sprite_ext(spr, spr_sub, sx + w / 2 - sprite_get_width(spr) / 2, sy + h / 2 - sprite_get_height(spr) / 2, spr_s, spr_s, 0, spr_c, 1)
+	draw_sprite_ext(spr, spr_sub, sx + w / 2 - (sprite_get_width(spr) * spr_s / 2), sy + h / 2 - (sprite_get_width(spr) * spr_s / 2), spr_s, spr_s, 0, spr_c, 1)
 	
 	draw_set_color(c_white)
 	
