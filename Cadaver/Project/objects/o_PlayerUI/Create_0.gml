@@ -1,5 +1,7 @@
 map = array_create();
 
+alarm[0] = 60
+
 tiles = 16
 world = room_width / tiles
 

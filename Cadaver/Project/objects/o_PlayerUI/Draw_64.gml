@@ -4,29 +4,26 @@ draw_set_font(ft_Title)
 var hp_x = 10;
 var hp_y = 10;
 
+var bar_draw = 3
+
 hp_show = lerp(hp_show, o_Player.hp, 0.2);
 
-var hp_w = sprite_get_width(s_HealthBar);
-var hp_h = (hp_show/100)*sprite_get_height(s_HealthBar);
+var hp_w = (hp_show/100)* sprite_get_width(s_HealthBar)
+var hp_h = sprite_get_height(s_HealthBar);
 
-draw_sprite(s_HealthBar, 1, hp_x, hp_y);
-draw_sprite_part(s_HealthBar, 0, 0, 0, hp_w, hp_h, hp_x, hp_y);
-
-draw_set_color(c_white)
-draw_text(hp_x + string_width(o_Player.hp) / 2 - 1, hp_y + string_height(o_Player.hp) / 3, o_Player.hp)
+draw_sprite_ext(s_HealthBar, 0, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
+draw_sprite_part_ext(s_HealthBar, 1, 0, 0, hp_w, hp_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
 
 //energy bar
-var energy_x = hp_x + pad + sprite_get_width(s_HealthBar)
+hp_y += hp_h * bar_draw + pad
 
 energy_show = lerp(energy_show, o_Player.energy, 0.2);
 
-var energy_w = sprite_get_width(s_HealthBar)
-var energy_h = (energy_show / 100) * sprite_get_height(s_HealthBar);
+var en_w = (energy_show/100)* sprite_get_width(s_HealthBar)
+var en_h = sprite_get_height(s_HealthBar);
 
-draw_sprite(s_EnergyBar, 1, energy_x, hp_y);
-draw_sprite_part(s_EnergyBar, 0, 0, 0, energy_w, energy_h, energy_x, hp_y)
-
-draw_text(energy_x + string_width(o_Player.energy) / 2 - 1, hp_y + string_height(o_Player.energy) / 3, o_Player.energy)
+draw_sprite_ext(s_EnergyBar, 0, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
+draw_sprite_part_ext(s_EnergyBar, 1, 0, 0, en_w, en_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
 
 draw_set_font(ft_Default)
 
