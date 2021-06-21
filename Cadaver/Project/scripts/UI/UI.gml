@@ -90,3 +90,17 @@ function ui_draw_rectangle(sx, sy, w, h, c, a, brd)
 	var return_data = array(w, h)
 	return return_data
 }
+
+function ui_draw_string(sx, sy, t, fnt)
+{
+	draw_set_font(fnt)
+	draw_text(sx, sy, t)	
+	draw_set_font(ft_Default)
+}
+
+function string_height_font(str, fnt)
+{
+	draw_set_font(fnt)
+	return string_height(str)
+	draw_set_font(ft_Default)
+}

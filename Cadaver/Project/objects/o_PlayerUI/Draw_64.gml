@@ -1,6 +1,3 @@
-//health bar
-draw_set_font(ft_Title)
-
 var hp_x = 10;
 var hp_y = 10;
 
@@ -39,7 +36,6 @@ if(global.current_gui  != 0)
 	var inv_width = round(o_PlayerInventory.slots_x * o_PlayerInventory.draw_scale * o_PlayerInventory.slot_size) - 1
 	var inv_width_slots_only = o_PlayerInventory.player_inventory_height_slots_only
 	var inv_height = o_PlayerInventory.player_inventory_height
-
 	var window_width = inv_width
 	var window_height = 300
 
@@ -108,37 +104,32 @@ function ui_draw_window(t, sx, sy, w, h)
 {
 	ui_draw_rectangle(sx, sy, w, h, menu_color, 1, false)
 	
-	draw_set_font(ft_Title)
-
-	var title_height = string_height(t)
+	var title_height = string_height_font(t, ft_Title)
 	
 	sy -= title_height + pad * 2
 	
 	ui_draw_rectangle(sx, sy, w, pad * 2 + title_height, tab_color, 1, false);
-
-	draw_text(sx + pad, sy + pad, t)
-	
+	ui_draw_string(sx + pad, sy + pad, t, ft_Title) 
+		
 	return title_height + pad * 3
 }
 
 if(global.current_gui == gui.INVENTORY)
 {
-	draw_set_font(ft_Title)
-	
 	//MAIN UI
 	var start_x = display_get_gui_width() / 2 - inv_width / 2
 	var start_y = display_get_gui_height() - inv_height - window_height - pad
 
 	var title = "INVENTORY";
-	var title_height = string_height(title) + pad * 2
-	
+	var font_height = string_height_font(title, ft_Title)
+	var title_height = font_height + pad * 2
+		
 	window_height -= title_height
 
 	start_y = display_get_gui_height() - inv_height - title_height
 	
 	ui_draw_rectangle(start_x, start_y, window_width, title_height, tab_color, 1, false)
-
-	draw_text(start_x + pad, start_y + pad, title)
+	ui_draw_string(start_x + pad, start_y + pad, title, ft_Title)
 
 	start_y = display_get_gui_height() - inv_height - window_height - title_height - pad
 
@@ -198,5 +189,3 @@ if(global.current_gui == gui.CRAFTING)
 		}
 	}
 }
-
-draw_set_font(ft_Default)
