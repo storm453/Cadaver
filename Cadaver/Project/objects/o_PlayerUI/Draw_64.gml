@@ -115,6 +115,8 @@ function ui_draw_window(t, sx, sy, w, h)
 
 	var title_height = string_height(t)
 	
+	sy -= title_height + pad * 2
+	
 	ui_draw_rectangle(sx, sy, w, pad * 2 + title_height, tab_color, 1, false);
 
 	draw_text(sx + pad, sy + pad, t)
@@ -171,11 +173,11 @@ if(global.current_gui == gui.CRAFTING)
 	var window = ui_draw_window("MAP", start_x, start_y, window_width, map_height)
 	
 	start_x += pad
-	start_y += window
+	start_y += pad
 	
-	world_draw = map_height - string_height("M") - pad  * 4
+	world_draw = 384
 	
-	ui_draw_rectangle(start_x + window_width / 2 - world_draw / 2, start_y, world_draw, world_draw, grass_color, 1, true)
+	ui_draw_rectangle(start_x, start_y, world_draw, world_draw, grass_color, 1, true)
 	
 	for(var i = 0; i < world; i++)
 	{
