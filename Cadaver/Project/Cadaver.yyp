@@ -3,6 +3,7 @@
     {"id":{"name":"s_light","path":"sprites/s_light/s_light.yy",},"order":12,},
     {"id":{"name":"s_EnergyBar","path":"sprites/s_EnergyBar/s_EnergyBar.yy",},"order":9,},
     {"id":{"name":"o_GUI","path":"objects/o_GUI/o_GUI.yy",},"order":2,},
+    {"id":{"name":"sTab","path":"sprites/sTab/sTab.yy",},"order":14,},
     {"id":{"name":"Util","path":"scripts/Util/Util.yy",},"order":0,},
     {"id":{"name":"UI","path":"scripts/UI/UI.yy",},"order":1,},
     {"id":{"name":"o_PlayerInventory","path":"objects/o_PlayerInventory/o_PlayerInventory.yy",},"order":1,},

@@ -131,9 +131,51 @@ if(global.current_gui == gui.INVENTORY)
 	ui_draw_rectangle(start_x, start_y, window_width, title_height, tab_color, 1, false)
 	ui_draw_string(start_x + pad, start_y + pad, title, ft_Title)
 
-	start_y = display_get_gui_height() - inv_height - window_height - title_height - pad
+	var craft_height = 405
 
-	//Draw stuff here..
+	start_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
+	
+	ui_draw_window("CRAFTING", start_x, start_y, window_width, craft_height)
+	
+	#macro list_button_scale 36.3
+	
+	#macro item_button_width 160
+	#macro item_button_height 35
+	
+	var buttons_x = display_get_gui_width() / 2 - inv_width / 2 + pad
+	var buttons_y = display_get_gui_height() - inv_height - craft_height - title_height
+	
+	var list_x = display_get_gui_width() / 2 - inv_width / 2 + pad
+	var list_y = display_get_gui_height() - inv_height - craft_height - title_height
+	
+	ui_draw_title(crafting_tab, buttons_x, buttons_y, inv_width - (pad * 2), item_button_height, tab_color, c_white, false)
+	
+	buttons_y += item_button_height + pad
+	
+	var buttons_list = ds_list_create()
+	
+	ds_list_add(buttons_list, array(0, "Weapons"))
+	ds_list_add(buttons_list, array(1, "Tools"))
+	ds_list_add(buttons_list, array(2, "Buildings"))
+	ds_list_add(buttons_list, array(3, "Consumables"))
+	
+	for(i = 0; i < ds_list_size(buttons_list); i++)
+	{
+		var index = buttons_list[|i]
+		
+		var button = ui_draw_button_sprite(sTab, index[0], buttons_x + (i * (pad + list_button_scale)), buttons_y, list_button_scale, list_button_scale, button_color, button_s_color, c_white, 0.05, false)
+		if(button[0])
+		{
+			crafting_tab = index[1]
+		}
+	}
+
+
+	list_y += (item_button_height + pad) * 2
+
+	
+
+	ui_draw_rectangle(list_x, list_y, item_button_width, item_button_height, button_color, 1, false)
 }
 
 if(global.current_gui == gui.PROFILE)

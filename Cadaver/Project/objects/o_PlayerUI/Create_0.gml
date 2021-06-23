@@ -19,6 +19,8 @@ for(var i = 0; i < world; i++)
 hp_show = 0;
 energy_show = 0;
 
+crafting_tab = "Consumables"
+
 enum gui
 {
 	NONE,
