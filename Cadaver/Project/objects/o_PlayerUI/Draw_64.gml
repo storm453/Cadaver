@@ -131,52 +131,83 @@ if(global.current_gui == gui.INVENTORY)
 	ui_draw_rectangle(start_x, start_y, window_width, title_height, tab_color, 1, false)
 	ui_draw_string(start_x + pad, start_y + pad, title, ft_Title)
 
-	var craft_height = 405
+	var craft_height = 400
 
 	start_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
 	
 	ui_draw_window("CRAFTING", start_x, start_y, window_width, craft_height)
 	
-	#macro list_button_scale 36.3
+	#macro list_button_scale 50
 	
 	#macro item_button_width 160
 	#macro item_button_height 35
 	
-	var buttons_x = display_get_gui_width() / 2 - inv_width / 2 + pad
+	var buttons_x = display_get_gui_width() / 2 - inv_width / 2
 	var buttons_y = display_get_gui_height() - inv_height - craft_height - title_height
 	
-	var list_x = display_get_gui_width() / 2 - inv_width / 2 + pad
-	var list_y = display_get_gui_height() - inv_height - craft_height - title_height
+	var list_x = display_get_gui_width() / 2 - inv_width / 2 
+	var list_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
+	
+	buttons_x += pad
+	list_x += pad
 	
 	ui_draw_title(crafting_tab, buttons_x, buttons_y, inv_width - (pad * 2), item_button_height, tab_color, c_white, false)
 	
 	buttons_y += item_button_height + pad
 	
-	var buttons_list = ds_list_create()
-	
-	ds_list_add(buttons_list, array(0, "Weapons"))
-	ds_list_add(buttons_list, array(1, "Tools"))
-	ds_list_add(buttons_list, array(2, "Buildings"))
-	ds_list_add(buttons_list, array(3, "Consumables"))
-	
 	for(i = 0; i < ds_list_size(buttons_list); i++)
 	{
 		var index = buttons_list[|i]
 		
-		var button = ui_draw_button_sprite(sTab, index[0], buttons_x + (i * (pad + list_button_scale)), buttons_y, list_button_scale, list_button_scale, button_color, button_s_color, c_white, 0.05, false)
+		var button = ui_draw_button_sprite(sTab, index[0], buttons_x + (list_button_scale + pad) * i, buttons_y, list_button_scale, list_button_scale, button_color, button_s_color, c_white, 0.05, false)
 		if(button[0])
 		{
 			crafting_tab = index[1]
+			selected_list = index[2]
 		}
 	}
-
-
-	list_y += (item_button_height + pad) * 2
-
 	
+	list_y += list_button_scale + item_button_height + pad * 3
 
-	ui_draw_rectangle(list_x, list_y, item_button_width, item_button_height, button_color, 1, false)
+	if(ds_list_size(selected_list) > 0)
+	{
+		for(var i = 0; i < ds_list_size(selected_list); i++)
+		{
+			var button = ui_draw_button_color(o_InventoryBase.items_list[selected_list[|i][0]].name, list_x, list_y + (i * (item_button_height + pad)), item_button_width, item_button_height, button_color, button_s_color, c_white, false)
+			if(button[0])
+			{
+				selected_item = i	
+			}
+		}
+	}
+	
+	list_x += item_button_width + pad
+	
+	var sprite_scale = 5
+	
+	//THIS IS INCREDIBLY JANK PLEAASE CHANGE THIS SOON ADAM JESUS CHRIST
+	if(ds_list_size(selected_list) > 0)
+	{
+		ui_draw_rectangle(list_x, list_y, sprite_get_width(s_Items) * sprite_scale, sprite_get_height(s_Items) * sprite_scale, button_color, 1, false)
+	
+		draw_sprite_ext(s_Items, o_InventoryBase.items_list[selected_list[|selected_item][0]].spr_index, list_x, list_y, sprite_scale, sprite_scale, 0, c_white, 1)
+	
+		list_x += sprite_get_width(s_Items) * sprite_scale + pad
+	
+		ui_draw_string(list_x, list_y, "CRAFTABLE: " + string(o_InventoryBase.items_list[selected_list[|selected_item][0]].name), ft_Default)
+	
+		list_y += string_height("Z") + pad
+	
+		for(var i = 0; i < ds_list_size(selected_list); i++)
+		{
+			ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
+		
+			list_y += string_height("Z") + pad
+		}
+	}
+	
 }
+
 
 if(global.current_gui == gui.PROFILE)
 {

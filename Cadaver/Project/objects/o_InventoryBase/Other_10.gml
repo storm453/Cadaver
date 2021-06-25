@@ -11,7 +11,7 @@ items_list[0] =
 //Apple
 items_list[1] =
 {
-	name : "Apple",
+	name : "Stone",
 	stack : 10,
 	spr_index : 1
 }
@@ -19,7 +19,7 @@ items_list[1] =
 //Bottle
 items_list[2] =
 {
-	name : "Bottle",
+	name : "Wood",
 	stack: 10,
 	spr_index : 2
 }
@@ -27,7 +27,14 @@ items_list[2] =
 //Chemicals
 items_list[3] =
 {
-	name : "Chemicals",
+	name : "Plastic",
 	stack : 10,
 	spr_index : 3
+}
+
+items_list[4] =
+{
+	name : "Metal",
+	stack : 10,
+	spr_index : 4
 }
