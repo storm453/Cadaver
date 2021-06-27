@@ -27,4 +27,8 @@
 26 - Pickaxed
 27 - axe
 28 - fries
-29 - steak potato meal
+29 - cheeseburger meal
+30 - chemicals
+31 - rare plants
+32 - metal pipes
+33 - medical parts

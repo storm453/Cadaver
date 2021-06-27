@@ -209,12 +209,12 @@ if(global.current_gui == gui.INVENTORY)
 		ui_draw_rectangle(list_x, list_y + sprite_get_height(s_Items) * sprite_scale, sprite_get_width(s_Items) * sprite_scale, height, button_color, 1, false)
 		
 		
-		
 		var craft_button = ui_draw_button_sprite(s_Icons, 0, list_x, list_y + sprite_space + pad + height, sprite_space, item_button_height, button_color, button_s_color, c_white, 0.5, false)
 		if(craft_button[0])
 		{
 			selected_mode = 0	
 		}
+		
 		
 		var info_button = ui_draw_button_sprite(s_Icons, 3, list_x, list_y + sprite_space + pad + height + item_button_height + pad, sprite_space, item_button_height, button_color, button_s_color, c_white, 0.5, false)
 		if(info_button[0])
@@ -298,20 +298,47 @@ if(global.current_gui == gui.INVENTORY)
 		{
 			with(o_PlayerInventory)
 			{
-				other.check = check_item(o_PlayerUI.selected_list[|o_PlayerUI.selected_item][1][i].iid, o_PlayerUI.selected_list[|o_PlayerUI.selected_item][1][i].mat)	
+				other.check = check_item(o_PlayerUI.selected_list[|o_PlayerUI.selected_item][1][i].iid, o_PlayerUI.selected_list[|o_PlayerUI.selected_item][1][i].mat * other.craft_amount)	
 			}
+
+			var prev_scale = 2
+
+
+
 
 			if(!selected_mode)
 			{
 				if(check)
 				{
 					draw_set_color(c_white)
-					ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
+					ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
+					
+					draw_sprite_ext(
+					s_Items, o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].spr_index, 
+					list_x + string_width(string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name) + pad, 
+					list_y - sprite_get_height(s_Items) * prev_scale / 10,
+					prev_scale,
+					prev_scale,
+					0,
+					c_white,
+					1
+					)
 				}
 				else
 				{
 					draw_set_color(0x6357d9)
-					ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)	
+					ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
+					
+					draw_sprite_ext(
+					s_Items, o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].spr_index, 
+					list_x + string_width(string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name) + pad, 
+					list_y - sprite_get_height(s_Items) * prev_scale / 10,
+					prev_scale,
+					prev_scale,
+					0,
+					0x6357d9,
+					1
+					)
 				}
 			}
 			

@@ -217,7 +217,35 @@ items_list[28] =
 
 items_list[29] =
 {
-	name : "Steak & Potato Meal",
+	name : "Hamburger Meal",
 	stack : 10,
 	spr_index : 29
+}
+
+items_list[30] =
+{
+	name : "Chemicals",
+	stack : 10,
+	spr_index : 30
+}
+
+items_list[31] =
+{
+	name : "Rare Plants",
+	stack : 10,
+	spr_index : 31
+}
+
+items_list[32] =
+{
+	name : "Pipes",
+	stack : 10,
+	spr_index : 32
+}
+
+items_list[33] =
+{
+	name : "Medical Parts",
+	stack : 10,
+	spr_index : 33
 }
