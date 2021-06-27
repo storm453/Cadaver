@@ -40,6 +40,7 @@ ammunition_list = ds_list_create()
 resources_list = ds_list_create()
 
 selected_list = weapons_list
+selected_mode = 0
 
 ds_list_add(weapons_list, make_recipe(5, array(make_recipe_requirement(2, 1), make_recipe_requirement(4, 1))))
 
@@ -76,8 +77,10 @@ ds_list_add(buttons_list, array(7, "RESOURCES", resources_list))
 crafting_tab = buttons_list[|0][1]
 
 selected_item = 0
+craft_amount = 1
 
-show_debug_message(weapons_list[|0])
+queue_list = ds_list_create()
+max_queue = 4
 
 //var index = weapons_list[|i]
 

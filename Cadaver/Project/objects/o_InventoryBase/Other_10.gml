@@ -5,7 +5,8 @@ items_list[0] =
 {
 	name : "",
 	stack : 0,
-	spr_index : 0
+	spr_index : 0,
+	description : "A sharp metal object."
 }
 
 //Apple

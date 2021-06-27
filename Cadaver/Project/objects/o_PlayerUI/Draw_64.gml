@@ -189,34 +189,133 @@ if(global.current_gui == gui.INVENTORY)
 			if(button[0])
 			{
 				selected_item = i	
-				//var check = check_item(1,2)
-				//show_debug_message(check)
 			}
 		}
 	}
 	
 	list_x += item_button_width + pad
 	
-	var sprite_scale = 5
+	var sprite_scale = 4
 	
 	//THIS IS INCREDIBLY JANK PLEAASE CHANGE THIS SOON ADAM GODAMN
 	if(ds_list_size(selected_list) > 0)
 	{
-		ui_draw_rectangle(list_x, list_y, sprite_get_width(s_Items) * sprite_scale, sprite_get_height(s_Items) * sprite_scale, button_color, 1, false)
-	
+		var sprite_space = sprite_get_height(s_Items) * sprite_scale
+		
+		ui_draw_rectangle(list_x, list_y, sprite_get_width(s_Items) * sprite_scale, sprite_get_height(s_Items) * sprite_scale - pad, button_color, 1, false)
+		
+		var height = craft_height - sprite_get_height(s_Items) * sprite_scale - (pad * 6) - list_button_scale - item_button_height - item_button_height *2
+		
+		ui_draw_rectangle(list_x, list_y + sprite_get_height(s_Items) * sprite_scale, sprite_get_width(s_Items) * sprite_scale, height, button_color, 1, false)
+		
+		
+		
+		var craft_button = ui_draw_button_sprite(s_Icons, 0, list_x, list_y + sprite_space + pad + height, sprite_space, item_button_height, button_color, button_s_color, c_white, 0.5, false)
+		if(craft_button[0])
+		{
+			selected_mode = 0	
+		}
+		
+		var info_button = ui_draw_button_sprite(s_Icons, 3, list_x, list_y + sprite_space + pad + height + item_button_height + pad, sprite_space, item_button_height, button_color, button_s_color, c_white, 0.5, false)
+		if(info_button[0])
+		{
+			selected_mode = 1		
+		}
+		
+		if(!selected_mode)
+		{
+			var craft_button = ui_draw_button_color("Craft", list_x + sprite_space + pad, list_y + sprite_space + pad + height + item_button_height + pad, inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4, item_button_height, button_color, button_s_color, c_white, false)
+
+			var arrow_width = (inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4) / 6
+
+			var ar_x = list_x + sprite_space + pad
+			var ar_y = list_y + sprite_space + pad + height
+		
+			var counter_width = arrow_width * 6 - (arrow_width + pad) * 4
+		
+		
+			//Small left
+			var arrow_button = ui_draw_button_sprite(s_Icons, 4, ar_x, ar_y, arrow_width, item_button_height, button_color, button_s_color, c_white, -0.3, false)
+			if(arrow_button[0])
+			{
+				craft_amount--
+			}
+		
+			ar_x += arrow_width + pad
+		
+			//Small right
+			var arrow_button = ui_draw_button_sprite(s_Icons, 4, ar_x, ar_y, arrow_width, item_button_height, button_color, button_s_color, c_white, 0.3, false)
+			if(arrow_button[0])
+			{
+				craft_amount++	
+			}
+		
+			ar_x += arrow_width + pad
+		
+			//Big left
+			var arrow_button = ui_draw_button_sprite(s_Icons, 5, ar_x, ar_y, arrow_width, item_button_height, button_color, button_s_color, c_white, -0.3, false)
+			if(arrow_button[0])
+			{
+				craft_amount -= 10	
+			}
+		
+			ar_x += arrow_width + pad
+		
+			//Big right
+			var arrow_button = ui_draw_button_sprite(s_Icons, 5, ar_x, ar_y, arrow_width, item_button_height, button_color, button_s_color, c_white, 0.3, false)
+			if(arrow_button[0])
+			{
+				craft_amount += 10	
+			}
+		
+			if(craft_amount <= 0) craft_amount = 1
+		
+			ar_x += arrow_width + pad
+		
+			//Counter
+			ui_draw_title(craft_amount, ar_x, ar_y, counter_width, item_button_height, button_color, c_white, false)
+		}
+		
 		draw_sprite_ext(s_Items, o_InventoryBase.items_list[selected_list[|selected_item][0]].spr_index, list_x, list_y, sprite_scale, sprite_scale, 0, c_white, 1)
-	
+		
 		list_x += sprite_get_width(s_Items) * sprite_scale + pad
+
+		ui_draw_title(o_InventoryBase.items_list[selected_list[|selected_item][0]].name, list_x, list_y, inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4, item_button_height, button_color, c_white, false)
+		
+		list_y += item_button_height + pad
 	
-		ui_draw_string(list_x, list_y, "CRAFTABLE: " + string(o_InventoryBase.items_list[selected_list[|selected_item][0]].name), ft_Default)
-	
-		list_y += string_height("Z") + pad
+		if(selected_mode)
+		{
+			//if(array_length_1d(variable_struct_get_names(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid]))) > 3
+			//{
+				//ui_draw_string(list_x, list_y, o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].description, ft_Default)
+			//}
+				
+			ui_draw_string(list_x, list_y, "Description goes here..", ft_Default)
+		}
 	
 		for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
 		{
-			ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
+			with(o_PlayerInventory)
+			{
+				other.check = check_item(o_PlayerUI.selected_list[|o_PlayerUI.selected_item][1][i].iid, o_PlayerUI.selected_list[|o_PlayerUI.selected_item][1][i].mat)	
+			}
+
+			if(!selected_mode)
+			{
+				if(check)
+				{
+					draw_set_color(c_white)
+					ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
+				}
+				else
+				{
+					draw_set_color(0x6357d9)
+					ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)	
+				}
+			}
 			
-			list_y += string_height("Z") + pad
+			list_y += string_height("1") + pad
 		}
 	}
 	
