@@ -143,7 +143,7 @@ if(global.current_gui == gui.INVENTORY)
 	#macro item_button_height 35
 	
 	var buttons_x = display_get_gui_width() / 2 - inv_width / 2
-	var buttons_y = display_get_gui_height() - inv_height - craft_height - title_height
+	var buttons_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
 	
 	var list_x = display_get_gui_width() / 2 - inv_width / 2 
 	var list_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
@@ -151,32 +151,46 @@ if(global.current_gui == gui.INVENTORY)
 	buttons_x += pad
 	list_x += pad
 	
-	ui_draw_title(crafting_tab, buttons_x, buttons_y, inv_width - (pad * 2), item_button_height, tab_color, c_white, false)
-	
-	buttons_y += item_button_height + pad
+	buttons_x += inv_width / 2 - ds_list_size(buttons_list) * (list_button_scale + pad) / 2 - pad
+	buttons_y += pad
 	
 	for(i = 0; i < ds_list_size(buttons_list); i++)
 	{
 		var index = buttons_list[|i]
 		
-		var button = ui_draw_button_sprite(sTab, index[0], buttons_x + (list_button_scale + pad) * i, buttons_y, list_button_scale, list_button_scale, button_color, button_s_color, c_white, 0.05, false)
+		var button = ui_draw_button_sprite(sTab, index[0], buttons_x + (list_button_scale + pad) * i, buttons_y, list_button_scale, list_button_scale, button_color, button_s_color, c_white, 0.07, false)
 		if(button[0])
 		{
 			crafting_tab = index[1]
 			selected_list = index[2]
+			selected_item = 0
 		}
 	}
 	
-	list_y += list_button_scale + item_button_height + pad * 3
+	list_y += list_button_scale + pad * 2
+	
+	ui_draw_title(crafting_tab, list_x, list_y, inv_width - (pad * 2), item_button_height, menu_color, c_white, false)
+	
+	list_y += item_button_height + pad
 
 	if(ds_list_size(selected_list) > 0)
 	{
 		for(var i = 0; i < ds_list_size(selected_list); i++)
 		{
-			var button = ui_draw_button_color(o_InventoryBase.items_list[selected_list[|i][0]].name, list_x, list_y + (i * (item_button_height + pad)), item_button_width, item_button_height, button_color, button_s_color, c_white, false)
+			if(selected_item == i)
+			{
+				var button = ui_draw_button_color(o_InventoryBase.items_list[selected_list[|i][0]].name, list_x, list_y + (i * (item_button_height + pad)), item_button_width, item_button_height, button_s_color, button_s_color, c_white, false)
+			}
+			else
+			{
+				var button = ui_draw_button_color(o_InventoryBase.items_list[selected_list[|i][0]].name, list_x, list_y + (i * (item_button_height + pad)), item_button_width, item_button_height, button_color, button_s_color, c_white, false)	
+			}
+			
 			if(button[0])
 			{
 				selected_item = i	
+				//var check = check_item(1,2)
+				//show_debug_message(check)
 			}
 		}
 	}
@@ -185,7 +199,7 @@ if(global.current_gui == gui.INVENTORY)
 	
 	var sprite_scale = 5
 	
-	//THIS IS INCREDIBLY JANK PLEAASE CHANGE THIS SOON ADAM JESUS CHRIST
+	//THIS IS INCREDIBLY JANK PLEAASE CHANGE THIS SOON ADAM GODAMN
 	if(ds_list_size(selected_list) > 0)
 	{
 		ui_draw_rectangle(list_x, list_y, sprite_get_width(s_Items) * sprite_scale, sprite_get_height(s_Items) * sprite_scale, button_color, 1, false)
@@ -198,10 +212,10 @@ if(global.current_gui == gui.INVENTORY)
 	
 		list_y += string_height("Z") + pad
 	
-		for(var i = 0; i < ds_list_size(selected_list); i++)
+		for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
 		{
 			ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
-		
+			
 			list_y += string_height("Z") + pad
 		}
 	}

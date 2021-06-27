@@ -1,0 +1,30 @@
+0 - Empty
+1 - Stone
+2 - Wood
+3 - Plastic
+4 - Metal
+5 - Sword
+6 - Syringe
+7 - Bottle
+8 - Meat
+9 - Cooked Meat
+10 - Salt
+11 - Potato
+12 - Uranium
+13 - Bread
+14 - Cheese
+15 - Shell
+16 - Electronics
+17 - Plants
+18 - Medical solution
+19 - Medical kit
+20 - Cloth
+21 - Bandage
+22 - Ice
+23 - Bear Trap
+24 - Mechanical Parts
+25 - Campfire
+26 - Pickaxed
+27 - axe
+28 - fries
+29 - steak potato meal

@@ -41,21 +41,39 @@ resources_list = ds_list_create()
 
 selected_list = weapons_list
 
-ds_list_add(weapons_list, make_recipe(1, array(make_recipe_requirement(2, 1), make_recipe_requirement(3,1))))
-ds_list_add(tools_list, make_recipe(3, array(make_recipe_requirement(1, 1))))
+ds_list_add(weapons_list, make_recipe(5, array(make_recipe_requirement(2, 1), make_recipe_requirement(4, 1))))
 
-crafting_tab = "Consumables"
+ds_list_add(tools_list, make_recipe(26, array(make_recipe_requirement(2, 1), make_recipe_requirement(4, 2))))
+ds_list_add(tools_list, make_recipe(27, array(make_recipe_requirement(2, 1), make_recipe_requirement(4, 2))))
+
+ds_list_add(buildings_list, make_recipe(25, array(make_recipe_requirement(2, 3), make_recipe_requirement(1, 3))))
+
+ds_list_add(consumables_list, make_recipe(13, array(make_recipe_requirement(17, 3))))
+ds_list_add(consumables_list, make_recipe(28, array(make_recipe_requirement(11, 3), make_recipe_requirement(10, 1))))
+ds_list_add(consumables_list, make_recipe(29, array(make_recipe_requirement(9, 1), make_recipe_requirement(28, 3))))
+
+ds_list_add(science_list, make_recipe(18, array(make_recipe_requirement(7, 1), make_recipe_requirement(17, 3))))
+ds_list_add(science_list, make_recipe(21, array(make_recipe_requirement(20, 3))))
+ds_list_add(science_list, make_recipe(6, array(make_recipe_requirement(4,2), make_recipe_requirement(18, 1))))
+ds_list_add(science_list, make_recipe(19, array(make_recipe_requirement(21,1), make_recipe_requirement(18, 1), make_recipe_requirement(20, 1))))
+
+ds_list_add(traps_list, make_recipe(23, array(make_recipe_requirement(4, 3), make_recipe_requirement(24, 1))))
+
+ds_list_add(resources_list, make_recipe(16, array(make_recipe_requirement(4, 5), make_recipe_requirement(24, 3))))
+ds_list_add(resources_list, make_recipe(24, array(make_recipe_requirement(4, 3), make_recipe_requirement(3, 1))))
 
 buttons_list = ds_list_create()
 	
-ds_list_add(buttons_list, array(0, "Weapons", weapons_list))
-ds_list_add(buttons_list, array(1, "Tools", tools_list))
-ds_list_add(buttons_list, array(2, "Buildings", buildings_list))
-ds_list_add(buttons_list, array(3, "Consumables", consumables_list))
-ds_list_add(buttons_list, array(4, "Science", science_list))
-ds_list_add(buttons_list, array(5, "Traps", traps_list))
-ds_list_add(buttons_list, array(6, "Ammunition", ammunition_list))
-ds_list_add(buttons_list, array(7, "Resources", resources_list))
+ds_list_add(buttons_list, array(0, "WEAPONS", weapons_list))
+ds_list_add(buttons_list, array(1, "TOOLS", tools_list))
+ds_list_add(buttons_list, array(2, "BUILDINGS", buildings_list))
+ds_list_add(buttons_list, array(3, "CONSUMABLES", consumables_list))
+ds_list_add(buttons_list, array(4, "SCIENCE", science_list))
+ds_list_add(buttons_list, array(5, "TRAPS", traps_list))
+ds_list_add(buttons_list, array(6, "AMMUNITION", ammunition_list))
+ds_list_add(buttons_list, array(7, "RESOURCES", resources_list))
+
+crafting_tab = buttons_list[|0][1]
 
 selected_item = 0
 

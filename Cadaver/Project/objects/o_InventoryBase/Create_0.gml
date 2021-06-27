@@ -52,4 +52,34 @@ function add_item(arg_item_id, arg_amount)
 	}
 }
 
+function check_item(arg_item_id, arg_amount)
+{
+	found_item = false
+	found_amt = 0
+	
+	for(var j = 0; j < slots_y; j++)
+	{
+		for(var i = 0; i < slots_x; i++)
+		{
+			var index = inv[i,j]
+			
+			if(index != 0)
+			{
+				if(index[0] == arg_item_id)
+				{
+					found_amt += index[1]	
+				}
+			}
+			
+			if(found_amt >= arg_amount)
+			{
+				found_item = true
+				return found_item
+			}
+		}
+	}
+	
+	return found_item
+}
+
 event_user(1);
