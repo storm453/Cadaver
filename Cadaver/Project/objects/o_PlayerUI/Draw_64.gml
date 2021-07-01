@@ -209,8 +209,8 @@ if(global.current_gui == gui.INVENTORY)
 		ui_draw_rectangle(list_x, list_y + sprite_get_height(s_Items) * sprite_scale, sprite_get_width(s_Items) * sprite_scale, height, button_color, 1, false)
 		
 		
-		var craft_button = ui_draw_button_sprite(s_Icons, 0, list_x, list_y + sprite_space + pad + height, sprite_space, item_button_height, button_color, button_s_color, c_white, 0.5, false)
-		if(craft_button[0])
+		var craft_mode_button = ui_draw_button_sprite(s_Icons, 0, list_x, list_y + sprite_space + pad + height, sprite_space, item_button_height, button_color, button_s_color, c_white, 0.5, false)
+		if(craft_mode_button[0])
 		{
 			selected_mode = 0	
 		}
@@ -224,7 +224,46 @@ if(global.current_gui == gui.INVENTORY)
 		
 		if(!selected_mode)
 		{
+			
+			//CRAFT
+			var craft_check = true;
+
+			for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
+			{
+				var check = o_PlayerInventory.check_item(selected_list[|selected_item][1][i].iid, selected_list[|selected_item][1][i].mat * craft_amount)
+
+				if(!check) 
+				{
+					craft_check = false 
+					break;	
+				}
+			}
+
+			var items_needed = array_create()
+
+			for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
+			{
+				items_needed[i] = 
+				{
+					uid : selected_list[|selected_item][1][i].iid,
+					amt : selected_list[|selected_item][1][i].mat * craft_amount
+				}
+			}
+
 			var craft_button = ui_draw_button_color("Craft", list_x + sprite_space + pad, list_y + sprite_space + pad + height + item_button_height + pad, inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4, item_button_height, button_color, button_s_color, c_white, false)
+
+			if(craft_button[0])
+			{
+				if(craft_check)
+				{
+					ds_list_add(queue_list, {uid : selected_list[|selected_item][0], amount: selected_list[|selected_item][2] * craft_amount, timer: 5})
+
+					for(var i = 0; i < array_length_1d(items_needed); i++)
+					{
+						o_PlayerInventory.remove_item(items_needed[i].uid, items_needed[i].amt)
+					}
+				}
+			}
 
 			var arrow_width = (inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4) / 6
 
@@ -276,76 +315,100 @@ if(global.current_gui == gui.INVENTORY)
 			ui_draw_title(craft_amount, ar_x, ar_y, counter_width, item_button_height, button_color, c_white, false)
 		}
 		
-		draw_sprite_ext(s_Items, o_InventoryBase.items_list[selected_list[|selected_item][0]].spr_index, list_x, list_y, sprite_scale, sprite_scale, 0, c_white, 1)
+		var selected_item_list = o_InventoryBase.items_list[selected_list[|selected_item][0]]
+
+		draw_sprite_ext(s_Items, selected_item_list.spr_index, list_x, list_y, sprite_scale, sprite_scale, 0, c_white, 1)
 		
+		var item_display = selected_item_list.name
+
+		if(selected_list[|selected_item][2] * craft_amount > 1)
+		{
+			item_display = string(selected_item_list.name) + " x" + string(selected_list[|selected_item][2]  * craft_amount)
+		}
+
 		list_x += sprite_get_width(s_Items) * sprite_scale + pad
 
-		ui_draw_title(o_InventoryBase.items_list[selected_list[|selected_item][0]].name, list_x, list_y, inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4, item_button_height, button_color, c_white, false)
-		
+		ui_draw_title(item_display, list_x, list_y, inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4, item_button_height, button_color, c_white, false)
+		//selected_item_list.name
+
 		list_y += item_button_height + pad
 	
+		//description
 		if(selected_mode)
 		{
-			//if(array_length_1d(variable_struct_get_names(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid]))) > 3
-			//{
-				//ui_draw_string(list_x, list_y, o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].description, ft_Default)
-			//}
-				
-			ui_draw_string(list_x, list_y, "Description goes here..", ft_Default)
-		}
-	
-		for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
-		{
-			with(o_PlayerInventory)
+			var description = "This is an item."
+
+			if(variable_struct_exists(selected_item_list, "description"))
 			{
-				other.check = check_item(o_PlayerUI.selected_list[|o_PlayerUI.selected_item][1][i].iid, o_PlayerUI.selected_list[|o_PlayerUI.selected_item][1][i].mat * other.craft_amount)	
+				description = selected_item_list.description
 			}
 
+			ui_draw_string(list_x, list_y, description, ft_Default)
+		}
+	
+		//prints out requimrents changes color if not have
+		for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
+		{
+			var check = o_PlayerInventory.check_item(selected_list[|selected_item][1][i].iid, selected_list[|selected_item][1][i].mat * craft_amount)	
 			var prev_scale = 2
-
-
-
 
 			if(!selected_mode)
 			{
-				if(check)
-				{
-					draw_set_color(c_white)
-					ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
+				var highlight_color = check ? c_white : 0x6357d9
+				
+				draw_set_color(highlight_color)
+				ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
 					
-					draw_sprite_ext(
-					s_Items, o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].spr_index, 
-					list_x + string_width(string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name) + pad, 
-					list_y - sprite_get_height(s_Items) * prev_scale / 10,
-					prev_scale,
-					prev_scale,
-					0,
-					c_white,
-					1
-					)
-				}
-				else
-				{
-					draw_set_color(0x6357d9)
-					ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
-					
-					draw_sprite_ext(
-					s_Items, o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].spr_index, 
-					list_x + string_width(string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name) + pad, 
-					list_y - sprite_get_height(s_Items) * prev_scale / 10,
-					prev_scale,
-					prev_scale,
-					0,
-					0x6357d9,
-					1
-					)
-				}
+				draw_sprite_ext(
+				s_Items, o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].spr_index, 
+				list_x + string_width(string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name) + pad, 
+				list_y - sprite_get_height(s_Items) * prev_scale / 10,
+				prev_scale,
+				prev_scale,
+				0,
+				highlight_color,
+				1
+				)
 			}
 			
 			list_y += string_height("1") + pad
 		}
 	}
 	
+	//crafting queue
+	que_scale = 75
+	que_sprite_scale = 3
+
+	var que_x = display_get_gui_width() / 2 - inv_width / 2 - que_scale - pad
+	var que_y = display_get_gui_height() - inv_height - title_height - que_scale - pad
+	
+	counter++
+
+	for(var i = 0; i < ds_list_size(queue_list); i++)
+	{
+		var que_button = ui_draw_button_sprite(s_Items, queue_list[|i].uid, que_x, que_y - (que_scale + pad) * i, que_scale, que_scale, menu_color, button_color, c_white, que_sprite_scale, false)
+		
+		ui_draw_string(que_x, que_y - (que_scale + pad) * i, "0:0" + string(queue_list[|i].timer), ft_Default)
+
+		var amount = queue_list[|i].amount
+
+		ui_draw_string(que_x + que_scale - string_width("x" + string(amount)), que_y + que_scale - string_height(amount), "x" + string(amount), ft_Default)
+		
+		if(counter > 60)
+		{
+			 queue_list[|i].timer--
+			 counter = 0
+			 
+			 if(queue_list[|i].timer <= 0)
+			 {
+				o_PlayerInventory.add_item(queue_list[|i].uid, queue_list[|i].amount)
+				ds_list_delete(queue_list, i)
+			 }
+		}	
+	}
+
+	//var buttons_x = display_get_gui_width() / 2 - inv_width / 2
+	//var buttons_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
 }
 
 

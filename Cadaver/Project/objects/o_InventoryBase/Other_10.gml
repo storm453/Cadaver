@@ -6,7 +6,6 @@ items_list[0] =
 	name : "",
 	stack : 0,
 	spr_index : 0,
-	description : "A sharp metal object."
 }
 
 //Apple
@@ -44,7 +43,8 @@ items_list[5] =
 {
 	name : "Sword",
 	stack : 10,
-	spr_index : 5
+	spr_index : 5,
+	description : "A sharp metal object."
 }
 
 items_list[6] =

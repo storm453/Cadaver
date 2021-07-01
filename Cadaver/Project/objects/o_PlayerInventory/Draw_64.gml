@@ -48,6 +48,13 @@ for(var i = 0; i < slots_x; i++)
 		
 		if(index != 0)
 		{
+			var amount_draw = index[1]
+
+			if(index[1] < 2)
+			{
+				amount_draw = ""
+			}
+
 			if(j != slots_y - 1)
 			{
 				if(global.current_gui  == gui.INVENTORY)
@@ -55,14 +62,14 @@ for(var i = 0; i < slots_x; i++)
 					//draw_text(start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), inv[i, j].name)
 					draw_sprite_ext(s_Items, items_list[index[0]].spr_index, start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), draw_scale, draw_scale, 0, c_white, 1);
 					draw_set_color(c_black)
-					draw_text(start_x + (i * slot_size * draw_scale) + 10, start_y + (j * slot_size * draw_scale) + 10, index[1])
+					draw_text(start_x + (i * slot_size * draw_scale) + 10, start_y + (j * slot_size * draw_scale) + 10, amount_draw)
 				}
 			}
 			else
 			{
 				draw_sprite_ext(s_Items, items_list[index[0]].spr_index, start_x + (i * slot_size * draw_scale), start_y + shift + (j * slot_size * draw_scale), draw_scale, draw_scale, 0, c_white, 1);
 				draw_set_color(c_black)
-				draw_text(start_x + (i * slot_size * draw_scale) + 10, start_y + shift + (j * slot_size * draw_scale) + 10, index[1])
+				draw_text(start_x + (i * slot_size * draw_scale) + 10, start_y + shift + (j * slot_size * draw_scale) + 10, amount_draw)
 			}
 		}
 	}
