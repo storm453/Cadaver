@@ -1,7 +1,7 @@
 event_user(0);
 
 inv = 0;
-in_hand = 0;
+//in_hand = 0;
 
 for(var i = 0; i < slots_x; i++)
 {

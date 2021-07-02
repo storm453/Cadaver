@@ -32,6 +32,23 @@ function ui_draw_button_color(txt, sx, sy, w, h, c, hov_c, txt_c, brd)
 	return return_data
 }
 
+function ui_draw_button_color_manual(sel, sx, sy, w, h, c, hov_c, brd)
+{	
+	draw_set_color(c)
+	draw_rectangle(sx, sy, sx + w, sy + h, brd)
+	
+	if(sel)
+	{
+		draw_set_color(hov_c)
+		draw_rectangle(sx, sy, sx + w, sy + h, brd)
+	}
+
+	draw_set_color(c_white)
+	
+	var return_data = array(w, h)
+	return return_data
+}
+
 function ui_draw_button_sprite(spr, spr_sub, sx, sy, w, h, c, hov_c, spr_c, spr_s, brd)
 {	
 	var mx = device_mouse_x_to_gui(0)

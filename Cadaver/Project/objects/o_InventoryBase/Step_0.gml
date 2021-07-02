@@ -13,45 +13,14 @@ for(var i = 0; i < slots_x; i++)
 			
 			if(mouse_check_button_pressed(mb_left))
 			{
-				if(keyboard_check(vk_shift))
+				if(!keyboard_check(vk_shift))
 				{
-					//if slot player is hovering is not empty
-					if(inv[i, j] != 0)
-					{
-						//if item is not in hotbar
-						for(var e = 0; e < slots_x; e++)
-						{
-							if(sj !=  4)
-							{
-								if(inv[e, 4] = 0)
-								{
-									//move item to bottom
-									inv[e, 4] = inv[i,j]
-									inv[i,j] = 0
-								}
-							}
-							else
-							{
-								if(inv[e, 0] = 0)
-								{
-									//move item to top
-									inv[e, 0] = inv[i,j]
-									inv[i,j] = 0	
-								}
-							}
-						}
-					}
-				}
-				else
-				{
-					var old_hand = in_hand
+					var old_hand = global.in_hand
 			
-					in_hand = inv[i, j]
+					global.in_hand = inv[i, j]
 		            inv[i, j] = old_hand
 				}
 			}
-        }
-
-       
+        }  
     }
 }

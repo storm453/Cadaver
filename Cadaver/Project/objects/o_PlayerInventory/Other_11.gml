@@ -1,3 +1,6 @@
+global.in_hand = 0
+open_inv = o_InventoryBase
+
 add_item(1, 20)
 add_item(2, 15)
 add_item(4, 20)

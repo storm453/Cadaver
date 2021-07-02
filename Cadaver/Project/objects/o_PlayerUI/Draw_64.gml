@@ -106,9 +106,9 @@ function ui_draw_window(t, sx, sy, w, h)
 	
 	var title_height = string_height_font(t, ft_Title)
 	
-	sy -= title_height + pad * 2
+	sy -= title_height + pad
 	
-	ui_draw_rectangle(sx, sy, w, pad * 2 + title_height, tab_color, 1, false);
+	ui_draw_rectangle(sx, sy, w, pad + title_height, tab_color, 1, false);
 	ui_draw_string(sx + pad, sy + pad, t, ft_Title) 
 		
 	return title_height + pad * 3
@@ -336,7 +336,7 @@ if(global.current_gui == gui.INVENTORY)
 		//description
 		if(selected_mode)
 		{
-			var description = "This is an item."
+			var description = "This is a " + string_lower(string(selected_item_list.name)) + "."
 
 			if(variable_struct_exists(selected_item_list, "description"))
 			{
@@ -426,42 +426,79 @@ if(global.current_gui == gui.PROFILE)
 
 if(global.current_gui == gui.CRAFTING)
 {
+	var journal_width = 600
+
 	draw_set_font(ft_Title)
 	
 	//MAIN UI
 	var map_height = window_height + inv_width_slots_only
 	
-	var start_x = display_get_gui_width() / 2 - inv_width / 2
+	var start_x = display_get_gui_width() / 2 - journal_width / 2
 	var start_y = display_get_gui_height() - inv_height - window_height - pad
 
-	var window = ui_draw_window("MAP", start_x, start_y, window_width, map_height)
+	var window = ui_draw_window("JOURNAL", start_x, start_y, journal_width, map_height)
 	
 	start_x += pad
 	start_y += pad
-	
-	world_draw = 384
-	
-	ui_draw_rectangle(start_x, start_y, world_draw, world_draw, grass_color, 1, true)
-	
-	for(var i = 0; i < world; i++)
+
+	var info_width = 250
+	var info_height = 35
+
+	for(var i = 0; i < ds_list_size(info_list); i++)
 	{
-		for(var j = 0; j < world; j++)
-		{	
-			if(!position_empty(i * tiles, j * tiles))
-			{
-				map[i,j] = 1	
-			}
-		}
-	}
-	
-	for(var i = 0; i < world; i++)
-	{
-		for(var j = 0; j < world; j++)
+		var color = button_color
+		
+		if(info_selected = i) color = button_s_color
+		
+		var button = ui_draw_button_color(info_list[|i].name, start_x, start_y + (info_height + pad) * i, info_width, info_height, color, button_s_color, c_white, false)
+		if(button[0])
 		{
-			if(map[i,j] == 1)
-			{
-				ui_draw_rectangle(start_x + (i * world_draw / world), start_y + (j * world_draw / world), world_draw / world, world_draw / world, object_color, 1, true)
-			}
+			info_selected = i	
 		}
 	}
+	
+	start_x += pad + info_width
+	
+	var title_width = journal_width - (pad * 3) - info_width
+	
+	ui_draw_title(info_list[|info_selected].name, start_x, start_y, title_width, info_height, menu_color, c_white, false)
+	
+	start_y += pad + info_height
+	
+	text = info_list[|info_selected].description
+
+	box_width = title_width
+	box_height = string_height(text)
+	
+	start_x += pad
+	
+	draw_text_ext(start_x, start_y, text, box_height, box_width - pad)
+
+	//draw_text_
+
+	//world_draw = 384
+	
+	//ui_draw_rectangle(start_x, start_y, world_draw, world_draw, grass_color, 1, true)
+	
+	//for(var i = 0; i < world; i++)
+	//{
+		//for(var j = 0; j < world; j++)
+		//{	
+			//if(!position_empty(i * tiles, j * tiles))
+			//{
+				//map[i,j] = 1	
+			//}
+		//}
+	//}
+	
+	//for(var i = 0; i < world; i++)
+	//{
+		//for(var j = 0; j < world; j++)
+		//{
+			//if(map[i,j] == 1)
+			//{
+				//ui_draw_rectangle(start_x + (i * world_draw / world), start_y + (j * world_draw / world), world_draw / world, world_draw / world, object_color, 1, true)
+			//}
+		//}
+	//}
 }

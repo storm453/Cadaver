@@ -87,6 +87,27 @@ counter = 0
 queue_list = ds_list_create()
 max_queue = 4
 
+info_list = ds_list_create()
+info_selected = 0
+
+ds_list_add(info_list, 
+	{ 
+	name : "Movement", 
+	description : "Use WASD to move your character, E is used to interfact with all objects in the game. Left Click to attack or harvest something, right click to build or place something."
+	})
+	
+ds_list_add(info_list, 
+	{ 
+	name : "Sherwin Salemi", 
+	description : "He is very violent, be careful when approaching him, his main weapon is a Fender HSS Stratocaster Special Edition."
+	})
+	
+ds_list_add(info_list, 
+	{ 
+	name : "Logan Brown", 
+	description : "REEEEEEE, Logan was never seen again after that"
+	})
+
 //var index = weapons_list[|i]
 
 //index[0] //ITEM TO BE CRAFTED

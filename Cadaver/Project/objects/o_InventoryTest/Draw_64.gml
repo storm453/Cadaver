@@ -1,3 +1,5 @@
+draw_set_color(c_red);
+
 //amount to shift hotbar down from inventory
 var shift = draw_scale * slot_size / 4
 
@@ -9,10 +11,6 @@ player_inventory_height = (slots_y * slot_size * draw_scale) + shift
 var mx = device_mouse_x_to_gui(0)
 var my = device_mouse_y_to_gui(0)
 
-//set drawing of inventory
-start_x = display_get_gui_width() / 2 - (slots_x  * draw_scale * slot_size) / 2
-start_y = display_get_gui_height() - (draw_scale * slot_size * slots_y) - shift
-
 //for drawing: loop through inventory
 for(var i = 0; i < slots_x; i++)
 {
@@ -23,12 +21,7 @@ for(var i = 0; i < slots_x; i++)
 		var position_y = start_y + shift + (j * slot_size * draw_scale)
 		var selected = 0
 		
-		if(j != slots_y - 1)
-		{
-			position_y = start_y + (j * slot_size * draw_scale)
-		}
-		
-		if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), position_y, start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, position_y + slot_size * draw_scale))
+		if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, start_y + (j * slot_size * draw_scale) + slot_size * draw_scale))
 		{
 			selected = 1
 		}
@@ -59,39 +52,6 @@ for(var i = 0; i < slots_x; i++)
 	}
 }
 
-//TEST
-with(o_InventoryTest)
-{
-	
-	for(var i = 0; i < slots_x; i++)
-	{
-		for(var j = 0; j < slots_y; j++)
-		{	
-	        if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, start_y + (j * slot_size * draw_scale) + slot_size * draw_scale))
-			{
-				si = i
-	            sj = j
-				s_slot = inv[i,j]
-			
-				if(mouse_check_button_pressed(mb_left))
-				{
-					if(!keyboard_check(vk_shift))
-					{
-						//show_debug_message("brtuh")
-						//var old_hand = global.in_hand
-			
-						//global.in_hand = inv[i, j]
-			
-						//global.in_hand = inv[i, j]
-			            //inv[i, j] = old_hand
-					}
-				}
-	        }  
-	    }
-	}
-	
-}
-
 //draw the sprite you have in your hand
 if(global.in_hand != 0)
 {
@@ -120,51 +80,4 @@ if(global.current_gui  == gui.INVENTORY)
 				}
 		}	
 	}
-}
-
-//shift clicking
-for(var i = 0; i < slots_x; i++)
-{
-	for(var j = 0; j < slots_y; j++)
-	{	
-        if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, start_y + (j * slot_size * draw_scale) + slot_size * draw_scale))
-		{
-			si = i
-            sj = j
-			s_slot = inv[i,j]
-			
-			if(mouse_check_button_pressed(mb_left))
-			{
-				if(keyboard_check(vk_shift))
-				{
-					//if slot player is hovering is not empty
-					if(inv[i, j] != 0)
-					{
-						//if item is not in hotbar
-						for(var e = 0; e < slots_x; e++)
-						{
-							if(sj !=  4)
-							{
-								if(inv[e, 4] = 0)
-								{
-									//move item to bottom
-									inv[e, 4] = inv[i,j]
-									inv[i,j] = 0
-								}
-							}
-							else
-							{
-								if(inv[e, 0] = 0)
-								{
-									//move item to top
-									inv[e, 0] = inv[i,j]
-									inv[i,j] = 0	
-								}
-							}
-						}
-					}
-				}
-			}
-        }    
-    }
 }

@@ -11,7 +11,8 @@
     {"id":{"name":"itemids","path":"notes/itemids/itemids.yy",},"order":15,},
     {"id":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"order":0,},
     {"id":{"name":"shdr_colour_grade","path":"shaders/shdr_colour_grade/shdr_colour_grade.yy",},"order":0,},
-    {"id":{"name":"ft_Default","path":"fonts/ft_Default/ft_Default.yy",},"order":1,},
+    {"id":{"name":"ft_Title4","path":"fonts/ft_Title4/ft_Title4.yy",},"order":3,},
+    {"id":{"name":"ft_Default2","path":"fonts/ft_Default2/ft_Default2.yy",},"order":1,},
     {"id":{"name":"s_HealthBar","path":"sprites/s_HealthBar/s_HealthBar.yy",},"order":8,},
     {"id":{"name":"spr_lut","path":"sprites/spr_lut/spr_lut.yy",},"order":4,},
     {"id":{"name":"o_Player","path":"objects/o_Player/o_Player.yy",},"order":5,},
@@ -26,6 +27,8 @@
     {"id":{"name":"spr_night","path":"sprites/spr_night/spr_night.yy",},"order":11,},
     {"id":{"name":"s_Icons","path":"sprites/s_Icons/s_Icons.yy",},"order":10,},
     {"id":{"name":"s_Slot","path":"sprites/s_Slot/s_Slot.yy",},"order":0,},
+    {"id":{"name":"o_InventoryTest","path":"objects/o_InventoryTest/o_InventoryTest.yy",},"order":7,},
+    {"id":{"name":"ft_Default","path":"fonts/ft_Default/ft_Default.yy",},"order":2,},
     {"id":{"name":"Game","path":"rooms/Game/Game.yy",},"order":0,},
   ],
   "Options": [
