@@ -18,7 +18,19 @@ for(var i = 0; i < slots_x; i++)
 					var old_hand = global.in_hand
 			
 					global.in_hand = inv[i, j]
-		            inv[i, j] = old_hand
+			        inv[i, j] = old_hand
+
+					if(global.in_hand != 0)
+					{
+						if(inv[i,j] != 0)
+						{
+							if(inv[i,j][0] == global.in_hand[0])
+							{
+								inv[i,j][1] += 	global.in_hand[1]
+								global.in_hand = 0 
+							}
+						}
+					}
 				}
 			}
         }  

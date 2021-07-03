@@ -38,6 +38,11 @@ for(var i = 0; i < slots_x; i++)
 			draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 		}
 		
+		if(global.current_gui != 0)
+		{
+			draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
+		}
+		
 		if(index != 0)
 		{
 			var amount_draw = index[1]
@@ -57,39 +62,6 @@ for(var i = 0; i < slots_x; i++)
 			}
 		}
 	}
-}
-
-//TEST
-with(o_InventoryTest)
-{
-	
-	for(var i = 0; i < slots_x; i++)
-	{
-		for(var j = 0; j < slots_y; j++)
-		{	
-	        if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, start_y + (j * slot_size * draw_scale) + slot_size * draw_scale))
-			{
-				si = i
-	            sj = j
-				s_slot = inv[i,j]
-			
-				if(mouse_check_button_pressed(mb_left))
-				{
-					if(!keyboard_check(vk_shift))
-					{
-						//show_debug_message("brtuh")
-						//var old_hand = global.in_hand
-			
-						//global.in_hand = inv[i, j]
-			
-						//global.in_hand = inv[i, j]
-			            //inv[i, j] = old_hand
-					}
-				}
-	        }  
-	    }
-	}
-	
 }
 
 //draw the sprite you have in your hand

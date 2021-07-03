@@ -105,7 +105,13 @@ ds_list_add(info_list,
 ds_list_add(info_list, 
 	{ 
 	name : "Logan Brown", 
-	description : "REEEEEEE, Logan was never seen again after that"
+	description : "REEEEEEE, Logan was never seen again"
+	})
+
+ds_list_add(info_list, 
+	{ 
+	name : "Adam Mathe",
+	description : "A self proclaimed monotone speaker. Always watching for when you become online, and doesn't take no for an answer when it comes to anything you don't want him to do."
 	})
 
 //var index = weapons_list[|i]

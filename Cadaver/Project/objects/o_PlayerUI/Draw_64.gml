@@ -343,7 +343,12 @@ if(global.current_gui == gui.INVENTORY)
 				description = selected_item_list.description
 			}
 
-			ui_draw_string(list_x, list_y, description, ft_Default)
+			box_width = inv_width - (pad * 4) - sprite_space - item_button_width
+			box_height = string_height(description)
+			
+			start_x += pad
+			
+			draw_text_ext(list_x, list_y, description, box_height, box_width - pad)
 		}
 	
 		//prints out requimrents changes color if not have

@@ -42,15 +42,15 @@ items_list[4] =
 items_list[5] =
 {
 	name : "Sword",
-	stack : 10,
+	stack : 1,
 	spr_index : 5,
-	description : "A sharp metal object."
+	description : "A sharp metal object, useful for stabbing things."
 }
 
 items_list[6] =
 {
 	name : "Syringe",
-	stack : 10,
+	stack : 3,
 	spr_index : 6
 }
 
@@ -72,7 +72,7 @@ items_list[9] =
 {
 	name : "Cooked Meat",
 	stack : 10,
-	spr_index : 8
+	spr_index : 9
 }
 
 items_list[10] =
@@ -176,7 +176,7 @@ items_list[22] =
 items_list[23] =
 {
 	name : "Bear Trap",
-	stack : 10,
+	stack : 1,
 	spr_index : 23
 }
 
@@ -190,21 +190,21 @@ items_list[24] =
 items_list[25] =
 {
 	name : "Campfire",
-	stack : 10,
+	stack : 1,
 	spr_index : 25
 }
 
 items_list[26] =
 {
 	name : "Pickaxe",
-	stack : 10,
+	stack : 1,
 	spr_index : 26
 }
 
 items_list[27] =
 {
 	name : "Axe",
-	stack : 10,
+	stack : 1,
 	spr_index : 27
 }	
 
