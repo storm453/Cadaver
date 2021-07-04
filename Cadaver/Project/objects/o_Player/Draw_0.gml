@@ -16,9 +16,9 @@ if(global.current_gui == 0)
 		//ui_draw_rectangle(x + sprite_get_width(s_Player) * image_xscale, y, attack_range * image_xscale, attack_range, c_red, 0.5 ,false)
 		
 		//NEEDS FIXING
-		draw_rectangle(x + 10 * image_xscale, y, x + 10 + attack_range * image_xscale, y + attack_range, false)
+		draw_rectangle(x + 10 * image_xscale, y, x + 10 * image_xscale + attack_range * image_xscale, y + attack_range, false)
 		
-		if(collision_rectangle(x, y, x + attack_range, y + attack_range, o_Tree01, false, true))
+		if(collision_rectangle(x + 10 * image_xscale, y, x + 10 * image_xscale + attack_range * image_xscale, y + attack_range, o_Tree01, false, true))
 		{
 			if(!gave_item)
 			{
