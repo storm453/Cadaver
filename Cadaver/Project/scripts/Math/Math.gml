@@ -405,3 +405,67 @@ function make_xform() {
 function m4_xform(xform) {
 	return m4_mul(m4_translate(xform.pos), m4_mul(xform.rot, m4_scale(xform.scale)));
 }
+
+function vec2(x, y) {
+	if (y == undefined)
+		y = x;
+	return {
+		x: x,
+		y: y
+	};
+}
+
+function vec_add(a, b) {
+    return {
+        x: a.x + b.x,
+        y: a.y + b.y
+    };
+}
+
+
+function vec_sub(a, b) {
+    return {
+        x: a.x - b.x,
+        y: a.y - b.y
+    };
+}
+
+function vec_mul(a, b) {
+    return {
+        x: a.x * b.x,
+        y: a.y * b.y
+    };
+}
+
+function vec_div(a, b) {
+    return {
+        x: a.x / b.x,
+        y: a.y / b.y
+    };
+}
+
+
+function vec_dot(a, b) {
+    return a.x * b.x + a.y * b.y;
+}
+
+
+function vec_length(a) {
+    return sqrt(a.x * a.x + a.y * a.y);
+}
+
+
+function vec_distance(a, b) {
+    return vec_length(vec_sub(a, b));
+}
+
+function vec_manhat_distance(a, b) {
+    var v = vec_sub(a, b);
+    return abs(v.x) + abs(v.y);
+}
+
+function vec_normalized(a) {
+	var l = vec_length(a);
+	if (l == 0) l = 1;
+	return vec_div(a, vec2(l));
+}

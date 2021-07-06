@@ -21,24 +21,32 @@ for(var i = 0; i < slots_x; i++)
 		var index = inv[i, j]
 
 		var position_y = start_y + shift + (j * slot_size * draw_scale)
+		var hotbar = true
 		var selected = 0
 		
 		if(j != slots_y - 1)
 		{
 			position_y = start_y + (j * slot_size * draw_scale)
+			hotbar = false
 		}
 		
 		if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), position_y, start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, position_y + slot_size * draw_scale))
 		{
-			selected = 1
+			if(global.current_gui != 0)
+			{
+				selected = 1
+			}
 		}
 		
 		if(global.current_gui == gui.INVENTORY)
-		{
-			draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
+		{	
+			if(!hotbar)
+			{
+				draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
+			}
 		}
-		
-		if(global.current_gui != 0)
+
+		if(hotbar)
 		{
 			draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 		}
@@ -55,10 +63,19 @@ for(var i = 0; i < slots_x; i++)
 
 			if(global.current_gui  == gui.INVENTORY)
 			{
-				//draw_text(start_x + (i * slot_size * draw_scale), start_y + (j * slot_size * draw_scale), inv[i, j].name)
+				if(!hotbar)
+				{
+					draw_sprite_ext(s_Items, items_list[index[0]].spr_index, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1);
+					draw_set_color(c_black)
+					draw_text(start_x + (i * slot_size * draw_scale), position_y, amount_draw)
+				}
+			}
+			
+			if(hotbar)
+			{
 				draw_sprite_ext(s_Items, items_list[index[0]].spr_index, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1);
 				draw_set_color(c_black)
-				draw_text(start_x + (i * slot_size * draw_scale), position_y, amount_draw)
+				draw_text(start_x + (i * slot_size * draw_scale), position_y, amount_draw)	
 			}
 		}
 	}

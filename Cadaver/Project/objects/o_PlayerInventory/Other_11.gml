@@ -1,4 +1,6 @@
 global.in_hand = 0
+global.hotbar_sel = 0
+
 open_inv = o_InventoryBase
 
 add_item(1, 20)

@@ -1,5 +1,7 @@
 draw_self()
 
+anim += 0.2
+
 if(global.current_gui == 0)
 {
 	if(attack)
@@ -13,20 +15,29 @@ if(global.current_gui == 0)
 
 	if(attack_cooldown > attack_duration)
 	{
-		//ui_draw_rectangle(x + sprite_get_width(s_Player) * image_xscale, y, attack_range * image_xscale, attack_range, c_red, 0.5 ,false)
+		rec_x = x + 10 * image_xscale
 		
-		//NEEDS FIXING
-		draw_rectangle(x + 10 * image_xscale, y, x + 10 * image_xscale + attack_range * image_xscale, y + attack_range, false)
+		var attack_rec = collision_rectangle(rec_x, y, rec_x + attack_range * image_xscale, y + attack_range, o_Tree01, false, true)
+	
+		ui_draw_rectangle(rec_x, y, attack_range * image_xscale, attack_range, c_red, 1, true)
 		
-		if(collision_rectangle(x + 10 * image_xscale, y, x + 10 * image_xscale + attack_range * image_xscale, y + attack_range, o_Tree01, false, true))
+		for(var i = 0; i < array_length_1d(resource_drops); i++)
 		{
-			if(!gave_item)
+			if(attack_rec != -4)
 			{
-				gave_item = true
-			
-				for(var i = 0; i < array_length_1d(tree); i++)
+				if(attack_rec.object_index == resource_drops[i].object)
 				{
-					o_PlayerInventory.add_item(tree[i].uid, tree[i].amt)
+					if(!gave_item)
+					{
+						gave_item = true
+			
+						var index = resource_drops[i]
+				
+						for(var j = 0; j < array_length_1d(resource_drops[i].drops); j++)
+						{
+							o_PlayerInventory.add_item(index.drops[j].uid, index.drops[j].amt)
+						}
+					}
 				}
 			}
 		}
