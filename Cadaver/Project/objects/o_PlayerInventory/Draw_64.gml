@@ -24,12 +24,14 @@ for(var i = 0; i < slots_x; i++)
 		var hotbar = true
 		var selected = 0
 		
+		//anmy slots other than hotbar
 		if(j != slots_y - 1)
 		{
 			position_y = start_y + (j * slot_size * draw_scale)
 			hotbar = false
 		}
 		
+		//select slot
 		if(point_in_rectangle(mx, my, start_x + (i * slot_size * draw_scale), position_y, start_x + (i * slot_size * draw_scale) + slot_size * draw_scale, position_y + slot_size * draw_scale))
 		{
 			if(global.current_gui != 0)
@@ -38,18 +40,22 @@ for(var i = 0; i < slots_x; i++)
 			}
 		}
 		
+		var draw_sel_slot = false
+		
 		if(global.current_gui == gui.INVENTORY)
 		{	
 			if(!hotbar)
 			{
-				draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
+				draw_sel_slot = true
 			}
 		}
 
 		if(hotbar)
 		{
-			draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
+			draw_sel_slot = true
 		}
+		
+		if(draw_sel_slot) draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 		
 		if(index != 0)
 		{
