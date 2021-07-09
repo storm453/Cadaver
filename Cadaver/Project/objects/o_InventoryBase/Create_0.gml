@@ -30,6 +30,9 @@ function add_item(arg_item_id, arg_amount)
 			{
 				found_item = true
 				inv[i,j][1] += arg_amount
+				
+				//@HACK
+				o_PlayerUI.add_item_notif(items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
 					
 				break;
 			}
@@ -61,7 +64,9 @@ function add_item(arg_item_id, arg_amount)
 					arg_item_id,
 					arg_amount
 				)
-
+				
+				o_PlayerUI.add_item_notif(items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
+				
 				found_item = true
 				break;
 			}

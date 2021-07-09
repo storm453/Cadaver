@@ -15,6 +15,38 @@ enum player_state
 	attack
 }
 
+attack_cooldown_set = 60
+attack_cooldown = 0
+attack_duration = 40
+
+attack_range = 25
+gave_item = false
+
+resource_drops = array_create(2)
+
+resource_drops[0] =
+{
+  object: o_Tree01,
+  drops: array
+  (
+	{ uid : 17, amt_min : 1, amt_max : 2 },
+	{ uid : 2, amt_min : 4, amt_max : 6 }
+  )
+}
+
+resource_drops[1] =
+{
+	object: o_Rock,
+	drops : array
+	(
+		{ uid : 1, amt_min : 1, amt_max : 3 },
+		{ uid : 4, amt_min : 1, amt_max : 1 }
+	)
+}
+
+anim = 0
+
+#region player functions
 function input()
 {
 	in_x = keyboard_check(ord("D")) - keyboard_check(ord("A"))
@@ -81,22 +113,4 @@ function player_animation()
 		image_xscale = sign_mouse;	
 	}
 }
-
-attack_cooldown_set = 60
-attack_cooldown = 0
-attack_duration = 20
-
-attack_range = 25
-gave_item = false
-
-resource_drops[0] =
-{
-  object: o_Tree01,
-  drops: array
-  (
-	{ uid : 17, amt : 1 },
-	{ uid : 2, amt : 1 }
-  )
-}
-
-anim = 0
+#endregion

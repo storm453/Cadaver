@@ -22,6 +22,36 @@ var en_h = sprite_get_height(s_HealthBar);
 draw_sprite_ext(s_EnergyBar, 0, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
 draw_sprite_part_ext(s_EnergyBar, 1, 0, 0, en_w, en_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
 
+//ITEM PICKUP DROP NOTIFICATIONS LOG HJING YEAH
+var log_x = 1700
+var log_y = 1000
+	
+for(var i = 0; i < ds_list_size(item_log); i++)
+{
+	var log_height = 50
+		
+	var item_entry = item_log[|i]
+		
+	var item_spr_index = item_entry.spr_index
+	//var item_name = o_iitem_entry.spr_index
+	
+	var fade_time = 0.5
+	var fade_alpha = clamp(item_entry.time / fade_time, 0, 1)
+	
+	//@TODO Smooth moving
+	//@HACK
+	draw_set_alpha(fade_alpha)
+	ui_draw_title(item_entry.msg, log_x, log_y - (log_height + pad) * i, 200, log_height, tab_color, c_white, false)
+	draw_set_alpha(1)	
+	
+	item_entry.time -= get_delta_time()
+		
+	if(item_entry.time <= 0)
+	{
+		ds_list_delete(item_log, i)
+	}
+}
+
 draw_set_font(ft_Default)
 
 #macro pad 5
@@ -97,7 +127,7 @@ if(global.current_gui  != 0)
 	{
 		global.current_gui = gui.CRAFTING
 		selected_tab = "MAP"
-	}
+	}	
 }
 
 function ui_draw_window(t, sx, sy, w, h)

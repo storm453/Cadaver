@@ -13,7 +13,7 @@ for(var i = 0; i < slots_x; i++)
 			inv[i, j] = array
 			(
 				uid,
-				irandom_range(0,o_InventoryBase.items_list[uid].stack)
+				irandom_range(1,o_InventoryBase.items_list[uid].stack)
 			)
 		}
 	}

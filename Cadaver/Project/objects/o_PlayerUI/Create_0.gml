@@ -19,6 +19,14 @@ for(var i = 0; i < world; i++)
 hp_show = 0;
 energy_show = 0;
 
+//item log and notication ye5ah
+item_log = ds_list_create()
+
+function add_item_notif(message, spriteindex, timer)
+{
+	ds_list_add(item_log, { msg : message, spr_index : spriteindex , time : timer } )		
+}
+
 //crafting
 function make_recipe_requirement(item_id, item_mat) 
 {

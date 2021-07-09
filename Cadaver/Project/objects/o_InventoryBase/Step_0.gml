@@ -15,19 +15,22 @@ for(var i = 0; i < slots_x; i++)
 			{
 				if(!keyboard_check(vk_shift))
 				{
-					var old_hand = global.in_hand
-			
-					global.in_hand = inv[i, j]
-			        inv[i, j] = old_hand
-
-					if(global.in_hand != 0)
+					if(global.current_gui != 0)
 					{
-						if(inv[i,j] != 0)
+						var old_hand = global.in_hand
+			
+						global.in_hand = inv[i, j]
+				        inv[i, j] = old_hand
+
+						if(global.in_hand != 0)
 						{
-							if(inv[i,j][0] == global.in_hand[0])
+							if(inv[i,j] != 0)
 							{
-								inv[i,j][1] += 	global.in_hand[1]
-								global.in_hand = 0 
+								if(inv[i,j][0] == global.in_hand[0])
+								{
+									inv[i,j][1] += 	global.in_hand[1]
+									global.in_hand = 0 
+								}
 							}
 						}
 					}

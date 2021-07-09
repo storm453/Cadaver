@@ -1,5 +1,26 @@
 items_list = 0;
 
+enum item_types
+{
+	weapon,
+	tool,
+	building,
+	resource
+}
+
+function create_struct()
+{
+	var return_struct =
+	{
+		description : "An item.",
+		burn_time : 60,
+		item_type : item_types.resource,
+		building_obj : o_Campfire
+	}
+
+	return return_struct
+}
+
 //Empty
 items_list[0] = 
 {
@@ -8,15 +29,13 @@ items_list[0] =
 	spr_index : 0,
 }
 
-//Apple
 items_list[1] =
 {
 	name : "Stone",
 	stack : 10,
-	spr_index : 1
+	spr_index : 1,
 }
 
-//Bottle
 items_list[2] =
 {
 	name : "Wood",
@@ -24,7 +43,6 @@ items_list[2] =
 	spr_index : 2
 }
 
-//Chemicals
 items_list[3] =
 {
 	name : "Plastic",
@@ -44,7 +62,10 @@ items_list[5] =
 	name : "Sword",
 	stack : 1,
 	spr_index : 5,
-	description : "A sharp metal object, useful for stabbing things."
+	item_data : create_struct()
+}
+{
+	items_list[5].item_data.item_type = item_types.weapon
 }
 
 items_list[6] =
@@ -191,7 +212,11 @@ items_list[25] =
 {
 	name : "Campfire",
 	stack : 1,
-	spr_index : 25
+	spr_index : 25,
+	item_data : create_struct()
+}
+{
+	items_list[25].item_data.item_type = item_types.building
 }
 
 items_list[26] =

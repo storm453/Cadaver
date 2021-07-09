@@ -13,7 +13,28 @@ var my = device_mouse_y_to_gui(0)
 start_x = display_get_gui_width() / 2 - (slots_x  * draw_scale * slot_size) / 2
 start_y = display_get_gui_height() - (draw_scale * slot_size * slots_y) - shift
 
-//for drawing: loop through inventory
+//hotbar drawing when inventory is closed
+for(var i = 0; i < slots_x; i++)
+{
+	var key = i + 1
+		
+	if(i == slots_x - 1) key = 0
+	if(keyboard_check_pressed(ord(key))) global.hotbar_sel = i
+
+	global.hotbar_sel_item = inv[global.hotbar_sel, slots_y - 1]
+	
+	var position_y = start_y + shift + ((slots_y - 1) * slot_size * draw_scale)	
+	var selected = false
+		
+	if(global.hotbar_sel == i) selected = 2
+		
+	if(global.current_gui != gui.INVENTORY)
+	{
+		draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
+	}
+}
+
+//for drawing: loop through inventory : not hotbar
 for(var i = 0; i < slots_x; i++)
 {
 	for(var j = 0; j < slots_y; j++)
@@ -39,23 +60,15 @@ for(var i = 0; i < slots_x; i++)
 				selected = 1
 			}
 		}
-		
-		var draw_sel_slot = false
-		
-		if(global.current_gui == gui.INVENTORY)
-		{	
-			if(!hotbar)
-			{
-				draw_sel_slot = true
-			}
-		}
 
-		if(hotbar)
+		//dont draw hotbar
+		if(j != slots_y)
 		{
-			draw_sel_slot = true
+			if(global.current_gui == gui.INVENTORY)
+			{	
+				draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
+			} 
 		}
-		
-		if(draw_sel_slot) draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 		
 		if(index != 0)
 		{
@@ -65,23 +78,27 @@ for(var i = 0; i < slots_x; i++)
 			{
 				amount_draw = ""
 			}
-
+		
+			var hotbar_draw = false
 
 			if(global.current_gui  == gui.INVENTORY)
 			{
 				if(!hotbar)
 				{
-					draw_sprite_ext(s_Items, items_list[index[0]].spr_index, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1);
-					draw_set_color(c_black)
-					draw_text(start_x + (i * slot_size * draw_scale), position_y, amount_draw)
+					hotbar_draw = true
 				}
 			}
 			
 			if(hotbar)
 			{
+				hotbar_draw = true
+			}
+			
+			if(hotbar_draw)
+			{
 				draw_sprite_ext(s_Items, items_list[index[0]].spr_index, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1);
 				draw_set_color(c_black)
-				draw_text(start_x + (i * slot_size * draw_scale), position_y, amount_draw)	
+				draw_text(start_x + (i * slot_size * draw_scale), position_y, amount_draw)		
 			}
 		}
 	}
