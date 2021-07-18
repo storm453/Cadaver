@@ -1,3 +1,5 @@
+depth = -bbox_bottom
+
 if(state = player_state.idle)
 {
 	input()

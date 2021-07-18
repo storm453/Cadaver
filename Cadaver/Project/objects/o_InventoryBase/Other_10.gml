@@ -27,6 +27,10 @@ items_list[0] =
 	name : "",
 	stack : 0,
 	spr_index : 0,
+	item_data : create_struct()
+}
+{
+	items_list[0].item_data.item_type = item_types.weapon
 }
 
 items_list[1] =
@@ -273,4 +277,32 @@ items_list[33] =
 	name : "Medical Parts",
 	stack : 10,
 	spr_index : 33
+}
+
+items_list[34] =
+{
+	name : "Grains",
+	stack : 10,
+	spr_index : 34
+}
+
+items_list[35] =
+{
+	name : "Raw Metal",
+	stack : 10,
+	spr_index : 35
+}
+
+items_list[36] =
+{
+	name : "Straw",
+	stack : 10,
+	spr_index : 36
+}
+
+items_list[37] =
+{
+	name : "Crushed Sand",
+	stack : 10,
+	spr_index : 37
 }

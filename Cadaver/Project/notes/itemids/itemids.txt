@@ -32,3 +32,5 @@
 31 - rare plants
 32 - metal pipes
 33 - medical parts
+34 - grains
+35 - raw metal

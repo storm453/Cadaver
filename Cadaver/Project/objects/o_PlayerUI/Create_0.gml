@@ -16,6 +16,17 @@ for(var i = 0; i < world; i++)
 #macro grass_color c_lime
 #macro object_color c_red
 
+enum gui
+{
+	NONE,
+	INVENTORY,
+	CRAFTING,
+	PROFILE,
+	LOOT
+}
+
+global.current_gui = gui.NONE
+
 hp_show = 0;
 energy_show = 0;
 
@@ -73,6 +84,7 @@ ds_list_add(resources_list, make_recipe(16, array(make_recipe_requirement(4, 5),
 ds_list_add(resources_list, make_recipe(24, array(make_recipe_requirement(4, 3), make_recipe_requirement(3, 1)), 1))
 ds_list_add(resources_list, make_recipe(32, array(make_recipe_requirement(4, 5)), 1))
 ds_list_add(resources_list, make_recipe(33, array(make_recipe_requirement(4, 3), make_recipe_requirement(7, 1), make_recipe_requirement(31, 1)), 3))
+ds_list_add(resources_list, make_recipe(37, array(make_recipe_requirement(1, 2)), 1))
 
 buttons_list = ds_list_create()
 	
@@ -95,8 +107,20 @@ counter = 0
 queue_list = ds_list_create()
 max_queue = 4
 
+status_list = ds_list_create()
+status_selected = 0
+
+abrasion = { name : "Abrasion", description : "A small, open wound. A bandage will speed up healing." }
+cut = { name : "Cuts" , description : "Some small cuts. A bandage will speed up healing." }
+laceration = { name : "Laceration", description: "Some deep cuts. Make sure to bandage these to avoid serious danger."}
+avulsion = { name : "Avulsion", description: "You are bleeding out. Applying a tourniquet will help this."}
+
 info_list = ds_list_create()
 info_selected = 0
+
+ds_list_add(status_list, { status_id : abrasion, time : 60 } )
+ds_list_add(status_list, { status_id : laceration, time : 600 } )
+ds_list_add(status_list, { status_id : cut, time : 300 } )
 
 ds_list_add(info_list, 
 	{ 
@@ -126,16 +150,6 @@ ds_list_add(info_list,
 
 //index[0] //ITEM TO BE CRAFTED
 //index[1] //ARRAY FOR REQUIRED ITEMS
-
-enum gui
-{
-	NONE,
-	INVENTORY,
-	CRAFTING,
-	PROFILE
-}
-
-global.current_gui = gui.NONE
 
 selected_tab = "CRAFTING"
 

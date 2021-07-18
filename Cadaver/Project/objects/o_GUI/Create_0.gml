@@ -1,7 +1,7 @@
+global.time_speed = 1
+
 draw_set_font(ft_Default)
 display_set_gui_size(view_wport[0], view_hport[0])
-
-global.draw_scale = 1
 
 //t = 0.0
 

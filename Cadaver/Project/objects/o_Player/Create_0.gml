@@ -1,5 +1,10 @@
-hp = 50;
-energy = 50;
+hp = 100;
+energy = 100;
+
+energy_time = 60
+
+//energy timer
+alarm[0] = energy_time
 
 walk_speed = 100
 acceleration = 50
@@ -24,23 +29,46 @@ gave_item = false
 
 resource_drops = array_create(2)
 
+//Tree 1
 resource_drops[0] =
 {
-  object: o_Tree01,
+  object: o_Tree1,
   drops: array
   (
-	{ uid : 17, amt_min : 1, amt_max : 2 },
-	{ uid : 2, amt_min : 4, amt_max : 6 }
+	{ uid : 2, amt_min : 3, amt_max : 6, chnce : 1 }
   )
 }
 
+//Rock 1
 resource_drops[1] =
 {
-	object: o_Rock,
+	object: o_Rock1,
 	drops : array
 	(
-		{ uid : 1, amt_min : 1, amt_max : 3 },
-		{ uid : 4, amt_min : 1, amt_max : 1 }
+		{ uid : 1, amt_min : 1, amt_max : 3, chnce: 1 },
+		{ uid : 35, amt_min : 1, amt_max : 1, chnce: 0.5 }
+	)
+}
+
+//Bush
+resource_drops[2] =
+{
+	object: o_Plants1,
+	drops : array
+	(
+		{ uid : 17, amt_min : 1, amt_max : 3, chnce : 1 },
+		{ uid : 31, amt_min : 1, amt_max : 2, chnce : 0.1 }
+	)
+}
+
+//Bush
+resource_drops[3] =
+{
+	object: o_Plants2,
+	drops : array
+	(
+		{ uid : 34, amt_min : 1, amt_max : 3, chnce : 0.5 },
+		{ uid : 36, amt_min : 2, amt_max : 7, chnce : 1 }
 	)
 }
 

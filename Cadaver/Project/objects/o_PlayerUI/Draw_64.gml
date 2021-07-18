@@ -416,8 +416,6 @@ if(global.current_gui == gui.INVENTORY)
 
 	var que_x = display_get_gui_width() / 2 - inv_width / 2 - que_scale - pad
 	var que_y = display_get_gui_height() - inv_height - title_height - que_scale - pad
-	
-	counter++
 
 	for(var i = 0; i < ds_list_size(queue_list); i++)
 	{
@@ -427,25 +425,30 @@ if(global.current_gui == gui.INVENTORY)
 
 		var amount = queue_list[|i].amount
 
-		ui_draw_string(que_x + que_scale - string_width("x" + string(amount)), que_y + que_scale - string_height(amount), "x" + string(amount), ft_Default)
-		
-		if(counter > 60)
-		{
-			 queue_list[|i].timer--
-			 counter = 0
-			 
-			 if(queue_list[|i].timer <= 0)
-			 {
-				o_PlayerInventory.add_item(queue_list[|i].uid, queue_list[|i].amount)
-				ds_list_delete(queue_list, i)
-			 }
-		}	
+		ui_draw_string(que_x + que_scale - string_width("x" + string(amount)), que_y + que_scale - string_height(amount), "x" + string(amount), ft_Default)	
 	}
 
 	//var buttons_x = display_get_gui_width() / 2 - inv_width / 2
 	//var buttons_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
 }
 
+counter++
+
+if(counter > 60)
+{
+	counter = 0
+		
+	if(ds_list_size(queue_list) > 0)
+	{
+		queue_list[|0].timer--
+		
+		if(queue_list[|0].timer <= 0)
+		{
+			o_PlayerInventory.add_item(queue_list[|0].uid, queue_list[|0].amount)
+			ds_list_delete(queue_list, 0)
+		}
+	}
+}
 
 if(global.current_gui == gui.PROFILE)
 {
@@ -453,10 +456,74 @@ if(global.current_gui == gui.PROFILE)
 	var prof_height = window_height + inv_width_slots_only
 	
 	//MAIN UI
-	var start_x = display_get_gui_width() / 2 - prof_width / 2
-	var start_y = display_get_gui_height() - inv_height - window_height - pad
+	var hp_info_start_x = display_get_gui_width() / 2 - prof_width / 2
+	var hp_info_start_y = display_get_gui_height() - inv_height - window_height - pad
+	
+	var hp_info_x = hp_info_start_x
+	var hp_info_y = hp_info_start_y
 
-	ui_draw_window("PROFILE", start_x, start_y, prof_width, prof_height)
+	ui_draw_window("PROFILE", hp_info_x, hp_info_y, prof_width, prof_height)
+	
+	hp_info_x += pad
+	hp_info_y += pad
+	
+	var hp_info_width = 250
+	var hp_info_height = 100
+	
+	ui_draw_rectangle(hp_info_x, hp_info_y, hp_info_width, hp_info_height, button_color, 1, false)
+	
+	var status_x = hp_info_start_x
+	var status_y = hp_info_start_y
+	
+	status_x += (pad * 2) + hp_info_width
+	status_y += pad
+	
+	var status_width = 200
+	var status_height = 50
+	
+	for(var i = 0; i < ds_list_size(status_list); i++)
+	{
+		if(ds_list_size(status_list) > 0)
+		{
+			var index = status_list[|i]
+			var selected_col = button_color
+		
+			if(status_selected = i)
+			{
+				selected_col = button_s_color	
+			}
+		
+			var button = ui_draw_button_color(index.status_id.name + " (" + string(index.time) + "s)", status_x, status_y + (pad + status_height) * i, status_width, status_height, selected_col, button_s_color, c_white, false)
+			if(button[0])
+			{
+				status_selected = i	
+			}
+		}
+	}
+	
+	status_x += status_width + pad
+	
+	draw_text(status_x, status_y, status_list[|status_selected].status_id.description)
+}
+
+counter++
+
+if(counter > 60)
+{
+	counter = 0
+		
+	if(ds_list_size(status_list) > 0)
+	{
+		for(var i = 0; i < ds_list_size(status_list); i++)
+		{
+			status_list[|i].time--
+		
+			if(status_list[|i].time <= 0)
+			{
+				ds_list_delete(status_list, i)
+			}
+		}
+	}
 }
 
 if(global.current_gui == gui.CRAFTING)
@@ -536,4 +603,9 @@ if(global.current_gui == gui.CRAFTING)
 			//}
 		//}
 	//}
+}
+
+if(global.current_gui == gui.LOOT)
+{
+
 }

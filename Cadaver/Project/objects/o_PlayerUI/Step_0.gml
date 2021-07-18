@@ -1,11 +1,13 @@
 if(keyboard_check_pressed(vk_tab))
 {
+	var to_gui = gui.INVENTORY
+	
 	if(global.current_gui == gui.INVENTORY)
 	{
-		global.current_gui = gui.NONE;
+		to_gui = gui.NONE	
 	}
-	else
-	{
-		global.current_gui = gui.INVENTORY
-	}
+	
+	global.current_gui = to_gui
 }
+
+if(keyboard_check_pressed(vk_shift)) global.current_gui = gui.LOOT
