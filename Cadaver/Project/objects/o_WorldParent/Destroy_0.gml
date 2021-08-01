@@ -1,0 +1,1 @@
+ds_list_delete(o_RenderManager.entities, ds_list_find_index(o_RenderManager.entities, self))

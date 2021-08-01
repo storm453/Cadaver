@@ -1,1 +1,1 @@
-depth = -bbox_bottom
+z = -bbox_bottom

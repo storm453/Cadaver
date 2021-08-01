@@ -1,4 +1,4 @@
-depth = -bbox_bottom
+z = -bbox_bottom
 
 if(state = player_state.idle)
 {

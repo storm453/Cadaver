@@ -1,5 +1,14 @@
 #macro PI 3.14159265358979
 
+function fract(x) 
+{
+  return x - floor(x);
+}
+function rand(cox, coy)
+{
+    return fract(sin(cox * 12.9898 + coy * 78.233) * 43758.5453);
+}
+
 function get_delta_time() {
 	return delta_time / 1000000;
 }

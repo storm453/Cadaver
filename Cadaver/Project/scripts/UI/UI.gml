@@ -100,7 +100,7 @@ function ui_draw_rectangle(sx, sy, w, h, c, a, brd)
 {	
 	draw_set_color(c)
 	draw_set_alpha(a)
-	draw_rectangle(sx, sy, sx + w, sy + h, brd)
+	draw_rectangle(sx, sy, sx + w - 1, sy + h - 1, brd)
 	draw_set_alpha(1)
 	draw_set_color(c_white)
 

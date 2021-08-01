@@ -13,7 +13,7 @@ last_y = y
 zoom       = 1;
 target_zoom = 1;
 min_zoom = 0.5;
-max_zoom = 10;
+max_zoom = 100;
 
 shake = 0;
 shake_damp = 0.9;
