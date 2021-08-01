@@ -28,13 +28,13 @@ function init_chunk(loc_x, loc_y)
 
 	for(var i = 0; i < objects_count; i++)
 	{
-		var obj = instance_create_layer(random_range(x, x + chunk_size), random_range(y, y + chunk_size), "Instances", o_Plants1)	
+		var obj = instance_create_layer(random_range(x, x + chunk_size), random_range(y, y + chunk_size), "Instances", choose(o_Plants1, o_Plants2))	
 	
 		ds_list_add(objects, obj)
 	}
 	
-	if (random(1) > 0.9) 
+	if (random(1) > 0.7) 
 	{
-		ds_list_add(objects, instance_create_layer(x + chunk_size / 2, y + chunk_size / 2, "Instances", o_Tree2))
+		ds_list_add(objects, instance_create_layer(x + chunk_size / 2, y + chunk_size / 2, "Instances", choose(o_Tree2, o_Tree1, o_Rock1)))
 	}
 }

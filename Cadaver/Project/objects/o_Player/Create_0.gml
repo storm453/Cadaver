@@ -227,9 +227,7 @@ function render()
 			var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, all, false, true)
 	
 			ui_draw_rectangle(rec_x, rec_y, attack_range * image_xscale, attack_range, c_red, 1, true)
-		
-			show_debug_message(attack_rec)
-		
+
 			for(var i = 0; i < array_length_1d(resource_drops); i++)
 			{
 				if(attack_rec != -4)
