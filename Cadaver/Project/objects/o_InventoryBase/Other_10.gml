@@ -306,3 +306,17 @@ items_list[37] =
 	stack : 10,
 	spr_index : 37
 }
+
+items_list[38] =
+{
+	name : "Workbench",
+	stack : 1,
+	spr_index : 38
+}
+
+items_list[39] =
+{
+	name : "Furnace",
+	stack : 1,
+	spr_index : 39
+}

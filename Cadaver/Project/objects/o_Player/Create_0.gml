@@ -10,7 +10,7 @@ energy_time = 60
 //energy timer
 alarm[0] = energy_time
 
-walk_speed = 300
+walk_speed = 100 
 acceleration = 50
 
 velocity = vec2(0, 0);

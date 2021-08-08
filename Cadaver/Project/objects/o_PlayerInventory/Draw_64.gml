@@ -1,17 +1,21 @@
-//amount to shift hotbar down from inventory
-var shift = draw_scale * slot_size / 4
-
-//some inventory height variables for drawing ui in o_PlayerUI
-player_inventory_height_slots_only = ((slots_y - 0.9) * slot_size * draw_scale) - 1
-player_inventory_height = (slots_y * slot_size * draw_scale) + shift
-
 //mouse variables
 var mx = device_mouse_x_to_gui(0)
 var my = device_mouse_y_to_gui(0)
 
 //set drawing of inventory
 start_x = display_get_gui_width() / 2 - (slots_x  * draw_scale * slot_size) / 2
-start_y = display_get_gui_height() - (draw_scale * slot_size * slots_y) - shift
+start_y = display_get_gui_height() - player_inventory_height
+
+var show_inventory = false
+
+//loop gui 
+for(var i = 0; i < ds_list_size(o_PlayerUI.inv_present_list); i++)
+{
+	if(global.current_gui = o_PlayerUI.inv_present_list[|i])
+	{
+		show_inventory = true
+	}
+}
 
 //hotbar drawing when inventory is closed
 for(var i = 0; i < slots_x; i++)
@@ -28,7 +32,7 @@ for(var i = 0; i < slots_x; i++)
 		
 	if(global.hotbar_sel == i) selected = 2
 		
-	if(global.current_gui != gui.INVENTORY)
+	if(!show_inventory)
 	{
 		draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 	}
@@ -64,7 +68,7 @@ for(var i = 0; i < slots_x; i++)
 		//dont draw hotbar
 		if(j != slots_y)
 		{
-			if(global.current_gui == gui.INVENTORY)
+			if(show_inventory)
 			{	
 				draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 			} 
@@ -81,7 +85,7 @@ for(var i = 0; i < slots_x; i++)
 		
 			var hotbar_draw = false
 
-			if(global.current_gui  == gui.INVENTORY)
+			if(show_inventory)
 			{
 				if(!hotbar)
 				{

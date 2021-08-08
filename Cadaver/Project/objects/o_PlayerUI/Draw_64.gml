@@ -61,9 +61,20 @@ draw_set_font(ft_Default)
 #macro title_button_width 128
 #macro title_button_height 32
 
-if(global.current_gui  != 0)
+//ONLY SHOW TAB SELECT IF IS IN LIST
+var show_tab = false
+
+for(var i = 0; i < ds_list_size(tab_sel_present_list); i++)
+{
+	if(global.current_gui = tab_sel_present_list[|i])
+	{
+		show_tab = true
+	}
+}
+
+if(show_tab)
 {	
-	var inv_width = round(o_PlayerInventory.slots_x * o_PlayerInventory.draw_scale * o_PlayerInventory.slot_size) - 1
+	var inv_width = round(o_PlayerInventory.slots_x * o_PlayerInventory.draw_scale * o_PlayerInventory.slot_size)
 	var inv_width_slots_only = o_PlayerInventory.player_inventory_height_slots_only
 	var inv_height = o_PlayerInventory.player_inventory_height
 	var window_width = inv_width

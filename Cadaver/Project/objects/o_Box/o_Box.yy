@@ -32,10 +32,8 @@
   "properties": [],
   "overriddenProperties": [
     {"propertyId":{"name":"draw_scale","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"3","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"start_x","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"250","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"start_y","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"300","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"slots_x","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"9","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"slots_y","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"5","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"slots_x","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"10","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"slots_y","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"4","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
   ],
   "parent": {
     "name": "Objects",

@@ -7,7 +7,7 @@ objects = ds_list_create()
 
 function render()
 {
-	ui_draw_rectangle(x, y, chunk_size, chunk_size, c_green, 1, false)
+	ui_draw_rectangle(x, y, chunk_size, chunk_size, 0x547D5B, 1, false)
 }
 
 function render_shadow()
@@ -36,5 +36,15 @@ function init_chunk(loc_x, loc_y)
 	if (random(1) > 0.7) 
 	{
 		ds_list_add(objects, instance_create_layer(x + chunk_size / 2, y + chunk_size / 2, "Instances", choose(o_Tree2, o_Tree1, o_Rock1)))
+	}
+	
+	if (random(1) > 0.95) 
+	{
+		ds_list_add(objects, instance_create_layer(x + chunk_size / 2, y + chunk_size / 2, "Instances", o_House))
+	}
+	
+	if (random(1) > 0.95) 
+	{
+		ds_list_add(objects, instance_create_layer(x + chunk_size / 2, y + chunk_size / 2, "Instances", o_Box))
 	}
 }

@@ -5,6 +5,7 @@ if(distance < 10)
 	if(keyboard_check_pressed(ord("E")))
 	{
 		open = true	
+		global.current_gui = gui.LOOT
 	}
 }
 

@@ -16,6 +16,17 @@ for(var i = 0; i < world; i++)
 #macro grass_color c_lime
 #macro object_color c_red
 
+tab_sel_present_list = ds_list_create()
+
+ds_list_add(tab_sel_present_list, gui.INVENTORY)
+ds_list_add(tab_sel_present_list, gui.CRAFTING)
+ds_list_add(tab_sel_present_list, gui.PROFILE)
+
+inv_present_list = ds_list_create()
+
+ds_list_add(inv_present_list, gui.INVENTORY)
+ds_list_add(inv_present_list, gui.LOOT)
+
 enum gui
 {
 	NONE,
