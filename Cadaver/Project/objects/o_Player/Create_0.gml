@@ -204,7 +204,9 @@ function render()
 		if(mouse_check_button_pressed(mb_left))
 		{
 			o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1] = 0
-			instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", struct.building_obj)
+			show_debug_message("placed")
+			instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", o_Campfire)
+			//instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", struct.building_obj)
 		}
 	}
 
@@ -232,6 +234,8 @@ function render()
 			{
 				if(attack_rec != -4)
 				{
+					
+					//Resource
 					if(attack_rec.object_index == resource_drops[i].object)
 					{
 						if(!gave_item)
@@ -250,6 +254,7 @@ function render()
 							}
 						}
 					}
+					
 				}
 			}
 		}

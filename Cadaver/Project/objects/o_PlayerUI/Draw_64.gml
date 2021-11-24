@@ -169,8 +169,8 @@ if(global.current_gui == gui.INVENTORY)
 
 	start_y = display_get_gui_height() - inv_height - title_height
 	
-	ui_draw_rectangle(start_x, start_y, window_width, title_height, tab_color, 1, false)
-	ui_draw_string(start_x + pad, start_y + pad, title, ft_Title)
+	//ui_draw_rectangle(start_x, start_y, window_width, title_height, tab_color, 1, false)
+	//ui_draw_string(start_x + pad, start_y + pad, title, ft_Title)
 
 	var craft_height = 400
 

@@ -1,5 +1,7 @@
 z = -bbox_bottom
 
+if(global.current_gui != gui.NONE) exit;
+
 if(state = player_state.idle)
 {
 	input()

@@ -33,7 +33,7 @@ function init_chunk(loc_x, loc_y)
 		ds_list_add(objects, obj)
 	}
 	
-	if (random(1) > 0.7) 
+	if (random(1) > 0.3) 
 	{
 		ds_list_add(objects, instance_create_layer(x + chunk_size / 2, y + chunk_size / 2, "Instances", choose(o_Tree2, o_Tree1, o_Rock1)))
 	}

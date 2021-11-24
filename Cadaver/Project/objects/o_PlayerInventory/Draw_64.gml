@@ -15,7 +15,7 @@ for(var i = 0; i < ds_list_size(o_PlayerUI.inv_present_list); i++)
 	{
 		show_inventory = true
 	}
-}
+}	
 
 //hotbar drawing when inventory is closed
 for(var i = 0; i < slots_x; i++)
@@ -36,6 +36,13 @@ for(var i = 0; i < slots_x; i++)
 	{
 		draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 	}
+}
+
+//TAB above main slots that says INVENTORY
+if(show_inventory)
+{
+	ui_draw_rectangle(start_x, start_y - title_height, 480, title_height, tab_color, 1, false)
+	ui_draw_string(start_x + pad, start_y - title_height + pad, title, ft_Title)
 }
 
 //for drawing: loop through inventory : not hotbar
@@ -71,7 +78,7 @@ for(var i = 0; i < slots_x; i++)
 			if(show_inventory)
 			{	
 				draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
-			} 
+			}
 		}
 		
 		if(index != 0)

@@ -202,7 +202,11 @@ items_list[23] =
 {
 	name : "Bear Trap",
 	stack : 1,
-	spr_index : 23
+	spr_index : 23,
+	item_data : create_struct()
+}
+{
+	items_list[23].item_data.item_type = item_types.building
 }
 
 items_list[24] =

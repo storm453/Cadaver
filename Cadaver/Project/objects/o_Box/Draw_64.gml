@@ -10,6 +10,14 @@ var shift = draw_scale * slot_size / 4
 var mx = device_mouse_x_to_gui(0)
 var my = device_mouse_y_to_gui(0)
 
+//TAB above main slots that says LOOT
+title = "LOOT";
+font_height = string_height_font(title, ft_Title)
+title_height = font_height + pad * 2
+
+ui_draw_rectangle(start_x, start_y + shift - title_height, 480, title_height, tab_color, 1, false)
+ui_draw_string(start_x + pad, start_y + shift - title_height + pad, title, ft_Title)
+
 //for drawing: loop through inventory
 for(var i = 0; i < slots_x; i++)
 {

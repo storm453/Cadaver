@@ -5,7 +5,7 @@ var slots_width = slots_x * draw_scale * slot_size
 var slots_height = slots_y * draw_scale * slot_size
 
 start_x = display_get_gui_width() / 2 - slots_width / 2
-start_y = display_get_gui_height() - o_PlayerInventory.player_inventory_height - o_PlayerInventory.shift - pad - slots_height
+start_y = display_get_gui_height() - o_PlayerInventory.player_inventory_height - o_PlayerInventory.shift - pad - slots_height - o_PlayerInventory.title_height
 show_debug_message(start_y)
 
 randomize()
