@@ -166,12 +166,13 @@ function render()
 	var draw_x = x + (distance) * image_xscale
 	var draw_y = y - sprite_height / 2
 
-	var attackable = false
+	var melee = false
+	var ranged = false
 	var buildable = false
 
 	if(global.hotbar_sel_item == 0)
 	{
-		attackable = true	
+		melee = true	
 	}
 
 	if(global.hotbar_sel_item != 0)
@@ -182,14 +183,19 @@ function render()
 		{
 			var struct = variable_struct_get(o_InventoryBase.items_list[global.hotbar_sel_item[0]], "item_data")
 
-			if(struct.item_type == item_types.weapon)
+			if(struct.item_type == item_types.melee)
 			{
-				attackable = true
+				melee = true
 			}
 		
 			if(struct.item_type == item_types.building)
 			{
 				buildable = true		
+			}
+			
+			if(struct.item_type == item_types.ranged)
+			{
+				ranged = true	
 			}
 		}
 	}	
@@ -210,7 +216,12 @@ function render()
 		}
 	}
 
-	if(attackable)
+	if(ranged)
+	{
+		//draw_sprite_ext(s_Items, o_InventoryBase.items_list[global.hotbar_sel_item[0]].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, point_direction(x, y,  mouse_x, mouse_y), c_white, 1)	
+	}
+
+	if(melee)
 	{
 		if(attack)
 		{
@@ -235,7 +246,7 @@ function render()
 				if(attack_rec != -4)
 				{
 					
-					//Resource
+					//IF NOT -4 GIVE RESOURCES BECAUSE ITS RESOURCE DROPS
 					if(attack_rec.object_index == resource_drops[i].object)
 					{
 						if(!gave_item)
@@ -254,6 +265,8 @@ function render()
 							}
 						}
 					}
+					
+					//if(enemy blah blah..)
 					
 				}
 			}

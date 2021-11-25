@@ -2,7 +2,8 @@ items_list = 0;
 
 enum item_types
 {
-	weapon,
+	melee,
+	ranged,
 	tool,
 	building,
 	resource
@@ -30,7 +31,7 @@ items_list[0] =
 	item_data : create_struct()
 }
 {
-	items_list[0].item_data.item_type = item_types.weapon
+	items_list[0].item_data.item_type = item_types.melee
 }
 
 items_list[1] =
@@ -38,6 +39,10 @@ items_list[1] =
 	name : "Stone",
 	stack : 10,
 	spr_index : 1,
+	item_data : create_struct()
+}
+{
+	items_list[1].item_data.item_type = item_types.ranged
 }
 
 items_list[2] =
@@ -69,7 +74,7 @@ items_list[5] =
 	item_data : create_struct()
 }
 {
-	items_list[5].item_data.item_type = item_types.weapon
+	items_list[5].item_data.item_type = item_types.melee
 }
 
 items_list[6] =

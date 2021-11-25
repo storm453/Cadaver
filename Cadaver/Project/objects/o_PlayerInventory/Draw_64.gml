@@ -20,20 +20,21 @@ for(var i = 0; i < ds_list_size(o_PlayerUI.inv_present_list); i++)
 //hotbar drawing when inventory is closed
 for(var i = 0; i < slots_x; i++)
 {
-	var key = i + 1
-		
-	if(i == slots_x - 1) key = 0
-	if(keyboard_check_pressed(ord(key))) global.hotbar_sel = i
-
-	global.hotbar_sel_item = inv[global.hotbar_sel, slots_y - 1]
-	
-	var position_y = start_y + shift + ((slots_y - 1) * slot_size * draw_scale)	
-	var selected = false
-		
-	if(global.hotbar_sel == i) selected = 2
-		
-	if(!show_inventory)
+	if(global.current_gui == gui.NONE)
 	{
+		var key = i + 1
+		
+		if(i == slots_x - 1) key = 0
+		
+		if(keyboard_check_pressed(ord(key))) global.hotbar_sel = i
+
+		global.hotbar_sel_item = inv[global.hotbar_sel, slots_y - 1]
+	
+		var position_y = start_y + shift + ((slots_y - 1) * slot_size * draw_scale)	
+		var selected = false
+		
+		if(global.hotbar_sel == i) selected = 2
+		
 		draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 	}
 }
@@ -77,6 +78,7 @@ for(var i = 0; i < slots_x; i++)
 		{
 			if(show_inventory)
 			{	
+				//actual inventory when open, not hotbar
 				draw_sprite_ext(s_Slot, selected, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1)
 			}
 		}
