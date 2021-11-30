@@ -1,1 +1,0 @@
-detection_range = 64

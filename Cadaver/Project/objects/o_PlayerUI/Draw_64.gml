@@ -74,12 +74,15 @@ for(var i = 0; i < ds_list_size(tab_sel_present_list); i++)
 
 if(show_tab)
 {	
-	var inv_width = round(o_PlayerInventory.slots_x * o_PlayerInventory.draw_scale * o_PlayerInventory.slot_size)
-	var inv_width_slots_only = o_PlayerInventory.player_inventory_height_slots_only
-	var inv_height = o_PlayerInventory.player_inventory_height
-	var window_width = inv_width
-	var window_height = 300
-
+	#macro inv_width round(o_PlayerInventory.slots_x * o_PlayerInventory.draw_scale * o_PlayerInventory.slot_size)
+	#macro inv_height o_PlayerInventory.player_inventory_height
+	
+	#macro inv_width_slots_only o_PlayerInventory.player_inventory_height_slots_only
+	
+	#macro window_width inv_width
+	
+	window_height = 300
+	
 	var buttons = 3
 	var menu_scale = 0;
 	
@@ -90,9 +93,7 @@ if(show_tab)
 	
 	menu_scale += pad
 
-	draw_set_font(ft_Title)
-	var title = "THING";
-	var title_height = string_height(title) + pad * 2
+	var title_height = string_height_font("Title", ft_Title) + pad * 2
 	
 	var switch_x = display_get_gui_width() / 2 - (menu_scale + menu_scale / 4) / 2
 	var switch_y = 0
@@ -136,45 +137,18 @@ if(show_tab)
 	
 	if(button_array[2][0])
 	{
-		global.current_gui = gui.CRAFTING
-		selected_tab = "MAP"
+		global.current_gui = gui.JOURNAL
+		selected_tab = "JOURNAL"
 	}	
-}
-
-function ui_draw_window(t, sx, sy, w, h)
-{
-	ui_draw_rectangle(sx, sy, w, h, menu_color, 1, false)
-	
-	var title_height = string_height_font(t, ft_Title)
-	
-	sy -= title_height + pad
-	
-	ui_draw_rectangle(sx, sy, w, pad + title_height, tab_color, 1, false);
-	ui_draw_string(sx + pad, sy + pad, t, ft_Title) 
-		
-	return title_height + pad * 3
 }
 
 if(global.current_gui == gui.INVENTORY)
 {
-	//MAIN UI
-	var start_x = display_get_gui_width() / 2 - inv_width / 2
-	var start_y = display_get_gui_height() - inv_height - window_height - pad
-
-	var title = "INVENTORY";
-	var font_height = string_height_font(title, ft_Title)
-	var title_height = font_height + pad * 2
-		
-	window_height -= title_height
-
-	start_y = display_get_gui_height() - inv_height - title_height
+	///CRAFTING UI
+	#macro craft_height 400
 	
-	//ui_draw_rectangle(start_x, start_y, window_width, title_height, tab_color, 1, false)
-	//ui_draw_string(start_x + pad, start_y + pad, title, ft_Title)
-
-	var craft_height = 400
-
-	start_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
+	var start_x = display_get_gui_width() / 2 - inv_width / 2
+	var start_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
 	
 	ui_draw_window("CRAFTING", start_x, start_y, window_width, craft_height)
 	
@@ -438,11 +412,9 @@ if(global.current_gui == gui.INVENTORY)
 
 		ui_draw_string(que_x + que_scale - string_width("x" + string(amount)), que_y + que_scale - string_height(amount), "x" + string(amount), ft_Default)	
 	}
-
-	//var buttons_x = display_get_gui_width() / 2 - inv_width / 2
-	//var buttons_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
 }
 
+//Counter for crafting
 counter++
 
 if(counter > 60)
@@ -537,7 +509,7 @@ if(counter > 60)
 	}
 }
 
-if(global.current_gui == gui.CRAFTING)
+if(global.current_gui == gui.JOURNAL)
 {
 	var journal_width = 600
 

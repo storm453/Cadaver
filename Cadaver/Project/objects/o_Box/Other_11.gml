@@ -35,11 +35,11 @@ for(var i = 0; i < slots_x; i++)
 			{
 				randomize()
 				
-				inv[i, j] = array
-				(
-					index.uid,
-					irandom_range(index.amt_min, index.amt_max)
-				)
+				inv[i, j] =
+				{
+					item : index.uid,
+					amt : irandom_range(index.amt_min, index.amt_max)
+				}
 			}
 		}
 	}

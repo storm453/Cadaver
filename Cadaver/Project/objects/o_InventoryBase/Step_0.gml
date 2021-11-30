@@ -26,9 +26,9 @@ for(var i = 0; i < slots_x; i++)
 						{
 							if(inv[i,j] != 0)
 							{
-								if(inv[i,j][0] == global.in_hand[0])
+								if(inv[i,j].item == global.in_hand.item)
 								{
-									inv[i,j][1] += 	global.in_hand[1]
+									inv[i,j].amt += 	global.in_hand.amt
 									global.in_hand = 0 
 								}
 							}

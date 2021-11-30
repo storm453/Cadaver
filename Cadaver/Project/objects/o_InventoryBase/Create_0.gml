@@ -26,10 +26,10 @@ function add_item(arg_item_id, arg_amount)
 		if(index != 0)
 		{
 			//found an item with the id given as an arg
-			if(index[0] == arg_item_id)
+			if(index.item == arg_item_id)
 			{
 				found_item = true
-				inv[i,j][1] += arg_amount
+				inv[i,j].amt += arg_amount
 				
 				//@HACK
 				o_PlayerUI.add_item_notif(items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
@@ -59,11 +59,11 @@ function add_item(arg_item_id, arg_amount)
 			//find free slot
 			if(index == 0)
 			{
-				inv[i, j] = array
-				(
-					arg_item_id,
-					arg_amount
-				)
+				inv[i, j] =
+				{
+					item: arg_item_id,
+					amt: arg_amount
+				}
 				
 				o_PlayerUI.add_item_notif(items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
 				
@@ -97,12 +97,12 @@ function remove_item(arg_item_id, arg_amount)
 			{
 				if(index != 0)
 				{
-					if(index[0] == arg_item_id)
+					if(index.item == arg_item_id)
 					{
-						removed_amt += inv[i,j][1]
-						inv[i,j][1] -= arg_amount
+						removed_amt += inv[i,j].amt
+						inv[i,j].amt -= arg_amount
 						
-						if(inv[i,j][1] <= 0)
+						if(inv[i,j].amt <= 0)
 						{
 							inv[i,j] = 0	
 						}
@@ -126,9 +126,9 @@ function check_item(arg_item_id, arg_amount)
 			
 			if(index != 0)
 			{
-				if(index[0] == arg_item_id)
+				if(index.item == arg_item_id)
 				{
-					found_amt += index[1]	
+					found_amt += index.amt	
 				}
 			}
 			

@@ -13,13 +13,10 @@ for(var i = 0; i < world; i++)
 	}
 }
 
-#macro grass_color c_lime
-#macro object_color c_red
-
 tab_sel_present_list = ds_list_create()
 
 ds_list_add(tab_sel_present_list, gui.INVENTORY)
-ds_list_add(tab_sel_present_list, gui.CRAFTING)
+ds_list_add(tab_sel_present_list, gui.JOURNAL)
 ds_list_add(tab_sel_present_list, gui.PROFILE)
 
 inv_present_list = ds_list_create()
@@ -31,8 +28,8 @@ enum gui
 {
 	NONE,
 	INVENTORY,
-	CRAFTING,
 	PROFILE,
+	JOURNAL,
 	LOOT
 }
 
@@ -156,11 +153,6 @@ ds_list_add(info_list,
 	name : "Adam Mathe",
 	description : "A self proclaimed monotone speaker. Always watching for when you become online, and doesn't take no for an answer when it comes to anything you don't want him to do."
 	})
-
-//var index = weapons_list[|i]
-
-//index[0] //ITEM TO BE CRAFTED
-//index[1] //ARRAY FOR REQUIRED ITEMS
 
 selected_tab = "CRAFTING"
 

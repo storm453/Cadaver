@@ -85,9 +85,9 @@ for(var i = 0; i < slots_x; i++)
 		
 		if(index != 0)
 		{
-			var amount_draw = index[1]
+			var amount_draw = index.amt
 
-			if(index[1] < 2)
+			if(index.amt < 2)
 			{
 				amount_draw = ""
 			}
@@ -109,7 +109,7 @@ for(var i = 0; i < slots_x; i++)
 			
 			if(hotbar_draw)
 			{
-				draw_sprite_ext(s_Items, items_list[index[0]].spr_index, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1);
+				draw_sprite_ext(s_Items, items_list[index.item].spr_index, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1);
 				draw_set_color(c_black)
 				draw_text(start_x + (i * slot_size * draw_scale), position_y, amount_draw)		
 			}
@@ -120,7 +120,7 @@ for(var i = 0; i < slots_x; i++)
 //draw the sprite you have in your hand
 if(global.in_hand != 0)
 {
-	draw_sprite_ext(s_Items, items_list[global.in_hand[0]].spr_index, mx - slot_size * draw_scale  / 2, my - slot_size * draw_scale / 2, draw_scale, draw_scale, 0, c_white, 1);
+	draw_sprite_ext(s_Items, items_list[global.in_hand.item].spr_index, mx - slot_size * draw_scale  / 2, my - slot_size * draw_scale / 2, draw_scale, draw_scale, 0, c_white, 1);
 }
 
 //info boxes they're drawn down here so they're above the slots
@@ -138,9 +138,9 @@ if(global.current_gui  == gui.INVENTORY)
 						{
 							//info box drawing
 							draw_set_color(c_dkgray)
-							draw_rectangle(mx, my, mx + 5 + string_width(items_list[index[0]].name) + 5, my + 5 + string_height(items_list[index[0]].name) + 5, false);
+							draw_rectangle(mx, my, mx + 5 + string_width(items_list[index.item].name) + 5, my + 5 + string_height(items_list[index.item].name) + 5, false);
 							draw_set_color(c_white)
-							draw_text(mx + 5, my + 5, items_list[index[0]].name);
+							draw_text(mx + 5, my + 5, items_list[index.item].name);
 						}
 				}
 		}	

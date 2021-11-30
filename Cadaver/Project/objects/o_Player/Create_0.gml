@@ -104,19 +104,16 @@ function movement()
 	
 	velocity = vec_add(velocity, velocity_increase)
 
-	//if(Collision(x + velocity.x * get_delta_time(), y))
-	//{
-    //    velocity.x = 0
-	//}
-
-	//if(Collision(x, y + velocity.y * get_delta_time())) 
-	//{
-    //    velocity.y = 0
-	//}
-
 	// move the player
-	x += velocity.x * get_delta_time()
-	y += velocity.y * get_delta_time()
+	if(!place_meeting(x + velocity.x * get_delta_time(), y, o_Collision))
+	{
+		x += velocity.x * get_delta_time()
+	}
+	
+	if(!place_meeting(x, y + velocity.y * get_delta_time(), o_Collision))
+	{
+		y += velocity.y * get_delta_time()	
+	}
 }
 
 function player_animation() 
@@ -177,11 +174,11 @@ function render()
 
 	if(global.hotbar_sel_item != 0)
 	{
-		draw_sprite_ext(s_Items, o_InventoryBase.items_list[global.hotbar_sel_item[0]].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, 0, c_white, 1)
+		draw_sprite_ext(s_Items, o_InventoryBase.items_list[global.hotbar_sel_item.item].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, 0, c_white, 1)
 
-		if(variable_struct_exists(o_InventoryBase.items_list[global.hotbar_sel_item[0]], "item_data"))
+		if(variable_struct_exists(o_InventoryBase.items_list[global.hotbar_sel_item.item], "item_data"))
 		{
-			var struct = variable_struct_get(o_InventoryBase.items_list[global.hotbar_sel_item[0]], "item_data")
+			var struct = variable_struct_get(o_InventoryBase.items_list[global.hotbar_sel_item.item], "item_data")
 
 			if(struct.item_type == item_types.melee)
 			{
@@ -209,7 +206,14 @@ function render()
 	
 		if(mouse_check_button_pressed(mb_left))
 		{
-			o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1] = 0
+			//@TEMP
+			o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1].amt--	
+			
+			if(o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1].amt <= 0)
+			{
+				o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1] = 0
+			}
+			
 			show_debug_message("placed")
 			instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", o_Campfire)
 			//instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", struct.building_obj)

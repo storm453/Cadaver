@@ -1,6 +1,10 @@
 player_distance = distance_to_object(o_Player)
 
-if(player_distance <= detection_range)
+z = -bbox_bottom
+
+var move_dir = v2(0)
+
+if(player_distance <= 256)
 {
 	//Face the player
 	var sign_mouse = sign(o_Player.x - x)
@@ -16,14 +20,26 @@ if(player_distance <= detection_range)
 	}
 
 	//Move towards player
-	move_towards_point(o_Player.x, o_Player.y, 1)
-}
-else
-{
-	speed = 0	
+	move_dir = move_towards(o_Player)
+	
+	var near = instance_nearest_notme(all)
+	
+	if(near != -4)
+	{
+		var near_dis = distance_to_object(near)
+		
+		if(near_dis == 0) near_dis = 1
+		
+		var near_dir = v2_div(move_towards(near), v2(near_dis))
+	
+		move_dir = v2_sub(move_dir, near_dir)
+	}
+	
+	x += move_dir.x
+	y += move_dir.y
 }
 
-if(speed > 0)
+if(v2_length(move_dir) > 0)
 {
 	sprite_index = s_MutantRun	
 }

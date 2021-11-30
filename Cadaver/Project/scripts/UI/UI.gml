@@ -32,6 +32,20 @@ function ui_draw_button_color(txt, sx, sy, w, h, c, hov_c, txt_c, brd)
 	return return_data
 }
 
+function ui_draw_window(t, sx, sy, w, h)
+{
+	ui_draw_rectangle(sx, sy, w, h, menu_color, 1, false)
+	
+	var title_height = string_height_font(t, ft_Title)
+	
+	sy -= title_height + pad
+	
+	ui_draw_rectangle(sx, sy, w, pad + title_height, tab_color, 1, false);
+	ui_draw_string(sx + pad, sy + pad, t, ft_Title) 
+		
+	return title_height + pad * 3
+}
+
 function ui_draw_button_color_manual(sel, sx, sy, w, h, c, hov_c, brd)
 {	
 	draw_set_color(c)

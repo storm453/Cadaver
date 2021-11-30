@@ -329,3 +329,14 @@ items_list[39] =
 	stack : 1,
 	spr_index : 39
 }
+
+items_list[40] =
+{
+	name : "Wood Wall",
+	stack : 1,
+	spr_index : 40,
+	item_data : create_struct()
+}
+{
+	items_list[40].item_data.item_type = item_types.building
+}
