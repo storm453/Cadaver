@@ -14,7 +14,7 @@ function create_struct()
 	var return_struct =
 	{
 		description : "An item.",
-		burn_time : 60,
+		burn_time : 0,
 		item_type : item_types.resource,
 		building_obj : o_Campfire
 	}
@@ -49,7 +49,11 @@ items_list[2] =
 {
 	name : "Wood",
 	stack: 10,
-	spr_index : 2
+	spr_index : 2,
+	item_data : create_struct()
+}
+{
+	items_list[2].item_data.burn_time = 300
 }
 
 items_list[3] =
