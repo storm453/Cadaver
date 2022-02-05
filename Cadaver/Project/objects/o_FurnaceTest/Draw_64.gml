@@ -15,41 +15,54 @@ start_y = orig_start_y
 
 ui_draw_window("FURNACE", start_x, start_y, furnace_width, furnace_height)
 
-//rectangle
-var rect_width = furnace_height - (pad * 2)
-
-ui_draw_rectangle(start_x + pad, start_y + pad, rect_width, rect_width, button_color, 1, false)
-
-var spr_display_width = rect_width / sprite_get_width(s_Furnace)
-
-draw_sprite_ext(s_Furnace, 0, start_x + pad * 2, start_y + pad * 2, spr_display_width, spr_display_width , 0, c_white, 1)
-
 //move so slots draw to right of sprite
-start_x = start_x + pad + rect_width + pad
+start_x = start_x + pad
 start_y += pad
+
+//draw after third slot
+var rect_x = start_x + (pad + slot_scale) * 3
+var rect_y = start_y
+
+fuel_rect_height = furnace_height - pad * 2
+
+ui_draw_rectangle(rect_x, rect_y, fuel_rect_width, fuel_rect_height, tab_color, 1, false)
+ui_draw_rectangle(rect_x, rect_y, fuel_rect_width, fuel_rect_height * (fuel / fuel_rect_height), c_orange, 1, false)
+
+if(point_in_rectangle(mx, my, rect_x, rect_y, rect_x + fuel_rect_width, rect_y + fuel_rect_height))
+{
+	ui_draw_string(mx, my, string(fuel) + "/100", ft_Default)
+}
+
+fuel_timer++
 
 //for drawing: loop through inventory
 for(var i = 0; i < slots_x; i++)
 {
 	for(var j = 0; j < slots_y; j++)
 	{	
+		//TESTING @TODO -------- CREATE REMOVE SLOT FUNCTION FOR THIS CODE
+
 		var index = inv[i, j]
 
-		var position_y = start_y + (j * slot_size * draw_scale)
-		var selected = 0
-		
-		slot_px[0] = start_x
-		slot_px[1] = start_x
-		slot_px[2] = start_x + rect_width
-		
-		slot_py[0] = orig_start_y + furnace_height / 3 - (slot_size * draw_scale) / 2
-		slot_py[1] = orig_start_y + (furnace_height / 3) * 2 - (slot_size * draw_scale) / 2
-		slot_py[2] = orig_start_y + furnace_height / 3 - (slot_size * draw_scale) / 2
+		var position_y = orig_start_y + furnace_height / 2 - slot_scale / 2
+		var selected = 3
 
+		slot_px[0] = start_x + (pad + slot_scale) * i
+		slot_px[1] = start_x + (pad + slot_scale) * i
+		slot_px[2] = start_x + (pad + slot_scale) * i
+		slot_px[3] = start_x + (pad + slot_scale) * i + fuel_rect_width + pad
+		slot_px[4] = start_x + (pad + slot_scale) * (i + 1) + fuel_rect_width
+		
+		slot_py[0] = position_y
+		slot_py[1] = position_y
+		slot_py[2] = position_y
+		slot_py[3] = position_y
+		slot_py[4] = position_y
+	
 		//needs to be seperated because slots drawn weird
-	    if(point_in_rectangle(mx, my, slot_px[j], slot_py[j],  slot_px[j] + slot_size * draw_scale, slot_py[j] + slot_size * draw_scale))
+	    if(point_in_rectangle(mx, my, slot_px[i], slot_py[j],  slot_px[i] + slot_size * draw_scale, slot_py[j] + slot_size * draw_scale))
 		{
-			selected = 1
+			selected = 4
 			
 			si = i
             sj = j
@@ -58,13 +71,14 @@ for(var i = 0; i < slots_x; i++)
 			if(mouse_check_button_pressed(mb_left))
 			{
 				if(!keyboard_check(vk_shift))
-				{
+				{	
+					//all code for moving or picking up
 					if(global.current_gui != 0)
 					{
 						var old_hand = global.in_hand
 			
 						global.in_hand = inv[i, j]
-				        inv[i, j] = old_hand
+						inv[i, j] = old_hand
 
 						if(global.in_hand != 0)
 						{
@@ -82,7 +96,7 @@ for(var i = 0; i < slots_x; i++)
 			}
         } 
 
-		draw_sprite_ext(s_Slot, selected, slot_px[j], slot_py[j], draw_scale, draw_scale, 0, c_white, 1)
+		draw_sprite_ext(s_Slot, selected, slot_px[i], slot_py[j], draw_scale, draw_scale, 0, c_white, 1)
 
 		if(index != 0)
 		{
@@ -93,9 +107,9 @@ for(var i = 0; i < slots_x; i++)
 				amount_draw = ""
 			}
 
-			draw_sprite_ext(s_Items, items_list[index.item].spr_index, slot_px[j], slot_py[j], draw_scale, draw_scale, 0, c_white, 1);
+			draw_sprite_ext(s_Items, items_list[index.item].spr_index, slot_px[i], slot_py[j], draw_scale, draw_scale, 0, c_white, 1);
 			draw_set_color(c_black)
-			draw_text(slot_px[j], slot_py[j], amount_draw)
+			draw_text(slot_px[i], slot_py[j], amount_draw)
 		}
 	}
 }

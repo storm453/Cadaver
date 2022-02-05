@@ -15,6 +15,7 @@
     {"id":{"name":"o_Chunk","path":"objects/o_Chunk/o_Chunk.yy",},"order":20,},
     {"id":{"name":"s_Rock2","path":"sprites/s_Rock2/s_Rock2.yy",},"order":28,},
     {"id":{"name":"o_Rock2","path":"objects/o_Rock2/o_Rock2.yy",},"order":14,},
+    {"id":{"name":"s_SlotFuel","path":"sprites/s_SlotFuel/s_SlotFuel.yy",},"order":35,},
     {"id":{"name":"msc_day","path":"sounds/msc_day/msc_day.yy",},"order":0,},
     {"id":{"name":"s_Box","path":"sprites/s_Box/s_Box.yy",},"order":25,},
     {"id":{"name":"UI","path":"scripts/UI/UI.yy",},"order":1,},
