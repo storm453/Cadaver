@@ -23,17 +23,14 @@ start_y += pad
 var rect_x = start_x + (pad + slot_scale) * 3
 var rect_y = start_y
 
+current = lerp(current, fuel, 0.1) 
+
 fuel_rect_height = furnace_height - pad * 2
 
+var bar_width = -fuel_rect_height * (current / fuel_max)
+
 ui_draw_rectangle(rect_x, rect_y, fuel_rect_width, fuel_rect_height, tab_color, 1, false)
-ui_draw_rectangle(rect_x, rect_y, fuel_rect_width, fuel_rect_height * (fuel / fuel_rect_height), c_orange, 1, false)
-
-if(point_in_rectangle(mx, my, rect_x, rect_y, rect_x + fuel_rect_width, rect_y + fuel_rect_height))
-{
-	ui_draw_string(mx, my, string(fuel) + "/100", ft_Default)
-}
-
-fuel_timer++
+ui_draw_rectangle(rect_x, rect_y + fuel_rect_height, fuel_rect_width, bar_width, c_orange, 1, false)
 
 //for drawing: loop through inventory
 for(var i = 0; i < slots_x; i++)
@@ -139,4 +136,11 @@ for(var i = 0; i < slots_x; i++)
 					}
 			}
 	}	
+}
+
+//Fuel text
+if(point_in_rectangle(mx, my, rect_x, rect_y, rect_x + fuel_rect_width, rect_y + fuel_rect_height))
+{
+	draw_set_color(c_white)
+	ui_draw_string(mx, my, string(round(fuel)) + " / " + string(fuel_max), ft_Default)
 }

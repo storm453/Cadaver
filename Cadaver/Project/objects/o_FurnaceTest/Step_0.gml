@@ -1,10 +1,12 @@
 if(!open) exit;
 
-var mx = device_mouse_x_to_gui(0)
-var my = device_mouse_y_to_gui(0)
+//var mx = device_mouse_x_to_gui(0)
+//var my = device_mouse_y_to_gui(0)
 
-fuel++
-if(fuel > 100) fuel = 0
+if(fuel > 0)
+{
+	on = 1	
+}
 
 //for(var i = 0; i < slots_x; i++)
 //{

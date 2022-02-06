@@ -1,7 +1,7 @@
 {
   "spriteId": {
-    "name": "s_Furnace",
-    "path": "sprites/s_Furnace/s_Furnace.yy",
+    "name": "s_furnace_on",
+    "path": "sprites/s_furnace_on/s_furnace_on.yy",
   },
   "solid": false,
   "visible": true,

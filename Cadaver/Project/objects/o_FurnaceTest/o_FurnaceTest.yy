@@ -1,7 +1,7 @@
 {
   "spriteId": {
-    "name": "s_Furnace",
-    "path": "sprites/s_Furnace/s_Furnace.yy",
+    "name": "s_furnace_on",
+    "path": "sprites/s_furnace_on/s_furnace_on.yy",
   },
   "solid": false,
   "visible": true,
@@ -28,6 +28,7 @@
     {"isDnD":false,"eventNum":11,"eventType":7,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
     {"isDnD":false,"eventNum":1,"eventType":3,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
     {"isDnD":false,"eventNum":0,"eventType":3,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"isDnD":false,"eventNum":0,"eventType":8,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
   ],
   "properties": [],
   "overriddenProperties": [

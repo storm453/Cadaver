@@ -143,4 +143,16 @@ function check_item(arg_item_id, arg_amount)
 	return found_item
 }
 
+function remove_item_slot(arg_amount, arg_slotx, arg_sloty)
+{
+	var index = inv[arg_slotx, arg_sloty]
+
+	inv[arg_slotx, arg_sloty].amt -= arg_amount
+	
+	if(index.amt <= 0)
+	{
+		inv[arg_slotx, arg_sloty] = 0	
+	}
+}
+
 event_user(1);
