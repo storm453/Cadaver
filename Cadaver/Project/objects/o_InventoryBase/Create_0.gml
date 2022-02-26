@@ -155,4 +155,23 @@ function remove_item_slot(arg_amount, arg_slotx, arg_sloty)
 	}
 }
 
+function set_item_slot(arg_item, arg_amount, arg_slotx, arg_sloty)
+{
+	if(inv[arg_slotx, arg_sloty] == 0)
+	{
+		inv[arg_slotx, arg_sloty] = 
+		{
+			item: arg_item,
+			amt: arg_amount
+		}
+	}
+	else
+	{
+		if(inv[arg_slotx, arg_sloty].item == arg_item)
+		{
+			inv[arg_slotx, arg_sloty].amt += arg_amount
+		}
+	}
+}
+
 event_user(1);

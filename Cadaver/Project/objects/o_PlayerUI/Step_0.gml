@@ -9,3 +9,5 @@ if(keyboard_check_pressed(vk_tab) or keyboard_check_pressed(vk_escape))
 	
 	global.current_gui = to_gui
 }
+
+//o_Player.hp--

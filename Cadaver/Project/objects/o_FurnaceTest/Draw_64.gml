@@ -23,7 +23,7 @@ start_y += pad
 var rect_x = start_x + (pad + slot_scale) * 3
 var rect_y = start_y
 
-current = lerp(current, fuel, 0.1) 
+current = lerp(current, fuel, 1 * delta_time / 1000000) 
 
 fuel_rect_height = furnace_height - pad * 2
 
@@ -109,6 +109,23 @@ for(var i = 0; i < slots_x; i++)
 			draw_text(slot_px[i], slot_py[j], amount_draw)
 		}
 	}
+}
+
+
+//smelting bars
+for(var i = 0; i < 3; i++)
+{
+	var temp_y = orig_start_y + furnace_height / 2 - slot_scale / 2
+	
+	slotx[0] = start_x + (pad + slot_scale) * i
+	slotx[1] = start_x + (pad + slot_scale) * i
+	slotx[2] = start_x + (pad + slot_scale) * i
+	
+	sloty[0] = temp_y
+	sloty[1] = temp_y
+	sloty[2] = temp_y
+	
+	ui_draw_rectangle(slotx[i], sloty[i], slot_scale * (fuel_timer[i] / 300), slot_scale, c_lime, 0.5, false)
 }
 
 //draw the sprite you have in your hand

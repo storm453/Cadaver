@@ -1,26 +1,26 @@
 var hp_x = 10;
 var hp_y = 10;
 
-var bar_draw = 3
+var bar_draw = 0.5
 
 hp_show = lerp(hp_show, o_Player.hp, 0.2);
 
-var hp_w = (hp_show/100)* sprite_get_width(s_HealthBar)
-var hp_h = sprite_get_height(s_HealthBar);
+var hp_w = sprite_get_width(s_HealthBar)
+var hp_h = (hp_show / 100) * sprite_get_height(s_HealthBar);
 
-draw_sprite_ext(s_HealthBar, 0, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
-draw_sprite_part_ext(s_HealthBar, 1, 0, 0, hp_w, hp_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
+draw_sprite_ext(s_HealthBar, 1, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
+draw_sprite_part_ext(s_HealthBar, 0, 0, 0, hp_w, hp_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
 
 //energy bar
 hp_y += hp_h * bar_draw + pad
 
 energy_show = lerp(energy_show, o_Player.energy, 0.2);
 
-var en_w = (energy_show/100)* sprite_get_width(s_HealthBar)
-var en_h = sprite_get_height(s_HealthBar);
+var en_w = sprite_get_width(s_HealthBar)
+var en_h = (energy_show / 100) * sprite_get_height(s_HealthBar);
 
-draw_sprite_ext(s_EnergyBar, 0, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
-draw_sprite_part_ext(s_EnergyBar, 1, 0, 0, en_w, en_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
+draw_sprite_ext(s_EnergyBar, 1, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
+draw_sprite_part_ext(s_EnergyBar, 0, 0, 0, en_w, en_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
 
 //ITEM PICKUP DROP NOTIFICATIONS LOG HJING YEAH
 var log_x = 1700

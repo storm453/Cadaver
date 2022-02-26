@@ -202,22 +202,45 @@ function render()
 		var mouse_tile_x = floor(mouse_x / tile_size) * tile_size
 		var mouse_tile_y = floor(mouse_y / tile_size) * tile_size
 	
-		draw_sprite_ext(s_Slot, 0, mouse_tile_x, mouse_tile_y, 1, 1, 0, c_lime, 0.2)
-	
-		if(mouse_check_button_pressed(mb_left))
+		if(global.in_hand == 0)
 		{
-			//@TEMP
-			o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1].amt--	
+			var free = 1
+			var preview_col = c_lime
 			
-			if(o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1].amt <= 0)
+			var check = -tile_size
+			
+			repeat(3)
 			{
-				o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1] = 0
+				check += tile_size
+				
+				if(place_meeting(mouse_tile_x + check, mouse_tile_y + check, all))
+				{
+					free = 0
+					preview_col = c_red
+				}
+				if(place_meeting(mouse_tile_x - check, mouse_tile_y - check, all))
+				{
+					free = 0
+					preview_col = c_red
+				}
 			}
 			
-			show_debug_message("placed")
-			instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", o_Campfire)
-			//instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", struct.building_obj)
+			draw_sprite_ext(s_Tile, 0, mouse_tile_x, mouse_tile_y, 1, 1, 0, preview_col, 1)
+				
+			if(mouse_check_button_pressed(mb_left))
+			{
+				//@TEMP
+				o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1].amt--	
+			
+				if(o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1].amt <= 0)
+				{
+					o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1] = 0
+				}
+
+				instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", struct.building_obj)
+			}
 		}
+		
 	}
 
 	if(ranged)

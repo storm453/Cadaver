@@ -11,6 +11,7 @@
     {"id":{"name":"o_GUI","path":"objects/o_GUI/o_GUI.yy",},"order":2,},
     {"id":{"name":"sTab","path":"sprites/sTab/sTab.yy",},"order":14,},
     {"id":{"name":"Util","path":"scripts/Util/Util.yy",},"order":0,},
+    {"id":{"name":"s_Tile","path":"sprites/s_Tile/s_Tile.yy",},"order":37,},
     {"id":{"name":"o_WorldGen","path":"objects/o_WorldGen/o_WorldGen.yy",},"order":19,},
     {"id":{"name":"o_Chunk","path":"objects/o_Chunk/o_Chunk.yy",},"order":20,},
     {"id":{"name":"s_Rock2","path":"sprites/s_Rock2/s_Rock2.yy",},"order":28,},
@@ -118,7 +119,7 @@
   ],
   "IncludedFiles": [],
   "MetaData": {
-    "IDEVersion": "2.3.3.570",
+    "IDEVersion": "2.3.7.606",
   },
   "resourceVersion": "1.4",
   "name": "Cadaver",
