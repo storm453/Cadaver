@@ -32,6 +32,35 @@ function ui_draw_button_color(txt, sx, sy, w, h, c, hov_c, txt_c, brd)
 	return return_data
 }
 
+function rm_draw_button_color(sx, sy, w, h, c, hov_c, txt_c, brd)
+{	
+	var mx = mouse_x
+	var my = mouse_y
+	
+	var click = false
+	
+	draw_set_color(c)
+	draw_rectangle(sx, sy, sx + w, sy + h, brd)
+	
+	if(point_in_rectangle(mx, my, sx, sy, sx + w, sy + h))
+	{
+		draw_set_color(hov_c)
+		draw_rectangle(sx, sy, sx + w, sy + h, brd)
+		
+		if(mouse_check_button_pressed(mb_left))
+		{
+			click = true		
+		}
+		else
+		{
+			click = false	
+		}
+	}
+	
+	var return_data = array(click, w, h)
+	return return_data
+}
+
 function ui_draw_window(t, sx, sy, w, h)
 {
 	ui_draw_rectangle(sx, sy, w, h, menu_color, 1, false)

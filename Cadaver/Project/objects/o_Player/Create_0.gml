@@ -2,6 +2,8 @@ ds_list_add(o_RenderManager.entities, self)
 
 z = 0
 
+global.linking = noone
+
 hp = 100;
 energy = 100;
 
