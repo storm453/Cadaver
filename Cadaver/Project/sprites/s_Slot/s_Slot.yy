@@ -87,7 +87,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"s_Slot","path":"sprites/s_Slot/s_Slot.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "s_Slot",
     "tags": [],
     "resourceType": "GMSequence",

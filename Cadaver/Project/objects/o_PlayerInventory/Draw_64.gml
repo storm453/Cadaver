@@ -111,7 +111,10 @@ for(var i = 0; i < slots_x; i++)
 			{
 				draw_sprite_ext(s_Items, items_list[index.item].spr_index, start_x + (i * slot_size * draw_scale), position_y, draw_scale, draw_scale, 0, c_white, 1);
 				draw_set_color(c_black)
-				draw_text(start_x + (i * slot_size * draw_scale), position_y, amount_draw)		
+				draw_set_color(text_color)
+				ui_draw_string(start_x + (i * slot_size * draw_scale) + 3, position_y + 1, amount_draw, ft_Default)
+				draw_set_color(text_color)
+				draw_text(start_x + (i * slot_size * draw_scale) + 3, position_y + 1, amount_draw)
 			}
 		}
 	}

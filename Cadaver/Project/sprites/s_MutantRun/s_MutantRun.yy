@@ -87,7 +87,7 @@
     "eventToFunction": {},
     "eventStubScript": null,
     "parent": {"name":"s_MutantRun","path":"sprites/s_MutantRun/s_MutantRun.yy",},
-    "resourceVersion": "1.3",
+    "resourceVersion": "1.4",
     "name": "s_MutantRun",
     "tags": [],
     "resourceType": "GMSequence",

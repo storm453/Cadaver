@@ -43,6 +43,7 @@ items_list[1] =
 }
 {
 	items_list[1].item_data.item_type = item_types.ranged
+	items_list[1].item_data.description = "Heavy.. A very useful resource that is used in many different recipes. Pretty solid huh?"
 }
 
 items_list[2] =
@@ -79,6 +80,7 @@ items_list[5] =
 }
 {
 	items_list[5].item_data.item_type = item_types.melee
+	items_list[5].item_data.description = "A versatile weapon for taking down the infected and chopping unwanted foliage."
 }
 
 items_list[6] =
@@ -162,7 +164,11 @@ items_list[16] =
 {
 	name : "Electronics",
 	stack : 10,
-	spr_index : 16
+	spr_index : 16,
+	item_data : create_struct()
+}
+{
+	items_list[16].item_data.description = "Simple electronics ready to be used in whatever project you need them for."	
 }
 
 items_list[17] =
@@ -176,7 +182,11 @@ items_list[18] =
 {
 	name : "Medical Solution",
 	stack : 10,
-	spr_index : 18
+	spr_index : 18,
+	item_data : create_struct()
+}
+{
+	items_list[18].item_data.description = "An effective healing balm made from some plants. Used in crafting basic medicines."
 }
 
 items_list[19] =

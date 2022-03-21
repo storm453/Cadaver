@@ -144,273 +144,247 @@ if(show_tab)
 
 if(global.current_gui == gui.INVENTORY)
 {
-	///CRAFTING UI
-	#macro craft_height 400
+	/// CRAFTING UI !
 	
-	var start_x = display_get_gui_width() / 2 - inv_width / 2
-	var start_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
+	//ITEM DATA WINDOW
+	#macro craft_width window_width
+	#macro craft_height 320
 	
-	ui_draw_window("CRAFTING", start_x, start_y, window_width, craft_height)
+	var item_window_x = display_get_gui_width() / 2 - inv_width / 2
+	var item_window_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
 	
-	#macro list_button_scale 50
+	ui_draw_window(item_window_name, item_window_x, item_window_y, craft_width, craft_height)
 	
-	#macro item_button_width 160
-	#macro item_button_height 35
-	
-	var buttons_x = display_get_gui_width() / 2 - inv_width / 2
-	var buttons_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
-	
-	var list_x = display_get_gui_width() / 2 - inv_width / 2 
-	var list_y = display_get_gui_height() - inv_height - craft_height - title_height - pad
-	
-	buttons_x += pad
-	list_x += pad
-	
-	buttons_x += inv_width / 2 - ds_list_size(buttons_list) * (list_button_scale + pad) / 2 - pad
-	buttons_y += pad
-	
-	for(i = 0; i < ds_list_size(buttons_list); i++)
+	item_panel = make_panel(item_window_x + pad, item_window_y + pad)
+
+	if(sel_item != -1)
 	{
-		var index = buttons_list[|i]
+		sel_item_id = o_InventoryBase.items_list[sel_craft_list[|sel_item].item_id].spr_index
 		
-		var button = ui_draw_button_sprite(sTab, index[0], buttons_x + (list_button_scale + pad) * i, buttons_y, list_button_scale, list_button_scale, button_color, button_s_color, c_white, 0.07, false)
-		if(button[0])
+		var item_spr_scale = 5
+		var item_spr_size = sprite_get_width(s_Items)
+		
+		ui_draw_rectangle(item_panel.at_x, item_panel.at_y, item_spr_size * item_spr_scale, item_spr_size * item_spr_scale, tab_color, 1, false)
+		draw_sprite_ext(s_Items, sel_item_id, item_panel.at_x, item_panel.at_y, item_spr_scale, item_spr_scale, 0, c_white, 1)
+		
+		pn_col(item_panel, item_spr_scale * item_spr_size + pad)
+		
+		var text_space = craft_width - (pad * 3) - (item_spr_scale * item_spr_size)
+		
+		var description = "This is where the description would go. Essential for a crafting system. Well, not really. But it's cool!"
+		
+		if(variable_struct_exists(o_InventoryBase.items_list[sel_craft_list[|sel_item].item_id], "item_data"))
 		{
-			crafting_tab = index[1]
-			selected_list = index[2]
-			selected_item = 0
+			if(variable_struct_exists(o_InventoryBase.items_list[sel_craft_list[|sel_item].item_id].item_data, "description"))
+			{
+				description = o_InventoryBase.items_list[sel_craft_list[|sel_item].item_id].item_data.description
+			}
 		}
-	}
-	
-	list_y += list_button_scale + pad * 2
-	
-	ui_draw_title(crafting_tab, list_x, list_y, inv_width - (pad * 2), item_button_height, menu_color, c_white, false)
-	
-	list_y += item_button_height + pad
-
-	if(ds_list_size(selected_list) > 0)
-	{
-		for(var i = 0; i < ds_list_size(selected_list); i++)
-		{
-			if(selected_item == i)
-			{
-				var button = ui_draw_button_color(o_InventoryBase.items_list[selected_list[|i][0]].name, list_x, list_y + (i * (item_button_height + pad)), item_button_width, item_button_height, button_s_color, button_s_color, c_white, false)
-			}
-			else
-			{
-				var button = ui_draw_button_color(o_InventoryBase.items_list[selected_list[|i][0]].name, list_x, list_y + (i * (item_button_height + pad)), item_button_width, item_button_height, button_color, button_s_color, c_white, false)	
-			}
+		
+		draw_set_color(text_color)
+		draw_text_ext(item_panel.at_x, item_panel.at_y, description, 20, text_space)
+		draw_set_color(c_white)
+		
+		pn_row(item_panel, item_spr_scale * item_spr_size - (pad))
+		
+		var line_x = item_panel.at_x + craft_width - (pad * 2)
 			
-			if(button[0])
-			{
-				selected_item = i	
-			}
-		}
-	}
-	
-	list_x += item_button_width + pad
-	
-	var sprite_scale = 4
-	
-	//THIS IS INCREDIBLY JANK PLEAASE CHANGE THIS SOON ADAM GODAMN
-	if(ds_list_size(selected_list) > 0)
-	{
-		var sprite_space = sprite_get_height(s_Items) * sprite_scale
+		draw_set_color(tab_color)
+		draw_line_width(item_panel.at_x + (item_spr_scale * item_spr_size), item_panel.at_y, line_x, item_panel.at_y, 3)
 		
-		ui_draw_rectangle(list_x, list_y, sprite_get_width(s_Items) * sprite_scale, sprite_get_height(s_Items) * sprite_scale - pad, button_color, 1, false)
+		pn_row(item_panel, pad * 2)
 		
-		var height = craft_height - sprite_get_height(s_Items) * sprite_scale - (pad * 6) - list_button_scale - item_button_height - item_button_height *2
+		var arrow_width = (item_spr_scale * item_spr_size) / 2 - (pad / 2)
+		var arrow_height = 25
 		
-		ui_draw_rectangle(list_x, list_y + sprite_get_height(s_Items) * sprite_scale, sprite_get_width(s_Items) * sprite_scale, height, button_color, 1, false)
+		//ui_draw_button_sprite(s_Icons, 5, item_panel.at_x, item_panel.at_y, arrow_width, arrow_height, button_color, button_h_color, c_ltgray, -0.2, false)
 		
+		pn_col(item_panel, arrow_width + pad)
 		
-		var craft_mode_button = ui_draw_button_sprite(s_Icons, 0, list_x, list_y + sprite_space + pad + height, sprite_space, item_button_height, button_color, button_s_color, c_white, 0.5, false)
-		if(craft_mode_button[0])
+		//ui_draw_button_sprite(s_Icons, 5, item_panel.at_x, item_panel.at_y, arrow_width, arrow_height, button_color, button_h_color, c_ltgray, 0.2, false)
+		
+		pn_row(item_panel, arrow_height + pad)
+		
+		var craft_button_width = (item_spr_scale * item_spr_size) * 1.75
+		
+		for(var i = 0; i < 5; i++)
 		{
-			selected_mode = 0	
+			ui_draw_rectangle(item_panel.at_x, item_panel.at_y + (40 * i), craft_button_width, 35,	tab_color, 1, 1)
 		}
 		
+		var craft = 1
 		
-		var info_button = ui_draw_button_sprite(s_Icons, 3, list_x, list_y + sprite_space + pad + height + item_button_height + pad, sprite_space, item_button_height, button_color, button_s_color, c_white, 0.5, false)
-		if(info_button[0])
-		{
-			selected_mode = 1		
-		}
+		var requirements_array = sel_craft_list[|sel_item].req_arr
 		
-		if(!selected_mode)
+		for(var i = 0; i < array_length_1d(requirements_array); i++)
 		{
+			var arr_item_id = requirements_array[i].iid
+			var arr_item_am = requirements_array[i].mat
 			
-			//CRAFT
-			var craft_check = true;
-
-			for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
-			{
-				var check = o_PlayerInventory.check_item(selected_list[|selected_item][1][i].iid, selected_list[|selected_item][1][i].mat * craft_amount)
-
-				if(!check) 
-				{
-					craft_check = false 
-					break;	
-				}
-			}
-
-			var items_needed = array_create()
-
-			for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
-			{
-				items_needed[i] = 
-				{
-					uid : selected_list[|selected_item][1][i].iid,
-					amt : selected_list[|selected_item][1][i].mat * craft_amount
-				}
-			}
-
-			var craft_button = ui_draw_button_color("Craft", list_x + sprite_space + pad, list_y + sprite_space + pad + height + item_button_height + pad, inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4, item_button_height, button_color, button_s_color, c_white, false)
-
-			if(craft_button[0])
-			{
-				if(craft_check)
-				{
-					ds_list_add(queue_list, {uid : selected_list[|selected_item][0], amount: selected_list[|selected_item][2] * craft_amount, timer: 5})
-
-					for(var i = 0; i < array_length_1d(items_needed); i++)
-					{
-						o_PlayerInventory.remove_item(items_needed[i].uid, items_needed[i].amt)
-					}
-				}
-			}
-
-			var arrow_width = (inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4) / 6
-
-			var ar_x = list_x + sprite_space + pad
-			var ar_y = list_y + sprite_space + pad + height
-		
-			var counter_width = arrow_width * 6 - (arrow_width + pad) * 4
-		
-		
-			//Small left
-			var arrow_button = ui_draw_button_sprite(s_Icons, 4, ar_x, ar_y, arrow_width, item_button_height, button_color, button_s_color, c_white, -0.3, false)
-			if(arrow_button[0])
-			{
-				craft_amount--
-			}
-		
-			ar_x += arrow_width + pad
-		
-			//Small right
-			var arrow_button = ui_draw_button_sprite(s_Icons, 4, ar_x, ar_y, arrow_width, item_button_height, button_color, button_s_color, c_white, 0.3, false)
-			if(arrow_button[0])
-			{
-				craft_amount++	
-			}
-		
-			ar_x += arrow_width + pad
-		
-			//Big left
-			var arrow_button = ui_draw_button_sprite(s_Icons, 5, ar_x, ar_y, arrow_width, item_button_height, button_color, button_s_color, c_white, -0.3, false)
-			if(arrow_button[0])
-			{
-				craft_amount -= 10	
-			}
-		
-			ar_x += arrow_width + pad
-		
-			//Big right
-			var arrow_button = ui_draw_button_sprite(s_Icons, 5, ar_x, ar_y, arrow_width, item_button_height, button_color, button_s_color, c_white, 0.3, false)
-			if(arrow_button[0])
-			{
-				craft_amount += 10	
-			}
-		
-			if(craft_amount <= 0) craft_amount = 1
-		
-			ar_x += arrow_width + pad
-		
-			//Counter
-			ui_draw_title(craft_amount, ar_x, ar_y, counter_width, item_button_height, button_color, c_white, false)
-		}
-		
-		var selected_item_list = o_InventoryBase.items_list[selected_list[|selected_item][0]]
-
-		draw_sprite_ext(s_Items, selected_item_list.spr_index, list_x, list_y, sprite_scale, sprite_scale, 0, c_white, 1)
-		
-		var item_display = selected_item_list.name
-
-		if(selected_list[|selected_item][2] * craft_amount > 1)
-		{
-			item_display = string(selected_item_list.name) + " x" + string(selected_list[|selected_item][2]  * craft_amount)
-		}
-
-		list_x += sprite_get_width(s_Items) * sprite_scale + pad
-
-		ui_draw_title(item_display, list_x, list_y, inv_width - item_button_width - (sprite_get_width(s_Items) * sprite_scale) - pad * 4, item_button_height, button_color, c_white, false)
-		//selected_item_list.name
-
-		list_y += item_button_height + pad
-	
-		//description
-		if(selected_mode)
-		{
-			var description = "This is a " + string_lower(string(selected_item_list.name)) + "."
-
-			if(variable_struct_exists(selected_item_list, "description"))
-			{
-				description = selected_item_list.description
-			}
-
-			box_width = inv_width - (pad * 4) - sprite_space - item_button_width
-			box_height = string_height(description)
+			var check = o_PlayerInventory.check_item(arr_item_id, arr_item_am)
 			
-			start_x += pad
-			
-			draw_text_ext(list_x, list_y, description, box_height, box_width - pad)
+			if(!check) craft = 0
 		}
-	
-		//prints out requimrents changes color if not have
-		for(var i = 0; i < array_length_1d(selected_list[|selected_item][1]); i++)
+		
+		if(craft) 
 		{
-			var check = o_PlayerInventory.check_item(selected_list[|selected_item][1][i].iid, selected_list[|selected_item][1][i].mat * craft_amount)	
-			var prev_scale = 2
-
-			if(!selected_mode)
+			var craft = ui_draw_button_color("CRAFT", item_panel.at_x, item_panel.at_y, craft_button_width, 35, button_color, button_h_color, text_color, false)
+			if(craft[0])
 			{
-				var highlight_color = check ? c_white : 0x6357d9
-				
-				draw_set_color(highlight_color)
-				ui_draw_string(list_x, list_y, string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + string(o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name), ft_Default)
 					
-				draw_sprite_ext(
-				s_Items, o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].spr_index, 
-				list_x + string_width(string(selected_list[|selected_item][1][i].mat * craft_amount) + "x " + o_InventoryBase.items_list[selected_list[|selected_item][1][i].iid].name) + pad, 
-				list_y - sprite_get_height(s_Items) * prev_scale / 10,
-				prev_scale,
-				prev_scale,
-				0,
-				highlight_color,
-				1
-				)
+			}
+		}
+		else
+		{
+			ui_draw_title("CRAFT", item_panel.at_x, item_panel.at_y, craft_button_width, 35, button_color, tab_color, false)
+		}
+		
+		pn_col(item_panel, craft_button_width + pad)
+		
+		var req_width = craft_width - (pad * 3) - craft_button_width
+		
+		for(var i = 0; i < 5; i++)
+		{
+			ui_draw_rectangle(item_panel.at_x, item_panel.at_y + (40 * i), req_width, 35, tab_color, 1, false)
+		}
+		
+		for(var i = 0; i < array_length_1d(requirements_array); i++)
+		{
+			var arr_item_id = requirements_array[i].iid
+			var arr_item_am = requirements_array[i].mat
+			
+			var check = o_PlayerInventory.check_item(arr_item_id, arr_item_am)
+			
+			var dis_scale = 2.3
+			
+			var spr_adj = (35 / 2) - ((sprite_get_width(s_Items) * dis_scale) / 2)
+			var txt_adj = (35 / 2) - (string_height("ITEM") / 2)
+			
+			var txt_color = 0x69db91
+			var spr_color = c_white
+			
+			if(!check)
+			{
+				craft = 0
+				
+				txt_color = 0x8181f6
+				spr_color = 0x8181f6
 			}
 			
-			list_y += string_height("1") + pad
+			draw_sprite_ext(s_Items, o_InventoryBase.items_list[arr_item_id].spr_index, item_panel.at_x + spr_adj, item_panel.at_y + spr_adj + (40 * i), dis_scale, dis_scale, 0, spr_color, 1)
+			
+			var amt_string = ""
+			
+			if(arr_item_am > 1) amt_string = " x" + string(arr_item_am)
+			
+			draw_set_color(txt_color)
+			ui_draw_string(item_panel.at_x + pad + dis_scale * sprite_get_width(s_Items), item_panel.at_y + (40 * i) + txt_adj, string(o_InventoryBase.items_list[arr_item_id].name) + amt_string, ft_Default)	
 		}
 	}
 	
-	//crafting queue
-	que_scale = 75
-	que_sprite_scale = 3
-
-	var que_x = display_get_gui_width() / 2 - inv_width / 2 - que_scale - pad
-	var que_y = display_get_gui_height() - inv_height - title_height - que_scale - pad
-
-	for(var i = 0; i < ds_list_size(queue_list); i++)
-	{
-		var que_button = ui_draw_button_sprite(s_Items, queue_list[|i].uid, que_x, que_y - (que_scale + pad) * i, que_scale, que_scale, menu_color, button_color, c_white, que_sprite_scale, false)
+	//ITEM LIST WINDOW
+	#macro list_width 275
+	#macro list_height 450
 		
-		ui_draw_string(que_x, que_y - (que_scale + pad) * i, "0:0" + string(queue_list[|i].timer), ft_Default)
-
-		var amount = queue_list[|i].amount
-
-		ui_draw_string(que_x + que_scale - string_width("x" + string(amount)), que_y + que_scale - string_height(amount), "x" + string(amount), ft_Default)	
+	#macro spacing_from_top 50
+	
+	var list_window_x = display_get_gui_width() / 2 - inv_width / 2 - pad - list_width
+	var list_window_y = display_get_gui_height() - inv_height - craft_height - title_height - pad + spacing_from_top
+	
+	ui_draw_window(list_window_name, list_window_x, list_window_y, list_width, list_height)
+	
+	list_panel = make_panel(list_window_x + pad, list_window_y + pad)
+	
+	var mag_icon = s_MagIcon
+	var icon_size = sprite_get_width(mag_icon)
+	
+	draw_sprite(mag_icon, 0, list_panel.at_x, list_panel.at_y)
+	
+	pn_col(list_panel, icon_size + pad)
+	
+	var search_pad = 12
+	
+	var search_width = list_width - (pad * 3) - icon_size - search_pad
+	var search_height = icon_size - search_pad
+	
+	ui_draw_title("", list_panel.at_x + (search_pad / 2), list_panel.at_y + (search_pad / 2), search_width, search_height, tab_color, text_color, false)
+	
+	pn_row(list_panel, icon_size + pad)
+	
+	var cat_back_width = list_width - (pad * 2)
+	var cat_back_height = 50
+	
+	var cat_button_scale = 32
+	var cat_button_amt = 7
+	
+	ui_draw_rectangle(list_panel.at_x, list_panel.at_y, cat_back_width, cat_back_height, tab_color, 1, false)
+	
+	var cat_center = list_panel.at_x + cat_back_width
+	
+	for(var i = 0; i < cat_button_amt; i++)
+	{
+		var cat_button = ui_draw_button_sprite(s_MagIcon, 0, cat_center - ((pad + cat_button_scale) * cat_button_amt) + (i * (cat_button_scale + pad)), list_panel.at_y + (cat_back_height / 2 - cat_button_scale / 2), cat_button_scale, cat_button_scale, button_color, button_h_color, text_color, 0, 1)
+		if(cat_button[0])
+		{
+			current_page = 0
+			
+			list_window_name = cat_buttons[i].name
+			item_window_name = "None"
+			
+			sel_craft_list = cat_buttons[i].list_var
+			sel_item = -1
+		}
+	}
+	
+	pn_row(list_panel, cat_back_height + pad)
+	
+	var item_button_width = list_width - (pad * 2)
+	var item_button_height = 35
+	
+	//page
+	if(keyboard_check_pressed(vk_left))
+	{
+		current_page--
+		
+		if(current_page <= 0) current_page = 0
+	}
+	if(keyboard_check_pressed(vk_right))
+	{
+		if(ds_list_size(sel_craft_list) > ((current_page + 1) * item_per_page))
+		{
+			current_page++	
+		}
+	}
+	
+	var pg_loop_start = 0 + (item_per_page * current_page)
+	var pg_loop_end = item_per_page + (item_per_page * current_page)
+	
+	if(ds_list_size(sel_craft_list) < pg_loop_end) pg_loop_end = ds_list_size(sel_craft_list)
+	
+	if(ds_list_size(sel_craft_list) > 0)
+	{
+		for(var i = pg_loop_start; i < pg_loop_end; i++)
+		{
+			var pos_i = i - (item_per_page * current_page)
+			
+			var item_button_color = button_color
+			var item_button_h_color = button_h_color
+			
+			if(i == sel_item)
+			{
+				item_button_color = button_s_color	
+				item_button_h_color = button_s_color
+			}
+			
+			var item_name = o_InventoryBase.items_list[sel_craft_list[|i].item_id].name
+			
+			var item_button = ui_draw_button_color(item_name, list_panel.at_x, list_panel.at_y + (pos_i * (item_button_height + pad)), item_button_width, item_button_height, item_button_color, item_button_h_color, text_color, false)
+			if(item_button[0])
+			{
+				sel_item = i	
+				item_window_name = o_InventoryBase.items_list[sel_craft_list[|sel_item].item_id].name
+			}
+		}
 	}
 }
 

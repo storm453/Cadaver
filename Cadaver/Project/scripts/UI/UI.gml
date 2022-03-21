@@ -92,6 +92,22 @@ function ui_draw_button_color_manual(sel, sx, sy, w, h, c, hov_c, brd)
 	return return_data
 }
 
+function make_panel(xx, yy)
+{
+	return { start_x : xx, start_y : yy, at_x : xx, at_y : yy }	
+}
+
+function pn_row(panel, row_height)
+{
+	panel.at_x =  panel.start_x
+	panel.at_y += row_height
+}
+
+function pn_col(panel, col_width)
+{
+	panel.at_x += col_width	
+}
+
 function ui_draw_button_sprite(spr, spr_sub, sx, sy, w, h, c, hov_c, spr_c, spr_s, brd)
 {	
 	var mx = device_mouse_x_to_gui(0)

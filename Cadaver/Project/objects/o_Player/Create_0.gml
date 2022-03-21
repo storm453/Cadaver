@@ -266,7 +266,7 @@ function render()
 			rec_x = x + 10 * image_xscale
 			rec_y = y - sprite_height
 		
-			var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, all, false, true)
+			var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, o_WorldParent, false, true)
 	
 			ui_draw_rectangle(rec_x, rec_y, attack_range * image_xscale, attack_range, c_red, 1, true)
 
