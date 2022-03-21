@@ -22,6 +22,11 @@ function create_struct()
 	return return_struct
 }
 
+enum item
+{
+		
+}
+
 //Empty
 items_list[0] = 
 {
