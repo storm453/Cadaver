@@ -29,8 +29,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy",
+    "name": "Cadaver",
+    "path": "Cadaver.yyp",
   },
   "resourceVersion": "1.0",
   "name": "o_Player",

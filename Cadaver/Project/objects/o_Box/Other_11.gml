@@ -1,11 +1,11 @@
 open = false
 
 //position ui
-var slots_width = slots_x * draw_scale * slot_size
-var slots_height = slots_y * draw_scale * slot_size
+var slots_width = inv_data.slots_x * draw_scale * inv_data.slot_size
+var slots_height = inv_data.slots_y * draw_scale * inv_data.slot_size
 
-start_x = display_get_gui_width() / 2 - slots_width / 2
-start_y = display_get_gui_height() - o_PlayerInventory.player_inventory_height - o_PlayerInventory.shift - pad - slots_height - o_PlayerInventory.title_height
+inv_data.ix = display_get_gui_width() / 2 - slots_width / 2
+inv_data.iy = display_get_gui_height() - o_PlayerInventory.player_inventory_height - o_PlayerInventory.shift - pad - slots_height - o_PlayerInventory.title_height
 
 randomize()
 
@@ -21,9 +21,9 @@ loot_table = array
 	{ uid : 19, amt_min : 1, amt_max : 1, chnce: 4 }
 )
 
-for(var i = 0; i < slots_x; i++)
+for(var i = 0; i < inv_data.slots_x; i++)
 {
-	for(var j = 0; j < slots_y; j++)
+	for(var j = 0; j < inv_data.slots_y; j++)
 	{	
 		for(var e = 0; e < array_length_1d(loot_table); e++)
 		{

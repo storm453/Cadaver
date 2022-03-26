@@ -176,11 +176,11 @@ function render()
 
 	if(global.hotbar_sel_item != 0)
 	{
-		draw_sprite_ext(s_Items, o_InventoryBase.items_list[global.hotbar_sel_item.item].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, 0, c_white, 1)
+		draw_sprite_ext(s_Items, global.items_list[global.hotbar_sel_item.item].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, 0, c_white, 1)
 
-		if(variable_struct_exists(o_InventoryBase.items_list[global.hotbar_sel_item.item], "item_data"))
+		if(variable_struct_exists(global.items_list[global.hotbar_sel_item.item], "item_data"))
 		{
-			var struct = variable_struct_get(o_InventoryBase.items_list[global.hotbar_sel_item.item], "item_data")
+			var struct = variable_struct_get(global.items_list[global.hotbar_sel_item.item], "item_data")
 
 			if(struct.item_type == item_types.melee)
 			{
@@ -247,7 +247,7 @@ function render()
 
 	if(ranged)
 	{
-		//draw_sprite_ext(s_Items, o_InventoryBase.items_list[global.hotbar_sel_item[0]].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, point_direction(x, y,  mouse_x, mouse_y), c_white, 1)	
+		//draw_sprite_ext(s_Items, o_InventoryBase.global.items_list[global.hotbar_sel_item[0]].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, point_direction(x, y,  mouse_x, mouse_y), c_white, 1)	
 	}
 
 	if(melee)
@@ -289,7 +289,7 @@ function render()
 								randomize()
 								if(chance(index.drops[j].chnce))
 								{
-									o_PlayerInventory.add_item(index.drops[j].uid, irandom_range(index.drops[j].amt_min, index.drops[j].amt_max))
+									add_item(o_PlayerInventory, index.drops[j].uid, irandom_range(index.drops[j].amt_min, index.drops[j].amt_max))
 								}
 							}
 						}

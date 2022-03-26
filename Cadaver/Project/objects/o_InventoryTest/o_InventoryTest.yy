@@ -4,10 +4,7 @@
   "visible": true,
   "spriteMaskId": null,
   "persistent": false,
-  "parentObjectId": {
-    "name": "o_InventoryBase",
-    "path": "objects/o_InventoryBase/o_InventoryBase.yy",
-  },
+  "parentObjectId": null,
   "physicsObject": false,
   "physicsSensor": false,
   "physicsShape": 1,
@@ -26,11 +23,11 @@
   ],
   "properties": [],
   "overriddenProperties": [
-    {"propertyId":{"name":"draw_scale","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"3","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"start_x","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"250","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"start_y","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"300","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"slots_x","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"irandom_range(1,15)","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
-    {"propertyId":{"name":"slots_y","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":{"name":"o_InventoryBase","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"value":"irandom_range(1,15)","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"draw_scale","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":null,"value":"3","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"start_x","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":null,"value":"250","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"start_y","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":null,"value":"300","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"slots_x","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":null,"value":"irandom_range(1,15)","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"slots_y","path":"objects/o_InventoryBase/o_InventoryBase.yy",},"objectId":null,"value":"irandom_range(1,15)","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
   ],
   "parent": {
     "name": "Objects",

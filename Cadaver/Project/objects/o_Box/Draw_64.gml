@@ -19,9 +19,9 @@ ui_draw_rectangle(start_x, start_y + shift - title_height, 480, title_height, ta
 ui_draw_string(start_x + pad, start_y + shift - title_height + pad, title, ft_Title)
 
 //for drawing: loop through inventory
-for(var i = 0; i < slots_x; i++)
+for(var i = 0; i < inv_data.slots_x; i++)
 {
-	for(var j = 0; j < slots_y; j++)
+	for(var j = 0; j < inv_data.slots_y; j++)
 	{	
 		var index = inv[i, j]
 
@@ -55,13 +55,13 @@ for(var i = 0; i < slots_x; i++)
 //draw the sprite you have in your hand
 if(global.in_hand != 0)
 {
-	draw_sprite_ext(s_Items, items_list[global.in_hand.item].spr_index, mx - slot_size * draw_scale  / 2, my - slot_size * draw_scale / 2, draw_scale, draw_scale, 0, c_white, 1);
+	draw_sprite_ext(s_Items, items_list[global.in_hand.item].spr_index, mx - slot_size * draw_scale / 2, my - slot_size * draw_scale / 2, draw_scale, draw_scale, 0, c_white, 1);
 }
 
 //info boxes they're drawn down here so they're above the slots
-for(var i = 0; i < slots_x; i++)
+for(var i = 0; i < inv_data.slots_x; i++)
 {
-	for(var j = 0; j < slots_y; j++)
+	for(var j = 0; j < inv_data.slots_y; j++)
 	{	
 			var index = inv[i, j]
 		

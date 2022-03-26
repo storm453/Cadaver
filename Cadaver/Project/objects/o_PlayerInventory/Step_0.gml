@@ -1,0 +1,1 @@
+inv_move(self)
