@@ -232,11 +232,11 @@ function render()
 			if(mouse_check_button_pressed(mb_left))
 			{
 				//@TEMP
-				o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1].amt--	
+				o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1].amt--	
 			
-				if(o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1].amt <= 0)
+				if(o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1].amt <= 0)
 				{
-					o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.slots_y - 1] = 0
+					o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1] = 0
 				}
 
 				instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", struct.building_obj)

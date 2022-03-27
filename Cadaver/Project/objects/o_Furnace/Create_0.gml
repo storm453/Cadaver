@@ -1,5 +1,7 @@
 z = 0
 
+open = false
+
 function render()
 {
 	draw_self();

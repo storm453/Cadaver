@@ -2,7 +2,7 @@ z = 0
 
 open = false
 inv_data = create_inv_data(3, 1, 10, 10, 3)
-inv_data = create_inventory(inv_data.slots_x, inv_data.slots_y)
+inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
 
 function render()
 {

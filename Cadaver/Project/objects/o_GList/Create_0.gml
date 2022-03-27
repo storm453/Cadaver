@@ -296,6 +296,7 @@ global.items_list[25] =
 }
 {
 	global.items_list[25].item_data.item_type = item_types.building
+	global.items_list[25].item_data.description = "Keeps you warm, cooks food, it's easy to build, and provides a light source. What more could you ask for?"
 }
 
 global.items_list[26] =

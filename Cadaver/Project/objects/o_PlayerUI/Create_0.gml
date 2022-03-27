@@ -41,6 +41,9 @@ enum crafting_lvls
 	WORKBENCH
 }
 
+clvl_string[0] = "Any"
+clvl_string[1] = "Workbench"
+
 crafting_level = crafting_lvls.ALL
 craft_cat_name = "CRAFTING"
 
@@ -105,16 +108,6 @@ ds_list_add(consumables_list, make_recipe(13, array(make_recipe_requirement(17, 
 ds_list_add(consumables_list, make_recipe(28, array(make_recipe_requirement(11, 3), make_recipe_requirement(10, 1)), 3, crafting_lvls.ALL))
 ds_list_add(consumables_list, make_recipe(29, array(make_recipe_requirement(9, 1), make_recipe_requirement(13, 2), make_recipe_requirement(14, 1), make_recipe_requirement(28, 1)), 1, crafting_lvls.ALL))
 
-ds_list_add(science_list, make_recipe(18, array(make_recipe_requirement(7, 1), make_recipe_requirement(17, 3)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(science_list, make_recipe(21, array(make_recipe_requirement(20, 3)), 1, crafting_lvls.ALL))
-ds_list_add(science_list, make_recipe(6, array(make_recipe_requirement(18, 1), make_recipe_requirement(33, 1)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(science_list, make_recipe(19, array(make_recipe_requirement(21,1), make_recipe_requirement(18, 1), make_recipe_requirement(20, 1)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(science_list, make_recipe(30, array(make_recipe_requirement(7,1), make_recipe_requirement(17, 3), make_recipe_requirement(31,1)), 3, crafting_lvls.WORKBENCH))
-ds_list_add(science_list, make_recipe(18, array(make_recipe_requirement(7, 1), make_recipe_requirement(17, 3)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(science_list, make_recipe(21, array(make_recipe_requirement(20, 3)), 1, crafting_lvls.ALL))
-ds_list_add(science_list, make_recipe(6, array(make_recipe_requirement(18, 1), make_recipe_requirement(33, 1)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(science_list, make_recipe(19, array(make_recipe_requirement(21,1), make_recipe_requirement(18, 1), make_recipe_requirement(20, 1)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(science_list, make_recipe(30, array(make_recipe_requirement(7,1), make_recipe_requirement(17, 3), make_recipe_requirement(31,1)), 3, crafting_lvls.WORKBENCH))
 ds_list_add(science_list, make_recipe(18, array(make_recipe_requirement(7, 1), make_recipe_requirement(17, 3)), 1, crafting_lvls.WORKBENCH))
 ds_list_add(science_list, make_recipe(21, array(make_recipe_requirement(20, 3)), 1, crafting_lvls.ALL))
 ds_list_add(science_list, make_recipe(6, array(make_recipe_requirement(18, 1), make_recipe_requirement(33, 1)), 1, crafting_lvls.WORKBENCH))
