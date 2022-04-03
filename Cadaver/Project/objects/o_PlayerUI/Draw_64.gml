@@ -81,7 +81,7 @@ for(var i = 0; i < ds_list_size(tab_sel_present_list); i++)
 
 if(show_tab)
 {	
-	#macro inv_width round(o_PlayerInventory.inv_data.slots_x * o_PlayerInventory.inv_data.draw_scale * o_PlayerInventory.inv_data.slot_size)
+	#macro inv_width round(o_PlayerInventory.inv_data.slots_x * o_PlayerInventory.inv_data.slot_space)
 	#macro inv_height o_PlayerInventory.player_inventory_height
 	
 	#macro inv_width_slots_only o_PlayerInventory.player_inventory_height_slots_only
@@ -189,8 +189,34 @@ if(global.current_gui == gui.INVENTORY)
 			if(sel_craft_list[|sel_item].craft_lvl != crafting_level) station_check = false
 		}
 
+		if(clvl_allow[crafting_level] != 1)
+		{
+			if(sel_craft_list[|sel_item].craft_lvl !=  clvl_allow[crafting_level]) station_check = false
+		}
+
 		if(station_check)
 		{
+			var station_inv = o_PlayerInventory.inv
+			var station_dat = o_PlayerInventory.inv_data
+
+			var craft_name = "CRAFT"
+
+			//DEPENDING ON WHAT STATION IS OPEN
+			switch(crafting_level)
+			{
+				//WORKBENCH
+				case(1):
+					craft_name = "WORK"
+				break;
+
+				case(2):
+					craft_name = "FORGE"
+
+					station_inv = o_Furnace.stored_inv
+					station_dat = o_Furnace.stored_inv_data
+				break;
+			}
+
 			sel_item_id = global.items_list[sel_craft_list[|sel_item].item_id].spr_index
 			
 			var item_spr_scale = 5
@@ -253,14 +279,14 @@ if(global.current_gui == gui.INVENTORY)
 				var arr_item_id = requirements_array[i].iid
 				var arr_item_am = requirements_array[i].mat
 				
-				var check = check_item(o_PlayerInventory, arr_item_id, arr_item_am)
+				var check = check_item(station_inv, station_dat, arr_item_id, arr_item_am)
 				
 				if(!check) craft = 0
 			}
 			
 			if(craft) 
 			{
-				var craft = ui_draw_button_color("CRAFT", item_panel.at_x, item_panel.at_y, craft_button_width, 35, button_color, button_h_color, text_color, false)
+				var craft = ui_draw_button_color(craft_name, item_panel.at_x, item_panel.at_y, craft_button_width, 35, button_color, button_h_color, text_color, false)
 				if(craft[0])
 				{
 					ds_list_add(queue_list, { uid: sel_item_id , amt: 1 , timer: 5 } )
@@ -268,13 +294,13 @@ if(global.current_gui == gui.INVENTORY)
 					//remove items needed
 					for(var i = 0; i < array_length_1d(requirements_array); i++)
 					{
-						remove_item(o_PlayerInventory, requirements_array[i].iid,  requirements_array[i].mat)
+						remove_item(station_inv, station_dat, requirements_array[i].iid,  requirements_array[i].mat)
 					}
 				}
 			}
 			else
 			{
-				ui_draw_title("CRAFT", item_panel.at_x, item_panel.at_y, craft_button_width, 35, button_color, tab_color, false)
+				ui_draw_title(craft_name, item_panel.at_x, item_panel.at_y, craft_button_width, 35, button_color, tab_color, false)
 			}
 			
 			pn_col(item_panel, craft_button_width + pad)
@@ -291,7 +317,7 @@ if(global.current_gui == gui.INVENTORY)
 				var arr_item_id = requirements_array[i].iid
 				var arr_item_am = requirements_array[i].mat
 				
-				var check = check_item(o_PlayerInventory, arr_item_id, arr_item_am)
+				var check = check_item(station_inv, station_dat, arr_item_id, arr_item_am)
 				
 				var dis_scale = 2.3
 				
@@ -333,10 +359,15 @@ if(global.current_gui == gui.INVENTORY)
 			pn_col(item_panel, item_spr_scale * item_spr_size + pad)
 			
 			var text_space = craft_width - (pad * 3) - (item_spr_scale * item_spr_size)
-			
-			var description = "You are not at the correct workstation to create this item. \nCrafted at: WORKBENCH"
 
-			draw_set_color(c_red)
+			var description = "You can craft " + string(global.items_list[sel_craft_list[|sel_item].item_id].name) + " at a " + string(clvl_string[sel_craft_list[|sel_item].craft_lvl]) + "."
+
+			if(clvl_allow[crafting_level] != 1)
+			{
+				if(sel_craft_list[|sel_item].craft_lvl !=  clvl_allow[crafting_level]) description = "You cannot craft this here."
+			}
+
+			draw_set_color(0x8181f6)
 			draw_text_ext(item_panel.at_x, item_panel.at_y, description, 20, text_space)
 			draw_set_color(c_white)
 		}
@@ -424,7 +455,7 @@ if(global.current_gui == gui.INVENTORY)
 					//Clicked use button
 					if(inspect_list[|i] == "Use")
 					{
-						remove_item_slot(o_PlayerInventory, 1, global.info_sel_slot[0], global.info_sel_slot[1])
+						remove_item_slot(o_PlayerInventory.inv, o_PlayerInventory.inv_data, 1, global.info_sel_slot[0], global.info_sel_slot[1])
 						
 						o_Player.hp += global.items_list[inv_sel].item_data.hp
 						o_Player.energy += global.items_list[inv_sel].item_data.energy
@@ -432,12 +463,12 @@ if(global.current_gui == gui.INVENTORY)
 					//Clicked scrap button
 					if(inspect_list[|i] == "Scrap")
 					{
-						remove_item_slot(o_PlayerInventory, 1, global.info_sel_slot[0], global.info_sel_slot[1])	
+						remove_item_slot(o_PlayerInventory.inv, o_PlayerInventory.inv_data, 1, global.info_sel_slot[0], global.info_sel_slot[1])	
 					}
 					//Clicked drop button
 					if(inspect_list[|i] == "Drop")
 					{
-						remove_item_slot(o_PlayerInventory, 999, global.info_sel_slot[0], global.info_sel_slot[1])
+						remove_item_slot(o_PlayerInventory.inv, o_PlayerInventory.inv_data, 999, global.info_sel_slot[0], global.info_sel_slot[1])
 					}
 					
 				}
@@ -561,37 +592,23 @@ if(global.current_gui == gui.INVENTORY)
 	var item_button_width = list_width - (pad * 2)
 	var item_button_height = 35
 	
-	//page
-	if(keyboard_check_pressed(vk_left))
-	{
-		current_page--
-		
-		if(current_page <= 0) current_page = 0
-	}
-	if(keyboard_check_pressed(vk_right))
-	{
-		if(ds_list_size(sel_craft_list) > ((current_page + 1) * item_per_page))
-		{
-			current_page++	
-		}
-	}
-	
-	var pg_loop_start = 0 + (item_per_page * current_page)
-	var pg_loop_end = item_per_page + (item_per_page * current_page)
-	
-	if(ds_list_size(sel_craft_list) < pg_loop_end) pg_loop_end = ds_list_size(sel_craft_list)
-	
 	if(ds_list_size(sel_craft_list) > 0)
 	{
-		for(var i = pg_loop_start; i < pg_loop_end; i++)
+		for(var i = 0; i < ds_list_size(sel_craft_list); i++)
 		{
-			var pos_i = i - (item_per_page * current_page)
-			
 			var station_check = true
 
-			if(sel_craft_list[|i].craft_lvl != crafting_level)
+			if(sel_craft_list[|i].craft_lvl != crafting_lvls.ALL)
 			{
-				station_check = false
+				if(sel_craft_list[|i].craft_lvl != crafting_level)
+				{
+					station_check = false
+				}
+			}
+
+			if(clvl_allow[crafting_level] != 1)
+			{
+				if(sel_craft_list[|i].craft_lvl !=  clvl_allow[crafting_level]) station_check = false
 			}
 
 			var item_button_t_color = text_color
@@ -610,7 +627,7 @@ if(global.current_gui == gui.INVENTORY)
 			
 			var item_name = global.items_list[sel_craft_list[|i].item_id].name
 			
-			var item_button = ui_draw_button_color(item_name, list_panel.at_x, list_panel.at_y + (pos_i * (item_button_height + pad)), item_button_width, item_button_height, item_button_color, item_button_h_color, item_button_t_color, false)
+			var item_button = ui_draw_button_color(item_name, list_panel.at_x, list_panel.at_y + (i * (item_button_height + pad)), item_button_width, item_button_height, item_button_color, item_button_h_color, item_button_t_color, false)
 			if(item_button[0])
 			{
 				sel_item = i	
@@ -620,15 +637,6 @@ if(global.current_gui == gui.INVENTORY)
 				global.info_sel_slot[1] = -1
 			}
 		}
-	}
-	
-	//DEPENDING ON WHAT STATION IS OPEN
-	switch(crafting_level)
-	{
-		//WORKBENCH
-		case(1):
-			
-		break;
 	}
 }
 
@@ -645,7 +653,7 @@ if(counter > 60)
 		
 		if(queue_list[|0].timer <= 0)
 		{
-			add_item(o_PlayerInventory, queue_list[|0].uid, queue_list[|0].amt)
+			add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, queue_list[|0].uid, queue_list[|0].amt)
 			ds_list_delete(queue_list, 0)
 		}
 	}
@@ -653,58 +661,7 @@ if(counter > 60)
 
 if(global.current_gui == gui.PROFILE)
 {
-	var prof_width = inv_width * 2
-	var prof_height = window_height + inv_width_slots_only
 	
-	//MAIN UI
-	var hp_info_start_x = display_get_gui_width() / 2 - prof_width / 2
-	var hp_info_start_y = display_get_gui_height() - inv_height - window_height - pad
-	
-	var hp_info_x = hp_info_start_x
-	var hp_info_y = hp_info_start_y
-
-	ui_draw_window("PROFILE", hp_info_x, hp_info_y, prof_width, prof_height)
-	
-	hp_info_x += pad
-	hp_info_y += pad
-	
-	var hp_info_width = 250
-	var hp_info_height = 100
-	
-	ui_draw_rectangle(hp_info_x, hp_info_y, hp_info_width, hp_info_height, button_color, 1, false)
-	
-	var status_x = hp_info_start_x
-	var status_y = hp_info_start_y
-	
-	status_x += (pad * 2) + hp_info_width
-	status_y += pad
-	
-	var status_width = 200
-	var status_height = 50
-	
-	for(var i = 0; i < ds_list_size(status_list); i++)
-	{
-		if(ds_list_size(status_list) > 0)
-		{
-			var index = status_list[|i]
-			var selected_col = button_color
-		
-			if(status_selected = i)
-			{
-				selected_col = button_s_color	
-			}
-		
-			var button = ui_draw_button_color(index.status_id.name + " (" + string(index.time) + "s)", status_x, status_y + (pad + status_height) * i, status_width, status_height, selected_col, button_s_color, c_white, false)
-			if(button[0])
-			{
-				status_selected = i	
-			}
-		}
-	}
-	
-	status_x += status_width + pad
-	
-	draw_text(status_x, status_y, status_list[|status_selected].status_id.description)
 }
 
 counter++

@@ -35,6 +35,6 @@ function init_chunk(loc_x, loc_y)
 
 	if (random(1) > 0.8) 
 	{
-		ds_list_add(objects, instance_create_layer(x + chunk_size / 2, y + chunk_size / 2, "Instances", o_Box))
+		
 	}
 }

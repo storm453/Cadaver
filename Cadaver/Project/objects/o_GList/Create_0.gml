@@ -1,3 +1,4 @@
+global.slot_size = 16
 global.items_list = 0;
 
 enum item_types
@@ -10,24 +11,24 @@ enum item_types
 	consumable
 }
 
-enum item
+enum items
 {
 	air,
 	stone,
 	wood,
 	plastic,
-	metal,
+	forgedmetal,
 	sword,
 	syringe,
 	bottle,
 	meat,
 	cookedmeat,
 	salt,
-	potato,
-	uranium,
+	glass,
+	tools,
 	bread,
 	cheese,
-	shell,
+	metal,
 	electronics,
 	plants,
 	medicalsolution,
@@ -41,21 +42,27 @@ enum item
 	pickaxe,
 	axe,
 	fries,
-	cheeseburgermeal,
+	metalfragments,
 	chemicals,
 	rareplants,
 	metalpipes,
 	medicalparts,
 	grains,
-	rawmetal
+	rawmetal,
+	straw,
+	crushedsand,
+	workbench,
+	furnace,
+	woodwall
 }
 
 function create_struct()
 {
 	var return_struct =
 	{
-		description : "An item.",
+		description : "No description has been set for this item.",
 		burn_time : 0,
+		smelt: items.air,
 		item_type : item_types.resource,
 		building_obj : o_Campfire,
 		scrap: false,
@@ -66,344 +73,224 @@ function create_struct()
 	return return_struct
 }
 
+current_item = 0
 
-//Empty
-global.items_list[item.air] = 
+function create_item(arg_name)
 {
-	name : "",
-	stack : 0,
-	spr_index : 0,
-	item_data : create_struct()
-}
-{
-	global.items_list[0].item_data.item_type = item_types.melee
-}
-
-global.items_list[item.stone] =
-{
-	name : "Stone",
-	stack : 10,
-	spr_index : 1,
-	item_data : create_struct()
-}
-{
-	global.items_list[item.stone].item_data.item_type = item_types.ranged
-	global.items_list[item.stone].item_data.description = "Heavy.. A very useful resource that is used in many different recipes. Pretty solid huh?"
+	//Empty
+	global.items_list[current_item] = 
+	{
+		name : arg_name,
+		stack : 10,
+		spr_index : current_item,
+		item_data : create_struct()
+	}
+	
+	current_item++		
+	
+	return global.items_list[current_item - 1]
 }
 
-global.items_list[2] =
+//items
 {
-	name : "Wood",
-	stack: 10,
-	spr_index : 2,
-	item_data : create_struct()
-}
-{
-	global.items_list[2].item_data.burn_time = 300
+	var item = create_item("")
+	
+	show_debug_message(item)
+	
+	item.item_data.item_type = item_types.melee
 }
 
-global.items_list[3] =
 {
-	name : "Plastic",
-	stack : 10,
-	spr_index : 3
+	var item = create_item("Stone")
+	
+	item.item_data.item_type = item_types.ranged
+	item.item_data.description = "Heavy.. A very useful resource that is used in many different recipes. Pretty solid huh? I know, I know, my joke rocks."
 }
 
-global.items_list[4] =
 {
-	name : "Metal",
-	stack : 10,
-	spr_index : 4
+	var item = create_item("Wood")
+	
+	item.item_data.burn_time = 300
 }
 
-global.items_list[5] =
 {
-	name : "Sword",
-	stack : 1,
-	spr_index : 5,
-	item_data : create_struct()
-}
-{
-	global.items_list[5].item_data.scrap = true
-	global.items_list[5].item_data.item_type = item_types.melee
-	global.items_list[5].item_data.description = "A versatile weapon for taking down the infected and chopping unwanted foliage."
+	var item = create_item("Plastic")
 }
 
-global.items_list[6] =
 {
-	name : "Syringe",
-	stack : 3,
-	spr_index : 6
+	var item = create_item("Forged Metal")
+}
+	
+{
+	var item = create_item("Sword")
+	
+	item.item_data.scrap = true
+	item.item_data.item_type = item_types.melee
+	item.item_data.description = "A versatile weapon for taking down the infected and chopping unwanted foliage."
 }
 
-global.items_list[7] =
 {
-	name : "Bottle",
-	stack : 10,
-	spr_index : 7
+	var item = create_item("Syringe")
 }
 
-global.items_list[8] =
 {
-	name : "Meat",
-	stack : 10,
-	spr_index : 8
+	var item = create_item("Bottle")
 }
 
-global.items_list[9] =
 {
-	name : "Cooked Meat",
-	stack : 10,
-	spr_index : 9
+	var item = create_item("Meat")
 }
 
-global.items_list[10] =
 {
-	name : "Salt",
-	stack : 10,
-	spr_index : 10
+	var item = create_item("Cooked Meat")
 }
 
-global.items_list[11] =
 {
-	name : "Potato",
-	stack : 10,
-	spr_index : 10
+	var item = create_item("Salt")
 }
 
-global.items_list[11] =
 {
-	name : "Potato",
-	stack : 10,
-	spr_index : 11
+	var item = create_item("Glass")
 }
 
-global.items_list[12] =
 {
-	name : "Uranium",
-	stack : 10,
-	spr_index : 12
+	var item = create_item("Tools")
+	
+	item.item_data.description = "Low quality general purpose tools forged in a furnace. Essential for crafting workbenchs and anything alike."
 }
 
-global.items_list[13] =
 {
-	name : "Bread",
-	stack : 10,
-	spr_index : 13
+	var item = create_item("Bread")
 }
 
-global.items_list[14] =
 {
-	name : "Cheese",
-	stack : 10,
-	spr_index : 14
+	var item = create_item("Cheese")
 }
 
-global.items_list[15] =
 {
-	name : "Shell",
-	stack : 10,
-	spr_index : 15
+	var item = create_item("Metal")
 }
 
-global.items_list[16] =
 {
-	name : "Electronics",
-	stack : 10,
-	spr_index : 16,
-	item_data : create_struct()
-}
-{
-	global.items_list[16].item_data.description = "Simple electronics ready to be used in whatever project you need them for."	
+	var item = create_item("Electronics")
+	
+	item.item_data.description = "Simple electronics ready to be used in whatever project you need them for."	
 }
 
-global.items_list[17] =
 {
-	name : "Plants",
-	stack : 10,
-	spr_index : 17,
-	item_data : create_struct()
-}
-{
-	global.items_list[17].item_data.item_type = item_types.consumable
-	global.items_list[17].item_data.hp = 1
-	global.items_list[17].item_data.energy = 3
+	var item = create_item("Plants")
+	
+	item.item_data.item_type = item_types.consumable
+	item.item_data.hp = 1
+	item.item_data.energy = 3
 }
 
-global.items_list[18] =
 {
-	name : "Medical Solution",
-	stack : 10,
-	spr_index : 18,
-	item_data : create_struct()
-}
-{
-	global.items_list[18].item_data.description = "An effective healing balm made from some plants. Used in crafting basic medicines."
+	var item = create_item("Medical Solution")
+	
+	 item.item_data.description = "An effective healing balm made from some plants. Used in crafting basic medicines."
 }
 
-global.items_list[19] =
 {
-	name : "Medical Kit",
-	stack : 10,
-	spr_index : 19
+	var item = create_item("Medical Kit")
 }
 
-global.items_list[20] =
 {
-	name : "Cloth",
-	stack : 10,
-	spr_index : 20
+	var item = create_item("Cloth")
 }
 
-global.items_list[21] =
 {
-	name : "Bandage",
-	stack : 10,
-	spr_index : 21
+	var item = create_item("Bandage")
 }
 
-global.items_list[22] =
 {
-	name : "Ice",
-	stack : 10,
-	spr_index : 22
+	var item = create_item("Ice")
 }
 
-global.items_list[23] =
 {
-	name : "Bear Trap",
-	stack : 1,
-	spr_index : 23,
-	item_data : create_struct()
-}
-{
-	global.items_list[23].item_data.item_type = item_types.building
+	var item = create_item("Bear Trap")
+
+	item.item_data.item_type = item_types.building
 }
 
-global.items_list[24] =
 {
-	name : "Mechanical Parts",
-	stack : 10,
-	spr_index : 24
+	var item = create_item("Mechanical Parts")
 }
 
-global.items_list[25] =
 {
-	name : "Campfire",
-	stack : 1,
-	spr_index : 25,
-	item_data : create_struct()
-}
-{
-	global.items_list[25].item_data.item_type = item_types.building
-	global.items_list[25].item_data.description = "Keeps you warm, cooks food, it's easy to build, and provides a light source. What more could you ask for?"
+	var item = create_item("Campfire")
+
+	item.item_data.item_type = item_types.building
+	item.item_data.description = "Keeps you warm, cooks food, it's easy to build, and provides a light source. What more could you ask for?"
 }
 
-global.items_list[26] =
 {
-	name : "Pickaxe",
-	stack : 1,
-	spr_index : 26
+	var item = create_item("Pickaxe")
 }
 
-global.items_list[27] =
 {
-	name : "Axe",
-	stack : 1,
-	spr_index : 27
+	var item = create_item("Axe")
 }	
 
-global.items_list[28] =
 {
-	name : "Fries",
-	stack : 10,
-	spr_index : 28
+	var item = create_item("Fries")
 }
 
-global.items_list[29] =
 {
-	name : "Hamburger Meal",
-	stack : 10,
-	spr_index : 29
+	var item = create_item("Metal Fragments")
 }
 
-global.items_list[30] =
 {
-	name : "Chemicals",
-	stack : 10,
-	spr_index : 30
+	var item = create_item("Chemicals")
 }
 
-global.items_list[31] =
 {
-	name : "Rare Plants",
-	stack : 10,
-	spr_index : 31
+	var item = create_item("Rare Plants")
 }
 
-global.items_list[32] =
 {
-	name : "Pipes",
-	stack : 10,
-	spr_index : 32
+	var item = create_item("Metal Pipes")
 }
 
-global.items_list[33] =
 {
-	name : "Medical Parts",
-	stack : 10,
-	spr_index : 33
+	var item = create_item("Medical Parts")
 }
 
-global.items_list[34] =
 {
-	name : "Grains",
-	stack : 10,
-	spr_index : 34
+	var item = create_item("Grains")
 }
 
-global.items_list[35] =
 {
-	name : "Raw Metal",
-	stack : 10,
-	spr_index : 35
+	var item = create_item("Raw Metal")
+	
+	item.item_data.smelt = items.metal
 }
 
-global.items_list[36] =
 {
-	name : "Straw",
-	stack : 10,
-	spr_index : 36
+	var item = create_item("Straw")
+	
+	item.item_data.burn_time = 60
 }
 
-global.items_list[37] =
 {
-	name : "Crushed Sand",
-	stack : 10,
-	spr_index : 37
+	var item = create_item("Crushed Sand")
+	
+	item.item_data.smelt = items.glass
 }
 
-global.items_list[38] =
 {
-	name : "Workbench",
-	stack : 1,
-	spr_index : 38
+	var item = create_item("Workbench")
 }
 
-global.items_list[39] =
 {
-	name : "Furnace",
-	stack : 1,
-	spr_index : 39
+	var item = create_item("Furnace")
+	
+	item.item_data.item_type = item_types.building
+	item.item_data.building_obj = o_Furnace
 }
 
-global.items_list[40] =
 {
-	name : "Wood Wall",
-	stack : 1,
-	spr_index : 40,
-	item_data : create_struct()
-}
-{
+	var item = create_item("Wood Wall")
+
 	global.items_list[40].item_data.item_type = item_types.building
 }

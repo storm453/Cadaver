@@ -25,5 +25,9 @@ if(state == player_state.run)
 		state = player_state.idle
 	}
 }
+if(state == player_state.dead)
+{
+	player_animation()
+}
 
 attack_cooldown--

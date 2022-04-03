@@ -23,7 +23,8 @@ enum player_state
 {
 	idle,
 	run,
-	attack
+	attack,
+	dead
 }
 
 attack_cooldown_set = 60
@@ -92,7 +93,7 @@ function input()
 
 sprites_array[player_state.idle] = s_Player
 sprites_array[player_state.run] = s_PlayerRun
-//sprites_array[player_state.attack] = s_Player_Attack
+sprites_array[player_state.attack] = s_PlayerAttack
 
 function movement() 
 {
@@ -178,24 +179,21 @@ function render()
 	{
 		draw_sprite_ext(s_Items, global.items_list[global.hotbar_sel_item.item].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, 0, c_white, 1)
 
-		if(variable_struct_exists(global.items_list[global.hotbar_sel_item.item], "item_data"))
-		{
-			var struct = variable_struct_get(global.items_list[global.hotbar_sel_item.item], "item_data")
+		var struct = variable_struct_get(global.items_list[global.hotbar_sel_item.item], "item_data")
 
-			if(struct.item_type == item_types.melee)
-			{
-				melee = true
-			}
+		if(struct.item_type == item_types.melee)
+		{
+			melee = true
+		}
+	
+		if(struct.item_type == item_types.building)
+		{
+			buildable = true		
+		}
 		
-			if(struct.item_type == item_types.building)
-			{
-				buildable = true		
-			}
-			
-			if(struct.item_type == item_types.ranged)
-			{
-				ranged = true	
-			}
+		if(struct.item_type == item_types.ranged)
+		{
+			ranged = true	
 		}
 	}	
 
@@ -289,7 +287,7 @@ function render()
 								randomize()
 								if(chance(index.drops[j].chnce))
 								{
-									add_item(o_PlayerInventory, index.drops[j].uid, irandom_range(index.drops[j].amt_min, index.drops[j].amt_max))
+									add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, index.drops[j].uid, irandom_range(index.drops[j].amt_min, index.drops[j].amt_max))
 								}
 							}
 						}

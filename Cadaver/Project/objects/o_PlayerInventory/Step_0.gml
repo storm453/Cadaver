@@ -1,1 +1,1 @@
-inv_move(self)
+inv_move(inv, inv_data, inv_x, inv_y)

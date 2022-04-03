@@ -15,4 +15,4 @@ texture_lut_night = sprite_get_texture(spr_night, 0);
 day_factor = 0
 timer = 0;
 
-colour_grade = true
+colour_grade = 0

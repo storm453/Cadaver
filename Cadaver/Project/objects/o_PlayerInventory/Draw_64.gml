@@ -2,9 +2,8 @@
 var mx = device_mouse_x_to_gui(0)
 var my = device_mouse_y_to_gui(0)
 
-//set drawing of inventory
-inv_data.ix = display_get_gui_width() / 2 - (inv_data.slots_x  * inv_data.draw_scale * 16) / 2
-inv_data.iy = display_get_gui_height() - player_inventory_height
+inv_x = display_get_gui_width() / 2 - (inv_data.slots_x * inv_data.slot_space) / 2
+inv_y = display_get_gui_height() - player_inventory_height
 
 var show_inventory = false
 
@@ -30,20 +29,20 @@ for(var i = 0; i < inv_data.slots_x; i++)
 
 		global.hotbar_sel_item = inv[global.hotbar_sel, inv_data.slots_y - 1]
 	
-		var position_y = inv_data.iy + shift + ((inv_data.slots_y - 1) * inv_data.slot_size * inv_data.draw_scale)	
+		var position_y = inv_y + shift + ((inv_data.slots_y - 1) * inv_data.slot_space)	
 		var selected = false
 		
 		if(global.hotbar_sel == i) selected = 2
 		
-		draw_sprite_ext(s_Slot, selected, inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale), position_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1)
+		draw_sprite_ext(s_Slot, selected, inv_x + (i * inv_data.slot_space), position_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1)
 	}
 }
 
 //TAB above main slots that says INVENTORY
 if(show_inventory)
 {
-	ui_draw_rectangle(inv_data.ix, inv_data.iy - title_height, 480, title_height, tab_color, 1, false)
-	ui_draw_string(inv_data.ix + pad, inv_data.iy - title_height + pad, title, ft_Title)
+	ui_draw_rectangle(inv_x, inv_y - title_height, 480, title_height, tab_color, 1, false)
+	ui_draw_string(inv_x + pad, inv_y - title_height + pad, title, ft_Title)
 }
 
 //for drawing: loop through inventory : not hotbar
@@ -53,19 +52,19 @@ for(var i = 0; i < inv_data.slots_x; i++)
 	{	
 		var index = inv[i, j]
 
-		var position_y = inv_data.iy + shift + (j * inv_data.slot_size * inv_data.draw_scale)
+		var position_y = inv_y + shift + (j * inv_data.slot_space)
 		var hotbar = true
 		var selected = 0
 		
 		//anmy slots other than hotbar
 		if(j != inv_data.slots_y - 1)
 		{
-			position_y = inv_data.iy + (j * inv_data.slot_size * inv_data.draw_scale)
+			position_y = inv_y + (j * inv_data.slot_space)
 			hotbar = false
 		}
 		
 		//select slot
-		if(point_in_rectangle(mx, my, inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale), position_y, inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale) + inv_data.slot_size * inv_data.draw_scale, position_y + inv_data.slot_size * inv_data.draw_scale))
+		if(point_in_rectangle(mx, my, inv_x + (i * inv_data.slot_space), position_y, inv_x + (i * inv_data.slot_space) + inv_data.slot_space, position_y + inv_data.slot_space))
 		{
 			if(global.current_gui != 0)
 			{
@@ -78,17 +77,8 @@ for(var i = 0; i < inv_data.slots_x; i++)
 		{
 			if(show_inventory)
 			{	
-				//draw border if right clicked select on slot
-				if(global.info_sel_slot[0] != 0)
-				{
-					if(global.info_sel_slot[1] != 0)
-					{
-						draw_sprite_ext(s_Slot, 3, inv_data.ix + (global.info_sel_slot[0] * inv_data.slot_size * inv_data.draw_scale), inv_data.iy + (global.info_sel_slot[1] * inv_data.slot_size * inv_data.draw_scale), inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1)
-					}
-				}
-				
 				//actual inventory when open, not hotbar
-				draw_sprite_ext(s_Slot, selected, inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale), position_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1)
+				draw_sprite_ext(s_Slot, selected, inv_x + (i * inv_data.slot_space), position_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1)
 			}
 		}
 		
@@ -118,12 +108,12 @@ for(var i = 0; i < inv_data.slots_x; i++)
 			
 			if(hotbar_draw)
 			{
-				draw_sprite_ext(s_Items, global.items_list[index.item].spr_index, inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale), position_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1);
+				draw_sprite_ext(s_Items, global.items_list[index.item].spr_index, inv_x + (i * inv_data.slot_space), position_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1);
 				draw_set_color(c_black)
 				draw_set_color(text_color)
-				ui_draw_string(inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale) + 3, position_y + 1, amount_draw, ft_Default)
+				ui_draw_string(inv_x + (i * inv_data.slot_space) + 3, position_y + 1, amount_draw, ft_Default)
 				draw_set_color(text_color)
-				draw_text(inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale) + 3, position_y + 1, amount_draw)
+				draw_text(inv_x + (i * inv_data.slot_space) + 3, position_y + 1, amount_draw)
 			}
 		}
 	}
@@ -132,7 +122,7 @@ for(var i = 0; i < inv_data.slots_x; i++)
 //draw the sprite you have in your hand
 if(global.in_hand != 0)
 {
-	draw_sprite_ext(s_Items, global.items_list[global.in_hand.item].spr_index, mx - inv_data.slot_size * inv_data.draw_scale  / 2, my - inv_data.slot_size * inv_data.draw_scale / 2, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1);
+	draw_sprite_ext(s_Items, global.items_list[global.in_hand.item].spr_index, mx - inv_data.slot_space  / 2, my - inv_data.slot_space / 2, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1);
 }
 
 //info boxes they're drawn down here so they're above the slots
@@ -144,7 +134,7 @@ if(global.current_gui  == gui.INVENTORY)
 		{	
 				var index = inv[i, j]
 		
-				if(point_in_rectangle(mx, my, inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale), inv_data.iy + (j * inv_data.slot_size * inv_data.draw_scale), inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale) + 16 * inv_data.draw_scale, inv_data.iy + (j * inv_data.slot_size * inv_data.draw_scale) + 16 * inv_data.draw_scale))
+				if(point_in_rectangle(mx, my, inv_x + (i * inv_data.slot_space), inv_y + (j * inv_data.slot_space), inv_x + (i * inv_data.slot_space) + inv_data.slot_space, inv_y + (j * inv_data.slot_space) + inv_data.slot_space))
 				{
 						if(inv[i, j] != 0)
 						{
@@ -164,7 +154,7 @@ for(var i = 0; i < inv_data.slots_x; i++)
 {
 	for(var j = 0; j < inv_data.slots_y; j++)
 	{	
-        if(point_in_rectangle(mx, my, inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale), inv_data.iy + (j * inv_data.slot_size * inv_data.draw_scale), inv_data.ix + (i * inv_data.slot_size * inv_data.draw_scale) + inv_data.slot_size * inv_data.draw_scale, inv_data.iy + (j * inv_data.slot_size * inv_data.draw_scale) + inv_data.slot_size * inv_data.draw_scale))
+        if(point_in_rectangle(mx, my, inv_x + (i * inv_data.slot_space), inv_y + (j * inv_data.slot_space), inv_x + (i * inv_data.slot_space) + inv_data.slot_space, inv_y + (j * inv_data.slot_space) + inv_data.slot_space))
 		{
 			si = i
             sj = j

@@ -10,7 +10,7 @@ if(open)
 	
 	work_panel = make_panel(work_window_x + pad, work_window_y + pad)
 	
-	var slot_scale = inv_data.slot_size * inv_data.draw_scale
+	var slot_scale = inv_data.slot_space
 	
 	for(var i = 0; i < inv_data.slots_y; i++)
 	{

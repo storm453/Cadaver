@@ -38,21 +38,24 @@ global.current_gui = gui.NONE
 enum crafting_lvls
 {
 	ALL,
-	WORKBENCH
+	WORKBENCH,
+	FURNACE
 }
 
-clvl_string[0] = "Any"
-clvl_string[1] = "Workbench"
+clvl_string[0] = "any"
+clvl_string[1] = "workbench"
+clvl_string[2] = "furnace"
+
+clvl_allow[0] = 1
+clvl_allow[1] = 1
+clvl_allow[2] = crafting_lvls.FURNACE
 
 crafting_level = crafting_lvls.ALL
 craft_cat_name = "CRAFTING"
 
 craft_name_arr[0] = "CRAFTING"
 craft_name_arr[1] = "WORKBENCH"
-
-//pg cars
-item_per_page = 8
-current_page = 0
+craft_name_arr[2] = "FURNACE"
 
 hp_show = 0;
 energy_show = 0;
@@ -97,16 +100,17 @@ sel_item_id = 0
 
 all_list = ds_list_create()
 
-ds_list_add(weapons_list, make_recipe(item.sword, array(make_recipe_requirement(item.metal, 1), make_recipe_requirement(item.wood, 1)), 1, crafting_lvls.WORKBENCH))
+ds_list_add(weapons_list, make_recipe(items.sword, array(make_recipe_requirement(items.forgedmetal, 1), make_recipe_requirement(items.wood, 1)), 1, crafting_lvls.WORKBENCH))
 
 ds_list_add(tools_list, make_recipe(26, array(make_recipe_requirement(2, 1), make_recipe_requirement(4, 2)), 1, crafting_lvls.WORKBENCH))
 ds_list_add(tools_list, make_recipe(27, array(make_recipe_requirement(2, 1), make_recipe_requirement(4, 2)), 1, crafting_lvls.WORKBENCH))
+ds_list_add(tools_list, make_recipe(items.tools, array(make_recipe_requirement(items.metal, 3)), 1, crafting_lvls.FURNACE))
 
 ds_list_add(buildings_list, make_recipe(25, array(make_recipe_requirement(2, 3), make_recipe_requirement(1, 3)), 1, crafting_lvls.ALL))
+ds_list_add(buildings_list, make_recipe(items.furnace, array(make_recipe_requirement(2, 5), make_recipe_requirement(items.stone, 15)), 1, crafting_lvls.ALL))
+ds_list_add(buildings_list, make_recipe(items.workbench, array(make_recipe_requirement(items.wood, 5), make_recipe_requirement(items.forgedmetal, 3), make_recipe_requirement(items.tools, 1)), 1, crafting_lvls.ALL))
 
 ds_list_add(consumables_list, make_recipe(13, array(make_recipe_requirement(17, 3)), 1, crafting_lvls.ALL))
-ds_list_add(consumables_list, make_recipe(28, array(make_recipe_requirement(11, 3), make_recipe_requirement(10, 1)), 3, crafting_lvls.ALL))
-ds_list_add(consumables_list, make_recipe(29, array(make_recipe_requirement(9, 1), make_recipe_requirement(13, 2), make_recipe_requirement(14, 1), make_recipe_requirement(28, 1)), 1, crafting_lvls.ALL))
 
 ds_list_add(science_list, make_recipe(18, array(make_recipe_requirement(7, 1), make_recipe_requirement(17, 3)), 1, crafting_lvls.WORKBENCH))
 ds_list_add(science_list, make_recipe(21, array(make_recipe_requirement(20, 3)), 1, crafting_lvls.ALL))
@@ -114,12 +118,15 @@ ds_list_add(science_list, make_recipe(6, array(make_recipe_requirement(18, 1), m
 ds_list_add(science_list, make_recipe(19, array(make_recipe_requirement(21,1), make_recipe_requirement(18, 1), make_recipe_requirement(20, 1)), 1, crafting_lvls.WORKBENCH))
 ds_list_add(science_list, make_recipe(30, array(make_recipe_requirement(7,1), make_recipe_requirement(17, 3), make_recipe_requirement(31,1)), 3, crafting_lvls.WORKBENCH))
 
-ds_list_add(traps_list, make_recipe(23, array(make_recipe_requirement(4, 3), make_recipe_requirement(24, 1)), 1, crafting_lvls.WORKBENCH))
+ds_list_add(traps_list, make_recipe(23, array(make_recipe_requirement(4, 3), make_recipe_requirement(37, 1)), 1, crafting_lvls.WORKBENCH))
 
-ds_list_add(resources_list, make_recipe(16, array(make_recipe_requirement(4, 5), make_recipe_requirement(24, 3)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(resources_list, make_recipe(24, array(make_recipe_requirement(4, 3), make_recipe_requirement(3, 1)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(resources_list, make_recipe(32, array(make_recipe_requirement(4, 5)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(resources_list, make_recipe(33, array(make_recipe_requirement(4, 3), make_recipe_requirement(7, 1), make_recipe_requirement(31, 1)), 3, crafting_lvls.WORKBENCH))
+ds_list_add(resources_list, make_recipe(4, array(make_recipe_requirement(15, 5), make_recipe_requirement(items.stone, 1)), 1, crafting_lvls.FURNACE))
+ds_list_add(resources_list, make_recipe(items.metalfragments, array(make_recipe_requirement(15, 1)), 1, crafting_lvls.FURNACE))
+ds_list_add(resources_list, make_recipe(16, array(make_recipe_requirement(items.metalfragments, 1), make_recipe_requirement(24, 3)), 1, crafting_lvls.WORKBENCH))
+ds_list_add(resources_list, make_recipe(24, array(make_recipe_requirement(15, 3), make_recipe_requirement(3, 1)), 1, crafting_lvls.FURNACE))
+ds_list_add(resources_list, make_recipe(items.bottle, array(make_recipe_requirement(items.glass, 3)), 1, crafting_lvls.FURNACE))
+ds_list_add(resources_list, make_recipe(32, array(make_recipe_requirement(15, 5)), 1, crafting_lvls.FURNACE))
+ds_list_add(resources_list, make_recipe(33, array(make_recipe_requirement(15, 3), make_recipe_requirement(7, 1), make_recipe_requirement(31, 1)), 3, crafting_lvls.WORKBENCH))
 ds_list_add(resources_list, make_recipe(37, array(make_recipe_requirement(1, 2)), 1, crafting_lvls.WORKBENCH))
 
 cat_buttons = array
