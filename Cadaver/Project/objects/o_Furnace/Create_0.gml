@@ -1,5 +1,7 @@
 z = 0
 
+counter = 0
+
 //ui / panel
 #macro furn_width 325
 #macro furn_height 400
@@ -20,6 +22,11 @@ smelt_inv = create_inventory(smelt_inv_data.slots_x, smelt_inv_data.slots_y)
 
 stored_inv_data = create_inv_data(5, 1, 3)
 stored_inv = create_inventory(stored_inv_data.slots_x, stored_inv_data.slots_y)
+
+crafted_inv_data = create_inv_data(5, 1, 3)
+crafted_inv = create_inventory(crafted_inv_data.slots_x, crafted_inv_data.slots_y)
+
+queue_list = ds_list_create()
 
 smelted = array(0, 0, 0)
 

@@ -180,3 +180,24 @@ function string_height_font(str, fnt)
 	return string_height(str)
 	draw_set_font(ft_Default)
 }
+
+function queue_count(list, inv, inv_data)
+{
+	counter++
+
+	if(counter > 60)
+	{
+		counter = 0
+		
+		if(ds_list_size(list) > 0)
+		{
+			list[|0].timer--
+		
+			if(list[|0].timer <= 0)
+			{
+				add_item(inv, inv_data, list[|0].uid, list[|0].amt)
+				ds_list_delete(list, 0)
+			}
+		}
+	}
+}

@@ -111,9 +111,15 @@ if(open)
 		
 		if(smelted[i] > 0)
 		{
-			var smelt_bar = smelt_inv_data.slot_space * (smelted[i] / 300)
+			var smelt_bar = (smelt_inv_data.slot_space - (pad * 2)) * (smelted[i] / 300)
 			
-			ui_draw_rectangle(furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, smelt_bar, smelt_inv_data.slot_space, c_yellow, 0.2, false)
+			var rect_height = smelt_inv_data.slot_space / 8
+
+			var rect_x = furn_panel.at_x + (smelt_scale * i) + pad
+			var rect_y = furn_panel.at_y + smelt_inv_data.slot_space - rect_height - pad
+
+			ui_draw_rectangle(rect_x - 4, rect_y - 2, smelt_bar + 4, rect_height + 4, tab_color, 1, false)
+			ui_draw_rectangle(rect_x, rect_y, smelt_bar, rect_height, c_red, 0.9, false)
 		}
 	}
 
@@ -145,4 +151,13 @@ if(open)
 
 	ui_draw_string(furn_panel.at_x + 3, furn_panel.at_y - center, "Stone: " + string(stone_count), ft_Default)
 
+	pn_row(furn_panel, 35)
+
+	for(var i = 0; i < crafted_inv_data.slots_x; i++)
+	{
+		for(var j = 0; j < crafted_inv_data.slots_y; j++)
+		{
+			
+		}
+	}
 }

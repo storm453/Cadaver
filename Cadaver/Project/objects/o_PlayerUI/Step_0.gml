@@ -7,6 +7,8 @@ if(keyboard_check_pressed(vk_tab) or keyboard_check_pressed(vk_escape))
 		to_gui = gui.NONE
 		
 		crafting_level = crafting_lvls.ALL
+
+		global.object_open = -4
 	}
 	
 	global.current_gui = to_gui

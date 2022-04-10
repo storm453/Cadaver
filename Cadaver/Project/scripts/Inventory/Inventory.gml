@@ -39,8 +39,11 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 				arg_inv[i,j].amt += arg_amount
 				
 				//@HACK
-				o_PlayerUI.add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
-					
+				if(arg_inv == o_PlayerInventory.inv)
+				{
+					o_PlayerUI.add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
+				}	
+
 				break;
 			}
 		}
@@ -68,8 +71,11 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 			{
 				array_set(arg_inv[i], j, { item: arg_item_id, amt: arg_amount } )
 
-				o_PlayerUI.add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
-				
+				if(arg_inv == o_PlayerInventory.inv)
+				{
+					o_PlayerUI.add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
+				}
+
 				found_item = true
 				break;
 			}

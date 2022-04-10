@@ -1,8 +1,12 @@
 z = 0
 
+counter = 0
+
 open = false
-inv_data = create_inv_data(3, 1, 10, 10, 3)
+inv_data = create_inv_data(6, 1, 3)
 inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
+
+queue_list = ds_list_create()
 
 function render()
 {

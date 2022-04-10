@@ -4,46 +4,69 @@ z = -bbox_bottom
 
 var move_dir = v2(0)
 
-if(player_distance <= 256)
+var chase_distance = 256
+
+var attack_distance = 12
+
+if(enemy_data.hp <= 0) 
 {
-	//Face the player
-	var sign_mouse = sign(o_Player.x - x)
-
-	if(sign_mouse == 0) 
-	{
-		sign_mouse = 1
-	}
-
-	if(sign_mouse != 0)
-	{
-		image_xscale = sign_mouse;	
-	}
-
-	//Move towards player
-	move_dir = move_towards(o_Player)
-	
-	var near = instance_nearest_notme(all)
-	
-	if(near != -4)
-	{
-		var near_dis = distance_to_object(near)
-		
-		if(near_dis == 0) near_dis = 1
-		
-		var near_dir = v2_div(move_towards(near), v2(near_dis))
-	
-		move_dir = v2_sub(move_dir, near_dir)
-	}
-	
-	x += move_dir.x
-	y += move_dir.y
+	add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, items.infectedpiece, irandom(2))
+	instance_destroy()
 }
 
-if(v2_length(move_dir) > 0)
+if(current_state == state.idle)
 {
-	sprite_index = s_MutantRun	
+	animation()
+	
+	if(player_distance < chase_distance) current_state = state.move
 }
-else
+
+if(current_state == state.move)
 {
-	sprite_index = s_Mutant	
+	animation()
+	movement()
+	
+	if(player_distance > chase_distance) current_state = state.idle
+	
+	if(player_distance <= attack_distance) 
+	{
+		current_state = state.attack
+		attack_frame = 60
+	}
 }
+
+if(current_state == state.attack)
+{
+	animation()
+	
+	attack_frame--
+	
+	if(attack_frame <= 0) current_state = state.idle
+
+	var rec_x = x + 10 * image_xscale
+	var rec_y = y - sprite_height
+	
+	var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, all, false, true)
+
+	if(attack_rec != -4)
+	{
+		if(attack_rec.object_index == o_Player)
+		{
+			var damage = 1
+
+			if(image_xscale != o_Player.image_xscale) 
+			{
+				if(mouse_check_button(mb_right))
+				{
+					damage = 0
+				}
+			}
+			
+			if(damage) 
+			{
+				o_Player.hp -= 1
+				o_Player.velocity.x += 500 * image_xscale
+			}
+		}
+	}
+}	

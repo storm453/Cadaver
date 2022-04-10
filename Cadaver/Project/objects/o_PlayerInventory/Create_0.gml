@@ -1,6 +1,9 @@
 inv_data = create_inv_data(10, 5, 3)
 inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
 
+held = 0
+cooldown = 0
+
 //amount to shift hotbar down from inventory
 shift = inv_data.slot_space / 4
 

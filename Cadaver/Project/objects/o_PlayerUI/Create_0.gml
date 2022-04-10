@@ -100,15 +100,16 @@ sel_item_id = 0
 
 all_list = ds_list_create()
 
-ds_list_add(weapons_list, make_recipe(items.sword, array(make_recipe_requirement(items.forgedmetal, 1), make_recipe_requirement(items.wood, 1)), 1, crafting_lvls.WORKBENCH))
+ds_list_add(weapons_list, make_recipe(items.basicknife, array(make_recipe_requirement(items.forgedmetal, 6), make_recipe_requirement(items.wood, 20)), 1, crafting_lvls.WORKBENCH))
 
-ds_list_add(tools_list, make_recipe(26, array(make_recipe_requirement(2, 1), make_recipe_requirement(4, 2)), 1, crafting_lvls.WORKBENCH))
-ds_list_add(tools_list, make_recipe(27, array(make_recipe_requirement(2, 1), make_recipe_requirement(4, 2)), 1, crafting_lvls.WORKBENCH))
+ds_list_add(tools_list, make_recipe(26, array(make_recipe_requirement(items.wood, 35), make_recipe_requirement(items.stone, 30)), 1, crafting_lvls.ALL))
+ds_list_add(tools_list, make_recipe(27, array(make_recipe_requirement(items.wood, 35), make_recipe_requirement(items.stone, 25)), 1, crafting_lvls.ALL))
 ds_list_add(tools_list, make_recipe(items.tools, array(make_recipe_requirement(items.metal, 3)), 1, crafting_lvls.FURNACE))
 
 ds_list_add(buildings_list, make_recipe(25, array(make_recipe_requirement(2, 3), make_recipe_requirement(1, 3)), 1, crafting_lvls.ALL))
-ds_list_add(buildings_list, make_recipe(items.furnace, array(make_recipe_requirement(2, 5), make_recipe_requirement(items.stone, 15)), 1, crafting_lvls.ALL))
+ds_list_add(buildings_list, make_recipe(items.furnace, array(make_recipe_requirement(2, 50), make_recipe_requirement(items.stone, 35)), 1, crafting_lvls.ALL))
 ds_list_add(buildings_list, make_recipe(items.workbench, array(make_recipe_requirement(items.wood, 5), make_recipe_requirement(items.forgedmetal, 3), make_recipe_requirement(items.tools, 1)), 1, crafting_lvls.ALL))
+ds_list_add(buildings_list, make_recipe(items.shoddybed, array(make_recipe_requirement(items.wood, 20)), 1, crafting_lvls.ALL))
 
 ds_list_add(consumables_list, make_recipe(13, array(make_recipe_requirement(17, 3)), 1, crafting_lvls.ALL))
 
@@ -144,6 +145,8 @@ counter = 0
 
 queue_list = ds_list_create()
 max_queue = 4
+
+queue_var = queue_list
 
 status_list = ds_list_create()
 status_selected = 0

@@ -289,7 +289,7 @@ if(global.current_gui == gui.INVENTORY)
 				var craft = ui_draw_button_color(craft_name, item_panel.at_x, item_panel.at_y, craft_button_width, 35, button_color, button_h_color, text_color, false)
 				if(craft[0])
 				{
-					ds_list_add(queue_list, { uid: sel_item_id , amt: 1 , timer: 5 } )
+					ds_list_add(queue_var, { uid: sel_item_id , amt: 1 , timer: 5 } )
 					
 					//remove items needed
 					for(var i = 0; i < array_length_1d(requirements_array); i++)
@@ -504,13 +504,24 @@ if(global.current_gui == gui.INVENTORY)
 		}
 	}
 	
-	//ITEM CRAFTING QUEUE
+	/// ITEM CRAFTING QUEUE
+
+	//Setting queue variable
+	if(global.object_open != -4)
+	{
+		queue_var = global.object_open.queue_list
+	}
+	else
+	{
+		queue_var = queue_list
+	}
+	
 	var q_size = 70
 	
 	var q_window_x = display_get_gui_width() / 2 - inv_width / 2 - pad - q_size
 	var q_window_y = display_get_gui_height() - inv_height - craft_height - title_height + spacing_from_top + list_height
 	
-	for(var i = 0; i < ds_list_size(queue_list); i++)
+	for(var i = 0; i < ds_list_size(queue_var); i++)
 	{
 		var q_window_x_i = q_window_x - (i * (pad + q_size))
 		
@@ -520,10 +531,10 @@ if(global.current_gui == gui.INVENTORY)
 		//draw sprite
 		var q_spr_scale = q_size / sprite_get_width(s_Items)
 		
-		draw_sprite_ext(s_Items, queue_list[|i].uid, q_window_x_i, q_window_y, q_spr_scale, q_spr_scale, 0, c_white, 1)
+		draw_sprite_ext(s_Items, queue_var[|i].uid, q_window_x_i, q_window_y, q_spr_scale, q_spr_scale, 0, c_white, 1)
 		
 		//draw timer texet
-		draw_text(q_window_x_i + pad, q_window_y + pad, "0:0" + string(queue_list[|i].timer))
+		draw_text(q_window_x_i + pad, q_window_y + pad, "0:0" + string(queue_var[|i].timer))
 	}
 	
 	//ITEM LIST WINDOW
@@ -641,23 +652,7 @@ if(global.current_gui == gui.INVENTORY)
 }
 
 //Counter for crafting
-counter++
-
-if(counter > 60)
-{
-	counter = 0
-		
-	if(ds_list_size(queue_list) > 0)
-	{
-		queue_list[|0].timer--
-		
-		if(queue_list[|0].timer <= 0)
-		{
-			add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, queue_list[|0].uid, queue_list[|0].amt)
-			ds_list_delete(queue_list, 0)
-		}
-	}
-}
+queue_count(queue_list, o_PlayerInventory.inv, o_PlayerInventory.inv_data)
 
 if(global.current_gui == gui.PROFILE)
 {

@@ -16,3 +16,7 @@ day_factor = 0
 timer = 0;
 
 colour_grade = 0
+
+//cursor
+//window_set_cursor(cr_none)
+//cursor_sprite = s_Cursor

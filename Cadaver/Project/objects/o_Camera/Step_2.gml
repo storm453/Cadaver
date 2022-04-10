@@ -1,5 +1,5 @@
-var tx = lerp(target.x, mouse_x, 0.3);
-var ty = lerp(target.y, mouse_y, 0.3);
+var tx = lerp(target.x, mouse_x, 0.2);
+var ty = lerp(target.y, mouse_y, 0.2);
 
 if(global.current_gui != gui.NONE)
 {

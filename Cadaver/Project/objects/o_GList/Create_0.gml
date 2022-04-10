@@ -18,7 +18,7 @@ enum items
 	wood,
 	plastic,
 	forgedmetal,
-	sword,
+	basicknife,
 	syringe,
 	bottle,
 	meat,
@@ -35,13 +35,13 @@ enum items
 	medicalkit,
 	cloth,
 	bandage,
-	ice,
+	infectedpiece,
 	beartrap,
 	mechanicalparts,
 	campfire,
 	pickaxe,
-	axe,
-	fries,
+	stonehatchet,
+	shoddybed,
 	metalfragments,
 	chemicals,
 	rareplants,
@@ -67,7 +67,8 @@ function create_struct()
 		building_obj : o_Campfire,
 		scrap: false,
 		hp: 0,
-		energy: 0
+		energy: 0,
+		damage: 0
 	}
 
 	return return_struct
@@ -94,23 +95,24 @@ function create_item(arg_name)
 //items
 {
 	var item = create_item("")
-	
-	show_debug_message(item)
-	
+
 	item.item_data.item_type = item_types.melee
+	item.item_data.damage = 2
 }
 
 {
 	var item = create_item("Stone")
 	
 	item.item_data.item_type = item_types.ranged
-	item.item_data.description = "Heavy.. A very useful resource that is used in many different recipes. Pretty solid huh? I know, I know, my joke rocks."
+	item.item_data.smelt = items.stone
+	item.item_data.description = "Heavy.. A very useful resource that is used in many different recipes. Pretty solid huh? I know, my joke rocks."
 }
 
 {
 	var item = create_item("Wood")
 	
 	item.item_data.burn_time = 300
+	item.item_data.description = "A small piece of wood taken from a tree. Mainly used as a fuel for fires."
 }
 
 {
@@ -122,7 +124,7 @@ function create_item(arg_name)
 }
 	
 {
-	var item = create_item("Sword")
+	var item = create_item("Basic Knife")
 	
 	item.item_data.scrap = true
 	item.item_data.item_type = item_types.melee
@@ -204,7 +206,7 @@ function create_item(arg_name)
 }
 
 {
-	var item = create_item("Ice")
+	var item = create_item("Infected Piece")
 }
 
 {
@@ -226,14 +228,22 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Pickaxe")
+
+	item.item_data.item_type = item_types.melee
+	item.item_data.damage = 4
 }
 
 {
-	var item = create_item("Axe")
+	var item = create_item("Stone Hatchet")
+
+	item.item_data.item_type = item_types.melee
+	item.item_data.damage = 5
 }	
 
 {
-	var item = create_item("Fries")
+	var item = create_item("Shoddy Bed")
+
+	item.item_data.description = "I mean, yeah, you could sleep here. But the question is, would you want to?"
 }
 
 {

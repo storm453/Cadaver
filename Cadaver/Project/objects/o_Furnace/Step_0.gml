@@ -11,6 +11,7 @@ if(distance < 10)
 		o_PlayerUI.crafting_level = crafting_lvls.FURNACE
 		
 		open = true
+		global.object_open = id
 	}
 }
 
@@ -64,3 +65,5 @@ if(on)
 		}
 	}
 }
+
+queue_count(queue_list, stored_inv, stored_inv_data)
