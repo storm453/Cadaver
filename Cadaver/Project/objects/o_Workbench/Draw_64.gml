@@ -44,5 +44,5 @@ if(open)
 		}
 	}
 
-	inv_move(inv, inv_data, work_panel.at_x, work_panel.at_y, inv_data.slot_space)
+	if(global.in_hand == 0) inv_move(inv, inv_data, work_panel.at_x, work_panel.at_y, inv_data.slot_space)
 }

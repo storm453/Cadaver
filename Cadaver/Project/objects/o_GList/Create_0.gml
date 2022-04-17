@@ -36,7 +36,7 @@ enum items
 	cloth,
 	bandage,
 	infectedpiece,
-	beartrap,
+	basecore,
 	mechanicalparts,
 	campfire,
 	pickaxe,
@@ -210,9 +210,10 @@ function create_item(arg_name)
 }
 
 {
-	var item = create_item("Bear Trap")
+	var item = create_item("Base Core")
 
 	item.item_data.item_type = item_types.building
+	item.item_data.description = "The most important block for your base. Keep this protected."
 }
 
 {

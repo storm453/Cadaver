@@ -110,6 +110,7 @@ ds_list_add(buildings_list, make_recipe(25, array(make_recipe_requirement(2, 3),
 ds_list_add(buildings_list, make_recipe(items.furnace, array(make_recipe_requirement(2, 50), make_recipe_requirement(items.stone, 35)), 1, crafting_lvls.ALL))
 ds_list_add(buildings_list, make_recipe(items.workbench, array(make_recipe_requirement(items.wood, 5), make_recipe_requirement(items.forgedmetal, 3), make_recipe_requirement(items.tools, 1)), 1, crafting_lvls.ALL))
 ds_list_add(buildings_list, make_recipe(items.shoddybed, array(make_recipe_requirement(items.wood, 20)), 1, crafting_lvls.ALL))
+ds_list_add(buildings_list, make_recipe(items.basecore, array(make_recipe_requirement(items.forgedmetal, 50)), 1, crafting_lvls.WORKBENCH))
 
 ds_list_add(consumables_list, make_recipe(13, array(make_recipe_requirement(17, 3)), 1, crafting_lvls.ALL))
 

@@ -42,6 +42,7 @@
         {"properties":[],"isDnd":false,"objectId":{"name":"o_Mutant","path":"objects/o_Mutant/o_Mutant.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":799.0,"y":375.0,"resourceVersion":"1.0","name":"inst_222FD0F8","tags":[],"resourceType":"GMRInstance",},
         {"properties":[],"isDnd":false,"objectId":{"name":"o_Mutant","path":"objects/o_Mutant/o_Mutant.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":-25.5,"y":577.0,"resourceVersion":"1.0","name":"inst_ED7B35A","tags":[],"resourceType":"GMRInstance",},
         {"properties":[],"isDnd":false,"objectId":{"name":"o_Mutant","path":"objects/o_Mutant/o_Mutant.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":-25.5,"y":597.0,"resourceVersion":"1.0","name":"inst_5629A2E7","tags":[],"resourceType":"GMRInstance",},
+        {"properties":[],"isDnd":false,"objectId":{"name":"o_BaseCore","path":"objects/o_BaseCore/o_BaseCore.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":112.0,"y":48.0,"resourceVersion":"1.0","name":"inst_59556A71","tags":[],"resourceType":"GMRInstance",},
       ],"visible":true,"depth":0,"userdefinedDepth":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"gridX":16,"gridY":16,"layers":[],"hierarchyFrozen":false,"effectEnabled":true,"effectType":null,"properties":[],"resourceVersion":"1.0","name":"Instances","tags":[],"resourceType":"GMRInstanceLayer",},
     {"instances":[
         {"properties":[],"isDnd":false,"objectId":{"name":"o_Furnace","path":"objects/o_Furnace/o_Furnace.yy",},"inheritCode":false,"hasCreationCode":false,"colour":4294967295,"rotation":0.0,"scaleX":1.0,"scaleY":1.0,"imageIndex":0,"imageSpeed":1.0,"inheritedItemId":null,"frozen":false,"ignore":false,"inheritItemSettings":false,"x":44.0,"y":112.0,"resourceVersion":"1.0","name":"inst_E93EF12","tags":[],"resourceType":"GMRInstance",},
@@ -81,6 +82,7 @@
     {"name":"inst_222FD0F8","path":"rooms/Game/Game.yy",},
     {"name":"inst_ED7B35A","path":"rooms/Game/Game.yy",},
     {"name":"inst_5629A2E7","path":"rooms/Game/Game.yy",},
+    {"name":"inst_59556A71","path":"rooms/Game/Game.yy",},
   ],
   "inheritCreationOrder": false,
   "sequenceId": null,

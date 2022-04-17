@@ -65,7 +65,8 @@ if(current_state == state.attack)
 			if(damage) 
 			{
 				o_Player.hp -= 1
-				o_Player.velocity.x += 500 * image_xscale
+				
+				
 			}
 		}
 	}

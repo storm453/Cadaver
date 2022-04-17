@@ -201,3 +201,10 @@ function queue_count(list, inv, inv_data)
 		}
 	}
 }
+
+function text_gap(panel, txt)
+{
+	draw_set_color(text_color)
+	ui_draw_string(panel.at_x, panel.at_y, txt, ft_Default)
+	pn_row(panel, string_height_font(txt, ft_Default) + pad)
+}

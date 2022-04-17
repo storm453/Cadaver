@@ -66,4 +66,4 @@ if(on)
 	}
 }
 
-queue_count(queue_list, stored_inv, stored_inv_data)
+queue_count(queue_list, crafted_inv, crafted_inv_data)

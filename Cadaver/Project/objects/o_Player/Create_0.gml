@@ -360,6 +360,11 @@ function render()
 							}
 
 							attack_rec.enemy_data.hp -= damage * attack_rec.enemy_data.protection
+							
+							var dir = move_towards(attack_rec);
+							
+							attack_rec.enemy_data.arg_knock_x += dir.x							attack_rec.enemy_data.arg_knock_x += dir.x
+							attack_rec.enemy_data.arg_knock_y += dir.y
 						}
 					}
 				}

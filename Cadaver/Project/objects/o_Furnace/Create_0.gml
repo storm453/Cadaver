@@ -4,7 +4,7 @@ counter = 0
 
 //ui / panel
 #macro furn_width 325
-#macro furn_height 400
+#macro furn_height 450
 	
 work_window_x = display_get_gui_width() / 2 + inv_width / 2 + pad
 work_window_y = display_get_gui_height() - inv_height - craft_height - pad
@@ -23,7 +23,7 @@ smelt_inv = create_inventory(smelt_inv_data.slots_x, smelt_inv_data.slots_y)
 stored_inv_data = create_inv_data(5, 1, 3)
 stored_inv = create_inventory(stored_inv_data.slots_x, stored_inv_data.slots_y)
 
-crafted_inv_data = create_inv_data(5, 1, 3)
+crafted_inv_data = create_inv_data(6, 1, 3)
 crafted_inv = create_inventory(crafted_inv_data.slots_x, crafted_inv_data.slots_y)
 
 queue_list = ds_list_create()

@@ -4,6 +4,8 @@ if(open)
 
 	furn_panel = make_panel(work_window_x + pad, work_window_y + pad)
 
+	text_gap(furn_panel, "Fuel")
+
 	if(fuel_inv[0, 0] != 0)
 	{
 		var on_button = ui_draw_button_sprite(s_PowerIcon, 0, furn_panel.at_x, furn_panel.at_y, fuel_inv_data.slot_space, fuel_inv_data.slot_space, button_color, button_h_color, text_color, 0.5, false)
@@ -81,6 +83,8 @@ if(open)
 	
 	pn_row(furn_panel, fuel_inv_data.slot_space + pad + gap)
 	
+	text_gap(furn_panel, "Smelting")
+
 	//smelting slots
 	var smelt_scale = smelt_inv_data.slot_space + pad
 
@@ -127,6 +131,8 @@ if(open)
 	
 	pn_row(furn_panel, smelt_scale + gap)
 	
+	text_gap(furn_panel, "Inventory")
+
 	var slots = 3
 	
 	for(var i = 0; i < slots; i++)
@@ -151,13 +157,35 @@ if(open)
 
 	ui_draw_string(furn_panel.at_x + 3, furn_panel.at_y - center, "Stone: " + string(stone_count), ft_Default)
 
-	pn_row(furn_panel, 35)
-
+	pn_row(furn_panel, 35 + gap)
+	
+	text_gap(furn_panel, "Output")
+	
 	for(var i = 0; i < crafted_inv_data.slots_x; i++)
 	{
 		for(var j = 0; j < crafted_inv_data.slots_y; j++)
 		{
-			
+			var select = 0
+
+			if(point_in_rectangle(mx, my, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, furn_panel.at_x + (smelt_scale * i) + smelt_scale, furn_panel.at_y + smelt_scale))
+			{
+				select = 1
+			}
+
+			draw_sprite_ext(s_SlotFurnace, select, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, crafted_inv_data.draw_scale, crafted_inv_data.draw_scale, 0, c_white, 1)
+
+			//draw item
+			if(crafted_inv[i,j] != 0)
+			{
+				draw_sprite_ext(s_Items, crafted_inv[i,j].item, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, crafted_inv_data.draw_scale, crafted_inv_data.draw_scale, 0, c_white, 1,)	
+				
+				draw_set_color(text_color)
+				ui_draw_string(furn_panel.at_x + 3 + (smelt_scale * i), furn_panel.at_y + 1, crafted_inv[i,j].amt, ft_Default)
+				draw_set_color(text_color)
+				draw_text(furn_panel.at_y + 3 + (smelt_scale * i), furn_panel.at_y + 1, crafted_inv[i,j].amt)
+			}
 		}
 	}
+
+	inv_move(crafted_inv, crafted_inv_data, furn_panel.at_x, furn_panel.at_y)
 }
