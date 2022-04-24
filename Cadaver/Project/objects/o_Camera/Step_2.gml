@@ -10,7 +10,7 @@ if(global.current_gui != gui.NONE)
 }
 else
 {
-	scroll_speed = 0.5	
+	scroll_speed = 0.2	
 }
 
 x += ((tx) - x) * scroll_speed;

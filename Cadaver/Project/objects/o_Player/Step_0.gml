@@ -1,6 +1,17 @@
 z = -bbox_bottom
 
-if(global.current_gui != gui.NONE) exit;
+//check list movable if player should be able to move in this gui state
+var move = true
+
+for(var i = 0; i < ds_list_size(list_movable); i++)
+{
+	if(global.current_gui == list_movable[|i])
+	{
+		move = false
+	}
+}
+
+if(!move) exit;
 
 if(hp <= 0) state = player_state.dead
 
@@ -55,6 +66,104 @@ if(state == player_state.run)
 		state = player_state.idle
 	}
 }
+
+if(state == player_state.attack)
+{
+	input()
+	player_animation()
+
+	if(image_index >= sprite_get_number(s_PlayerAttack))
+	{
+		state = player_state.idle
+	}
+
+	rec_x = x + 10 * image_xscale
+	rec_y = y - sprite_height
+
+	var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, o_WorldParent, false, true)
+
+	//ui_draw_rectangle(rec_x, rec_y, attack_range * image_xscale, attack_range, c_red, 0.1, false)
+	//draw_rectangle(rec_x, rec_y, rec_x + (attack_range * image_xscale), rec_y + attack_range, false)
+
+	for(var i = 0; i < array_length_1d(resource_drops); i++)
+	{
+		if(attack_rec != -4)
+		{
+			//IF NOT -4 GIVE RESOURCES BECAUSE ITS RESOURCE DROPS
+			if(attack_rec.object_index == resource_drops[i].object)
+			{
+				if(!gave_item)
+				{
+					gave_item = true
+
+					var drops_array = resource_drops[i].all_drops
+
+					for(var j = 0; j < array_length_1d(drops_array); j++)
+					{
+						var item = 0
+						var compare_item = 0
+
+						if(global.hotbar_sel_item != 0) compare_item = global.hotbar_sel_item.item
+
+						if(compare_item == drops_array[j].item) 
+						{
+							item = 1
+						}
+
+						if(item)
+						{
+							//you are using an item that exists, gets drops from there
+							var item_drops = drops_array[j].drops
+
+							for(var k = 0; k < array_length_1d(item_drops); k++)
+							{
+								if(random(1) < item_drops[k].chnce)
+								{
+									var drop_amt = irandom_range(item_drops[k].amt_min, item_drops[k].amt_max)
+
+									add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, item_drops[k].uid, drop_amt)
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			//enemies
+			for(var p = 0; p < ds_list_size(enemies_list); p++)
+			{
+				if(attack_rec.object_index == enemies_list[|p])
+				{
+					if(!dealt_damage)
+					{
+						dealt_damage = true
+
+						var damage = global.items_list[items.air].item_data.damage
+						var kb = global.items_list[items.air].item_data.kb
+
+						if(global.hotbar_sel_item != 0)
+						{
+							damage = global.items_list[global.hotbar_sel_item.item].item_data.damage
+						}
+						if(global.hotbar_sel_item != 0)
+						{
+							kb = global.items_list[global.hotbar_sel_item.item].item_data.kb
+						}
+
+						attack_rec.enemy_data.hp -= damage * attack_rec.enemy_data.protection
+						
+						var dir = move_towards(attack_rec);
+
+						attack_rec.enemy_data.arg_knock_x += dir.x * kb * attack_rec.enemy_data.knock_resistance
+						attack_rec.enemy_data.arg_knock_y += dir.y * kb * attack_rec.enemy_data.knock_resistance
+					}
+				}
+			}
+		}
+	}
+
+}
+
 if(state == player_state.dead)
 {
 	player_animation()

@@ -1,0 +1,52 @@
+if(points >= points_needed[level + 1])
+{
+	level++
+}
+
+switch(level)
+{
+	case(0):
+	
+		//level one
+		if(chance(0.001))
+		{
+			if(spawn_timer >= spawn_set)
+			{
+				spawn_timer = 0
+			
+				repeat( irandom_range(1, 2) )
+				{
+					spawn_enemy(500, o_Mutant)	
+				}
+			}
+		}
+		
+	break;
+	
+	case(1):
+	
+		//level one
+		if(chance(0.003))
+		{
+			if(spawn_timer >= spawn_set / 2)
+			{
+				spawn_timer = 0
+			
+				repeat( irandom_range(2, 5) )
+				{
+					spawn_enemy(450, o_Mutant)	
+				}
+				
+				//vaulkers
+				if(chance(0.005))
+				{
+					spawn_enemy(300, o_Walker)	
+				}
+			}
+		}
+		
+		
+	break;
+}
+
+spawn_timer++

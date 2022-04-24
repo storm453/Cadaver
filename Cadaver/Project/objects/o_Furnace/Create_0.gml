@@ -26,6 +26,8 @@ stored_inv = create_inventory(stored_inv_data.slots_x, stored_inv_data.slots_y)
 crafted_inv_data = create_inv_data(6, 1, 3)
 crafted_inv = create_inventory(crafted_inv_data.slots_x, crafted_inv_data.slots_y)
 
+block_data = create_multiblock(gui.INVENTORY, stored_inv, stored_inv_data, smelt_inv, smelt_inv_data, crafting_lvls.FURNACE)
+
 queue_list = ds_list_create()
 
 smelted = array(0, 0, 0)

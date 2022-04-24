@@ -5,6 +5,8 @@ alarm[0] = 20
 tiles = 16
 world = room_width / tiles
 
+open_instance = -4
+
 for(var i = 0; i < world; i++)
 {
 	for(var j = 0; j < world; j++)
@@ -30,7 +32,8 @@ enum gui
 	INVENTORY,
 	PROFILE,
 	JOURNAL,
-	LOOT
+	LOOT,
+	BLUEPRINT
 }
 
 global.current_gui = gui.NONE
@@ -167,26 +170,26 @@ ds_list_add(status_list, { status_id : cut, time : 300 } )
 ds_list_add(info_list, 
 	{ 
 	name : "Movement", 
-	description : "Use WASD to move your character, E is used to interfact with all objects in the game. Left Click to attack or harvest something, right click to build or place something."
+	description : "Use the [W] [A] [S] [D] keys to move your character. Try walking around."
 	})
 	
-ds_list_add(info_list, 
-	{ 
-	name : "Sherwin Salemi", 
-	description : "He is very violent, be careful when approaching him, his main weapon is a Fender HSS Stratocaster Special Edition."
-	})
+// ds_list_add(info_list, 
+// 	{ 
+// 	name : "Sherwin Salemi", 
+// 	description : "He is very violent, be careful when approaching him, his main weapon is a Fender HSS Stratocaster Special Edition."
+// 	})
 	
-ds_list_add(info_list, 
-	{ 
-	name : "Logan Brown", 
-	description : "REEEEEEE, Logan was never seen again"
-	})
+// ds_list_add(info_list, 
+// 	{ 
+// 	name : "Logan Brown", 
+// 	description : "REEEEEEE, Logan was never seen again"
+// 	})
 
-ds_list_add(info_list, 
-	{ 
-	name : "Adam Mathe",
-	description : "A self proclaimed monotone speaker. Always watching for when you become online, and doesn't take no for an answer when it comes to anything you don't want him to do."
-	})
+// ds_list_add(info_list, 
+// 	{ 
+// 	name : "Adam Mathe",
+// 	description : "A self proclaimed monotone speaker. Always watching for when you become online, and doesn't take no for an answer when it comes to anything you don't want him to do."
+// 	})
 
 selected_tab = "CRAFTING"
 

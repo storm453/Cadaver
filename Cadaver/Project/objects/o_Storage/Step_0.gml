@@ -1,21 +1,16 @@
 z = -bbox_bottom
 
-//open if near
-var distance = distance_to_object(o_Player)
+var empty = true
 
-if(distance < 10)
+for(var i = 0; i < inv_data.slots_x; i++)
 {
-	if(keyboard_check_pressed(ord("E")))
+	for(var j = 0; j < inv_data.slots_y; j++)
 	{
-		global.current_gui = gui.LOOT
-		
-		open = true
+		if(inv[i,j] != 0)
+		{
+			empty = false	
+		}
 	}
 }
 
-if(keyboard_check_pressed(vk_escape))
-{
-    open = false
-}
-
-if(global.current_gui != gui.LOOT) open = false
+if(empty) instance_destroy()

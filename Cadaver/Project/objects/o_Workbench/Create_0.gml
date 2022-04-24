@@ -6,6 +6,8 @@ open = false
 inv_data = create_inv_data(6, 1, 3)
 inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
 
+block_data = create_multiblock(gui.INVENTORY, o_PlayerInventory.inv, o_PlayerInventory.inv_data, inv, inv_data, crafting_lvls.WORKBENCH)
+
 queue_list = ds_list_create()
 
 function render()

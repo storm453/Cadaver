@@ -1,7 +1,7 @@
 var hp_x = 10;
 var hp_y = 10;
 
-var bar_draw = 2
+var bar_draw = 3
 
 hp_show = lerp(hp_show, o_Player.hp, 0.2);
 
@@ -206,14 +206,21 @@ if(global.current_gui == gui.INVENTORY)
 			{
 				//WORKBENCH
 				case(1):
+
 					craft_name = "WORK"
+
 				break;
 
 				case(2):
+
 					craft_name = "FORGE"
 
-					station_inv = o_Furnace.stored_inv
-					station_dat = o_Furnace.stored_inv_data
+					if(open_instance != -4)
+					{
+						station_inv = open_instance.block_data.check_inv
+						station_dat = open_instance.block_data.check_dat
+					}
+
 				break;
 			}
 
@@ -507,9 +514,9 @@ if(global.current_gui == gui.INVENTORY)
 	/// ITEM CRAFTING QUEUE
 
 	//Setting queue variable
-	if(global.object_open != -4)
+	if(open_instance != -4)
 	{
-		queue_var = global.object_open.queue_list
+		queue_var = open_instance.queue_list
 	}
 	else
 	{
@@ -756,9 +763,4 @@ if(global.current_gui == gui.JOURNAL)
 			//}
 		//}
 	//}
-}
-
-if(global.current_gui == gui.LOOT)
-{
-
 }

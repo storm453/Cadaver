@@ -30,9 +30,9 @@ for(var i = 0; i < inv_data.slots_x; i++)
 		global.hotbar_sel_item = inv[global.hotbar_sel, inv_data.slots_y - 1]
 	
 		var position_y = inv_y + shift + ((inv_data.slots_y - 1) * inv_data.slot_space)	
-		var selected = false
+		var selected = 2
 		
-		if(global.hotbar_sel == i) selected = 2
+		if(global.hotbar_sel == i) selected = 3
 		
 		draw_sprite_ext(s_Slot, selected, inv_x + (i * inv_data.slot_space), position_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1)
 	}
@@ -155,48 +155,48 @@ if(global.current_gui  == gui.INVENTORY)
 }
 
 //shift clicking
-for(var i = 0; i < inv_data.slots_x; i++)
-{
-	for(var j = 0; j < inv_data.slots_y; j++)
-	{	
-        if(point_in_rectangle(mx, my, inv_x + (i * inv_data.slot_space), inv_y + (j * inv_data.slot_space), inv_x + (i * inv_data.slot_space) + inv_data.slot_space, inv_y + (j * inv_data.slot_space) + inv_data.slot_space))
-		{
-			si = i
-            sj = j
-			s_slot = inv[i,j]
+// for(var i = 0; i < inv_data.slots_x; i++)
+// {
+// 	for(var j = 0; j < inv_data.slots_y; j++)
+// 	{	
+//         if(point_in_rectangle(mx, my, inv_x + (i * inv_data.slot_space), inv_y + (j * inv_data.slot_space), inv_x + (i * inv_data.slot_space) + inv_data.slot_space, inv_y + (j * inv_data.slot_space) + inv_data.slot_space))
+// 		{
+// 			si = i
+//             sj = j
+// 			s_slot = inv[i,j]
 			
-			if(mouse_check_button_pressed(mb_left))
-			{
-				if(keyboard_check(vk_shift))
-				{
-					//if slot player is hovering is not empty
-					if(inv[i, j] != 0)
-					{
-						//if item is not in hotbar
-						for(var e = 0; e < inv_data.slots_x; e++)
-						{
-							if(sj !=  4)
-							{
-								if(inv[e, 4] = 0)
-								{
-									//move item to bottom
-									inv[e, 4] = inv[i,j]
-									inv[i,j] = 0
-								}
-							}
-							else
-							{
-								if(inv[e, 0] = 0)
-								{
-									//move item to top
-									inv[e, 0] = inv[i,j]
-									inv[i,j] = 0	
-								}
-							}
-						}
-					}
-				}
-			}
-        }    
-    }
-}
+// 			if(mouse_check_button_pressed(mb_left))
+// 			{
+// 				if(keyboard_check(vk_shift))
+// 				{
+// 					//if slot player is hovering is not empty
+// 					if(inv[i, j] != 0)
+// 					{
+// 						//if item is not in hotbar
+// 						for(var e = 0; e < inv_data.slots_x; e++)
+// 						{
+// 							if(sj !=  4)
+// 							{
+// 								if(inv[e, 4] = 0)
+// 								{
+// 									//move item to bottom
+// 									inv[e, 4] = inv[i,j]
+// 									inv[i,j] = 0
+// 								}
+// 							}
+// 							else
+// 							{
+// 								if(inv[e, 0] = 0)
+// 								{
+// 									//move item to top
+// 									inv[e, 0] = inv[i,j]
+// 									inv[i,j] = 0	
+// 								}
+// 							}
+// 						}
+// 					}
+// 				}
+// 			}
+//         }    
+//     }
+// }

@@ -1,4 +1,4 @@
-if(open)
+if(o_PlayerUI.open_instance == id)
 {
 	var title = "Loot"
 	var title_height = string_height_font(title, ft_Title)

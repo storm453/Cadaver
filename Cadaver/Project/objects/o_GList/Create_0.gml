@@ -27,7 +27,7 @@ enum items
 	glass,
 	tools,
 	bread,
-	cheese,
+	fuel,
 	metal,
 	electronics,
 	plants,
@@ -68,7 +68,8 @@ function create_struct()
 		scrap: false,
 		hp: 0,
 		energy: 0,
-		damage: 0
+		damage: 0,
+		kb: 1
 	}
 
 	return return_struct
@@ -129,10 +130,14 @@ function create_item(arg_name)
 	item.item_data.scrap = true
 	item.item_data.item_type = item_types.melee
 	item.item_data.description = "A versatile weapon for taking down the infected and chopping unwanted foliage."
+	item.item_data.damage = 8
+	item.item_data.kb = 0
 }
 
 {
 	var item = create_item("Syringe")
+
+	item.item_data.hp += 60
 }
 
 {
@@ -163,10 +168,13 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Bread")
+
+	item.item_data.item_type = item_types.consumable
+	item.item_data.energy = 35
 }
 
 {
-	var item = create_item("Cheese")
+	var item = create_item("Fuel")
 }
 
 {
@@ -195,6 +203,8 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Medical Kit")
+
+	item.item_data.hp += 85
 }
 
 {
@@ -203,6 +213,8 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Bandage")
+
+	item.item_data.hp += 35
 }
 
 {
@@ -232,6 +244,7 @@ function create_item(arg_name)
 
 	item.item_data.item_type = item_types.melee
 	item.item_data.damage = 4
+	item.item_data.kb = 3
 }
 
 {
@@ -239,6 +252,7 @@ function create_item(arg_name)
 
 	item.item_data.item_type = item_types.melee
 	item.item_data.damage = 5
+	item.item_data.kb = 1.5
 }	
 
 {

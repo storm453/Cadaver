@@ -222,6 +222,22 @@ function inv_move(arg_inv, arg_inv_data, arg_x, arg_y, arg_scale = 1)
 							}
 						}
 					}
+					else
+					{
+						//shift click! move item to player inv
+						for(var p = 0; p < o_PlayerInventory.inv_data.slots_y; p++)
+						{
+							for(var l = 0; l < o_PlayerInventory.inv_data.slots_x; l++)
+							{
+								if(o_PlayerInventory.inv[l,p] == 0)
+								{
+									//free slot!!!
+									array_set(o_PlayerInventory.inv[l], p, arg_inv[i,j])
+									array_set(arg_inv[i], j, 0)
+								}
+							}
+						}
+					}
 				}
 
 				//Right clicking to select an item for info

@@ -1,4 +1,4 @@
-if(open)
+if(o_PlayerUI.open_instance == id)
 {
 	ui_draw_window("Furnace", work_window_x, work_window_y, furn_width, furn_height)
 

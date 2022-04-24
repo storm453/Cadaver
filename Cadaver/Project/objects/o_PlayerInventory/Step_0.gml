@@ -32,23 +32,52 @@ for(var i = 0; i < inv_data.slots_x; i++)
 
             if(mouse_check_button_pressed(mb_left))
             {
-                if(global.current_gui != 0)
+                if(!keyboard_check(vk_shift))
                 {
-                    var old_hand = global.in_hand
-    
-                    global.in_hand = inv[i, j]
-                    array_set(inv[i], j, old_hand)
-
-                    if(global.in_hand != 0)
+                    if(global.current_gui != 0)
                     {
-                        if(inv[i,j] != 0)
+                        var old_hand = global.in_hand
+        
+                        global.in_hand = inv[i, j]
+                        array_set(inv[i], j, old_hand)
+
+                        if(global.in_hand != 0)
                         {
-                            if(inv[i,j].item == global.in_hand.item)
+                            if(inv[i,j] != 0)
                             {
-                                inv[i,j].amt += global.in_hand.amt
-                                global.in_hand = 0 
+                                if(inv[i,j].item == global.in_hand.item)
+                                {
+                                    inv[i,j].amt += global.in_hand.amt
+                                    global.in_hand = 0 
+                                }
                             }
                         }
+                    }
+                }
+                else
+                {
+                    //shift click
+                    if(o_PlayerUI.open_instance != noone)
+                    {
+                        //there is an object open
+                        for(var p = 0; p < o_PlayerUI.open_instance.block_data.shift_dat.slots_y; p++)
+						{
+							for(var l = 0; l < o_PlayerUI.open_instance.block_data.shift_dat.slots_x; l++)
+							{
+                                if(o_PlayerUI.open_instance.block_data.shift_inv[l,p] == 0)
+								{
+                                    //free slot!!!
+									array_set(o_PlayerUI.open_instance.block_data.shift_inv[l], p, inv[i,j])
+									array_set(inv[i], j, 0)
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        //shift clicking between player inventory goes here
+
+                        //....
                     }
                 }
             }

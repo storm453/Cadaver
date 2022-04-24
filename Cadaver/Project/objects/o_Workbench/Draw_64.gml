@@ -1,4 +1,4 @@
-if(open)
+if(o_PlayerUI.open_instance == id)
 {
 	#macro work_width 325
 	#macro work_height 200
@@ -34,12 +34,12 @@ if(open)
 			
 			if(inv[j,i] != 0)
 			{
-				draw_sprite_ext(s_Items, inv[j,i].item, work_panel.at_x + (pad_slot * i), work_panel.at_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1,)	
+				draw_sprite_ext(s_Items, inv[j,i].item, work_panel.at_x + (pad_slot * j), work_panel.at_y, inv_data.draw_scale, inv_data.draw_scale, 0, c_white, 1,)	
 				
 				draw_set_color(text_color)
-				ui_draw_string(work_panel.at_x + 3 + (pad_slot * i), work_panel.at_y + 1, inv[j,i].amt, ft_Default)
+				ui_draw_string(work_panel.at_x + 3 + (pad_slot * j), work_panel.at_y + 1, inv[j,i].amt, ft_Default)
 				draw_set_color(text_color)
-				draw_text(work_panel.at_y + 3 + (pad_slot * i), work_panel.at_y + 1, inv[j,i].amt)
+				draw_text(work_panel.at_x + 3 + (pad_slot * j), work_panel.at_y + 1, inv[j,i].amt)
 			}
 		}
 	}

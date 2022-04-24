@@ -10,7 +10,9 @@ var attack_distance = 12
 
 if(enemy_data.hp <= 0) 
 {
-	add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, items.infectedpiece, irandom(2))
+	if(chance(0.5)) add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, items.infectedpiece, irandom_range(1,3))
+	if(chance(0.8)) add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, items.cloth, irandom_range(1,2))
+	
 	instance_destroy()
 }
 
@@ -30,44 +32,97 @@ if(current_state == state.move)
 	
 	if(player_distance <= attack_distance) 
 	{
+		current_state = state.charging
+	}
+}
+
+if(current_state == state.charging)
+{
+	animation()
+	movement(0)
+
+	charged++
+
+	if(charged >= 60)
+	{
+		show_debug_message("attack!")
 		current_state = state.attack
-		attack_frame = 60
+
+		charged = 0
 	}
 }
 
 if(current_state == state.attack)
 {
 	animation()
-	
-	attack_frame--
-	
-	if(attack_frame <= 0) current_state = state.idle
+	movement()
+
+	attacked++
+
+	if(attacked >= attack_time) 
+	{
+		attacked = 0
+
+		current_state = state.idle
+	}
 
 	var rec_x = x + 10 * image_xscale
 	var rec_y = y - sprite_height
-	
+
 	var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, all, false, true)
 
 	if(attack_rec != -4)
 	{
 		if(attack_rec.object_index == o_Player)
 		{
-			var damage = 1
-
-			if(image_xscale != o_Player.image_xscale) 
+			if(!did_damage)
 			{
-				if(mouse_check_button(mb_right))
-				{
-					damage = 0
-				}
-			}
-			
-			if(damage) 
-			{
-				o_Player.hp -= 1
-				
-				
+				did_damage = 1
+	
+				o_EnemyControl.points += 250
+				o_Player.hp -= 10
 			}
 		}
 	}
-}	
+}
+else
+{
+	did_damage = 0
+}
+
+// if(current_state == state.attack)
+// {
+// 	animation()
+	
+// 	attack_frame--
+	
+// 	if(attack_frame <= 0) current_state = state.idle
+
+// 	var rec_x = x + 10 * image_xscale
+// 	var rec_y = y - sprite_height
+	
+// 	var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, all, false, true)
+
+// 	if(attack_rec != -4)
+// 	{
+// 		if(attack_rec.object_index == o_Player)
+// 		{
+// 			var damage = 1
+
+// 			if(image_xscale != o_Player.image_xscale) 
+// 			{
+// 				if(mouse_check_button(mb_right))
+// 				{
+// 					damage = 0
+// 				}
+// 			}
+			
+// 			if(damage) 
+// 			{
+// 				o_Player.hp -= 1
+				
+// 				o_EnemyControl.points += 10
+// 			}
+// 		}
+// 	}
+// }	

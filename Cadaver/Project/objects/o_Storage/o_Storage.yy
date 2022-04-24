@@ -8,8 +8,8 @@
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
-    "name": "o_Collision",
-    "path": "objects/o_Collision/o_Collision.yy",
+    "name": "o_Multiblock",
+    "path": "objects/o_Multiblock/o_Multiblock.yy",
   },
   "physicsObject": false,
   "physicsSensor": false,
