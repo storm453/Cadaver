@@ -18,7 +18,6 @@ sprites_array[state.idle] = s_Mutant
 sprites_array[state.move] = s_MutantRun
 sprites_array[state.charging] = s_MutantCharge
 sprites_array[state.attack] = s_MutantAttack
-
 charged = 0
 charge_time = 30
 
@@ -36,7 +35,7 @@ function movement(spd = 1)
 	
 	var near = instance_nearest_notme(all)
 	
-	if(near != -4)
+	if(near != noone)
 	{
 		var near_dis = distance_to_object(near)
 		

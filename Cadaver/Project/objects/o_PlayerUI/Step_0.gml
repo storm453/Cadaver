@@ -8,7 +8,7 @@ if(keyboard_check_pressed(vk_tab) or keyboard_check_pressed(vk_escape))
 		
 		crafting_level = crafting_lvls.ALL
 
-		open_instance = -4
+		open_instance = noone
 	}
 	
 	global.current_gui = to_gui
@@ -20,7 +20,7 @@ if(keyboard_check_pressed(ord("E")))
 {
 	if(global.current_gui == gui.NONE)
 	{
-		if(open_instance == -4)
+		if(open_instance == noone)
 		{
 			scan_distance = 0
 

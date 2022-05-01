@@ -1,11 +1,11 @@
 var left = instance_place(x - 16, y, all)
 var right = instance_place(x + 16, y, all)
 
-if(left != -4)
+if(left != noone)
 {
 	if(left.object_index == o_Pipe or o_Multiblock) left = true
 }
-if(right != -4)
+if(right != noone)
 {
 	if(right.object_index == o_Pipe or o_Multiblock) right = true	
 }

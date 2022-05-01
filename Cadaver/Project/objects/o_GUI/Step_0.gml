@@ -1,7 +1,9 @@
 //day_factor = 1
-day_factor = -sin(timer)
+day_factor = -cos(timer) * 0.5 + 0.5
 
-timer += (delta_time / 9000000) * global.time_speed
+show_debug_message(day_factor)
+
+timer += (delta_time / 10000000) * time_speed
 
 if(keyboard_check_pressed(vk_f1))
 {

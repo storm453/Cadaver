@@ -69,7 +69,8 @@ function create_struct()
 		hp: 0,
 		energy: 0,
 		damage: 0,
-		kb: 1
+		kb: 1,
+		sweep: 0
 	}
 
 	return return_struct
@@ -132,6 +133,7 @@ function create_item(arg_name)
 	item.item_data.description = "A versatile weapon for taking down the infected and chopping unwanted foliage."
 	item.item_data.damage = 8
 	item.item_data.kb = 0
+	item.item_data.sweep = 1
 }
 
 {
@@ -245,6 +247,7 @@ function create_item(arg_name)
 	item.item_data.item_type = item_types.melee
 	item.item_data.damage = 4
 	item.item_data.kb = 3
+	item.item_data.sweep = 1
 }
 
 {
@@ -253,6 +256,7 @@ function create_item(arg_name)
 	item.item_data.item_type = item_types.melee
 	item.item_data.damage = 5
 	item.item_data.kb = 1.5
+	item.item_data.sweep = 1
 }	
 
 {

@@ -5,7 +5,7 @@ alarm[0] = 20
 tiles = 16
 world = room_width / tiles
 
-open_instance = -4
+open_instance = noone
 
 for(var i = 0; i < world; i++)
 {

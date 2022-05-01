@@ -22,7 +22,7 @@ function movement(spd = 1)
 	
 	var near = instance_nearest_notme(all)
 	
-	if(near != -4)
+	if(near != noone)
 	{
 		var near_dis = distance_to_object(near)
 		

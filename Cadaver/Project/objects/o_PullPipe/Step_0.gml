@@ -7,7 +7,7 @@ var right = place_meeting(x + 16, y, o_Multiblock)
 var transfer = true
 
 if(ds_list_size(outputs) <= 0) transfer = false
-if(input == -4) transfer = false
+if(input == noone) transfer = false
 
 if(transfer)
 {

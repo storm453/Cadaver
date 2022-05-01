@@ -2,7 +2,7 @@ function check_adjacent(parent)
 {
 	var right = instance_place(x + 8, y, all)
 	
-	if(right != -4)
+	if(right != noone)
 	{
 		if(right.object_index == o_Pipe)
 		{
@@ -17,7 +17,7 @@ function check_adjacent(parent)
 
 function enemy_create(arg_hp = 10, arg_armor = 0, arg_knock_res = 0)
 {
-	return { hp: arg_hp, protection: 1 - (0.045 * arg_armor), knock_resistance: 1 - (0.05 * arg_knock_res), arg_knock_x : 0, arg_knock_y: 0 }	
+	return { hp: arg_hp, protection: 1 - (0.045 * arg_armor), knock_resistance: 1 - (0.05 * arg_knock_res), arg_knock_x : 0, arg_knock_y: 0, hit : 0 }	
 }
 
 function create_multiblock(arg_gui, arg_check_inv, arg_check_data, arg_shift_inv, arg_shift_data, arg_crafting_level = 0)
@@ -33,4 +33,13 @@ function spawn_enemy(radius, obj)
 	var ey = cos(random_angle) * radius + o_Player.y;	
 
 	instance_create_layer(ex, ey, "Instances", obj)
+}
+
+function create_light(arg_x, arg_y, range, color, brightness)
+{
+	instance_create_layer(arg_x, arg_y, "World", o_Light)
+	
+	o_Light.color = color
+	o_Light.range = range
+	o_Light.brightness = brightness
 }

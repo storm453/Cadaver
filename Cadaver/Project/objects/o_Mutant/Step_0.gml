@@ -1,5 +1,7 @@
 player_distance = distance_to_object(o_Player)
 
+enemy_data.hit--
+
 z = -bbox_bottom
 
 var move_dir = v2(0)
@@ -19,6 +21,7 @@ if(enemy_data.hp <= 0)
 if(current_state == state.idle)
 {
 	animation()
+	movement(0)
 	
 	if(player_distance < chase_distance) current_state = state.move
 }
@@ -71,7 +74,7 @@ if(current_state == state.attack)
 
 	var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, all, false, true)
 
-	if(attack_rec != -4)
+	if(attack_rec != noone)
 	{
 		if(attack_rec.object_index == o_Player)
 		{
@@ -81,6 +84,10 @@ if(current_state == state.attack)
 	
 				o_EnemyControl.points += 250
 				o_Player.hp -= 10
+				
+				o_Player.hurt_alpha = 1
+				
+				current_state = state.idle
 			}
 		}
 	}
@@ -89,40 +96,3 @@ else
 {
 	did_damage = 0
 }
-
-// if(current_state == state.attack)
-// {
-// 	animation()
-	
-// 	attack_frame--
-	
-// 	if(attack_frame <= 0) current_state = state.idle
-
-// 	var rec_x = x + 10 * image_xscale
-// 	var rec_y = y - sprite_height
-	
-// 	var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, all, false, true)
-
-// 	if(attack_rec != -4)
-// 	{
-// 		if(attack_rec.object_index == o_Player)
-// 		{
-// 			var damage = 1
-
-// 			if(image_xscale != o_Player.image_xscale) 
-// 			{
-// 				if(mouse_check_button(mb_right))
-// 				{
-// 					damage = 0
-// 				}
-// 			}
-			
-// 			if(damage) 
-// 			{
-// 				o_Player.hp -= 1
-				
-// 				o_EnemyControl.points += 10
-// 			}
-// 		}
-// 	}
-// }	

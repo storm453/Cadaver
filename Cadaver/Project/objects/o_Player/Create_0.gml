@@ -1,5 +1,7 @@
 ds_list_add(o_RenderManager.entities, self)
 
+hurt_alpha = 0
+
 z = 0
 
 list_movable = ds_list_create()
@@ -305,12 +307,15 @@ function render()
 			if(mouse_check_button_pressed(mb_left))
 			{
 				//@TEMP
-				o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1].amt--	
+				// o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1].amt--	
 			
-				if(o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1].amt <= 0)
-				{
-					o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1] = 0
-				}
+				// if(o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1].amt <= 0)
+				// {
+				// 	o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1] = 0
+				// }
+
+				var slots_y = o_PlayerInventory.inv_data.slots_y - 1
+				remove_item_slot(o_PlayerInventory.inv, o_PlayerInventory.inv_data, 1, global.hotbar_sel, slots_y)
 
 				instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", struct.building_obj)
 			}
