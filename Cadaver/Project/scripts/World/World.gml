@@ -20,9 +20,9 @@ function enemy_create(arg_hp = 10, arg_armor = 0, arg_knock_res = 0)
 	return { hp: arg_hp, protection: 1 - (0.045 * arg_armor), knock_resistance: 1 - (0.05 * arg_knock_res), arg_knock_x : 0, arg_knock_y: 0, hit : 0 }	
 }
 
-function create_multiblock(arg_gui, arg_check_inv, arg_check_data, arg_shift_inv, arg_shift_data, arg_crafting_level = 0)
+function create_multiblock(arg_gui, arg_check_inv = noone, arg_check_data = noone, arg_shift_inv = noone, arg_shift_data = noone, arg_crafting_level = 0, arg_elecin = 0, arg_elecout = 0, arg_e_output = 0)
 {
-	return { to_gui: arg_gui, check_inv: arg_check_inv, check_dat: arg_check_data, shift_inv: arg_shift_inv, shift_dat: arg_shift_data, crafting_level: arg_crafting_level }
+	return { to_gui: arg_gui, energy: 0, e_output: arg_e_output, elecin: array_create(arg_elecin, noone), elecout: array_create(arg_elecout, noone), check_inv: arg_check_inv, check_dat: arg_check_data, shift_inv: arg_shift_inv, shift_dat: arg_shift_data, crafting_level: arg_crafting_level }
 }
 
 function spawn_enemy(radius, obj)

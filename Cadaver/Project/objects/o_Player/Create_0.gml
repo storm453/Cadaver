@@ -1,5 +1,7 @@
 ds_list_add(o_RenderManager.entities, self)
 
+global.linking = noone
+
 hurt_alpha = 0
 
 z = 0
@@ -10,6 +12,8 @@ ds_list_add(list_movable, gui.INVENTORY)
 ds_list_add(list_movable, gui.PROFILE)
 ds_list_add(list_movable, gui.JOURNAL)
 ds_list_add(list_movable, gui.LOOT)
+ds_list_add(list_movable, gui.BASE)
+ds_list_add(list_movable, gui.SELECTBLUE)
 
 spawn_x = x
 spawn_y = y
@@ -189,6 +193,20 @@ function render()
 {
 	draw_self()
   
+	//wiring
+	if(global.current_gui == gui.WIRE)
+	{
+		if(global.linking != noone)
+		{
+			draw_set_color(c_aqua)
+			gpu_set_blendmode(bm_add)
+		
+			draw_line(global.linking.x + 8, global.linking.y + 4, mouse_x, mouse_y)	
+		
+			gpu_set_blendmode(bm_normal)
+		}
+	}
+  
 	anim += 0.2
 
 	var tile_size = 16
@@ -241,7 +259,7 @@ function render()
 			if(attack)
 			{
 				//@TEMP
-				if(global.current_gui != gui.BLUEPRINT)
+				if(global.current_gui != gui.BLUEPRINT && global.current_gui != gui.WIRE)
 				{
 					gave_item = false
 					dealt_damage = false

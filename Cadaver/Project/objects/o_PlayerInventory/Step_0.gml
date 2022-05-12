@@ -59,19 +59,22 @@ for(var i = 0; i < inv_data.slots_x; i++)
                     //shift click
                     if(o_PlayerUI.open_instance != noone)
                     {
-                        //there is an object open
-                        for(var p = 0; p < o_PlayerUI.open_instance.block_data.shift_dat.slots_y; p++)
+						if(o_PlayerUI.open_instance.block_data.check_inv != noone)
 						{
-							for(var l = 0; l < o_PlayerUI.open_instance.block_data.shift_dat.slots_x; l++)
+	                        //there is an object open
+	                        for(var p = 0; p < o_PlayerUI.open_instance.block_data.shift_dat.slots_y; p++)
 							{
-                                if(o_PlayerUI.open_instance.block_data.shift_inv[l,p] == 0)
+								for(var l = 0; l < o_PlayerUI.open_instance.block_data.shift_dat.slots_x; l++)
 								{
-                                    //free slot!!!
-									array_set(o_PlayerUI.open_instance.block_data.shift_inv[l], p, inv[i,j])
-									array_set(inv[i], j, 0)
-                                }
-                            }
-                        }
+	                                if(o_PlayerUI.open_instance.block_data.shift_inv[l,p] == 0)
+									{
+	                                    //free slot!!!
+										array_set(o_PlayerUI.open_instance.block_data.shift_inv[l], p, inv[i,j])
+										array_set(inv[i], j, 0)
+	                                }
+	                            }
+							}
+						}
                     }
                     else
                     {

@@ -1,5 +1,3 @@
-map = array_create();
-
 alarm[0] = 20
 
 tiles = 16
@@ -33,7 +31,10 @@ enum gui
 	PROFILE,
 	JOURNAL,
 	LOOT,
-	BLUEPRINT
+	BLUEPRINT,
+	BASE,
+	SELECTBLUE,
+	WIRE
 }
 
 global.current_gui = gui.NONE
@@ -172,24 +173,6 @@ ds_list_add(info_list,
 	name : "Movement", 
 	description : "Use the [W] [A] [S] [D] keys to move your character. Try walking around."
 	})
-	
-// ds_list_add(info_list, 
-// 	{ 
-// 	name : "Sherwin Salemi", 
-// 	description : "He is very violent, be careful when approaching him, his main weapon is a Fender HSS Stratocaster Special Edition."
-// 	})
-	
-// ds_list_add(info_list, 
-// 	{ 
-// 	name : "Logan Brown", 
-// 	description : "REEEEEEE, Logan was never seen again"
-// 	})
-
-// ds_list_add(info_list, 
-// 	{ 
-// 	name : "Adam Mathe",
-// 	description : "A self proclaimed monotone speaker. Always watching for when you become online, and doesn't take no for an answer when it comes to anything you don't want him to do."
-// 	})
 
 selected_tab = "CRAFTING"
 
@@ -201,3 +184,18 @@ selected_tab = "CRAFTING"
 #macro tab_color 0x171717
 #macro text_color c_ltgray
 #macro sprite_color c_ltgray
+
+building_grid = 0
+
+blueprint_obj = noone
+
+for(var i = 0; i < 8; i++)
+{
+	for(var j = 0; j < 5; j++)
+	{
+		building_grid[i,j] = 0
+	}
+}
+
+building_grid[0,0] = { spr: s_BasicQuarry, obj: o_BasicQuarry }
+building_grid[1,0] = { spr: s_PipeIcon, obj: o_Pipe }

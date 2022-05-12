@@ -4,7 +4,14 @@ if(keyboard_check_pressed(vk_tab) or keyboard_check_pressed(vk_escape))
 	
 	if(global.current_gui != 0)
 	{
-		to_gui = gui.NONE
+		if(global.current_gui == gui.BLUEPRINT)
+		{
+			to_gui = gui.SELECTBLUE
+		}
+		else
+		{
+			to_gui = gui.NONE
+		}
 		
 		crafting_level = crafting_lvls.ALL
 
@@ -39,11 +46,3 @@ if(keyboard_check_pressed(ord("E")))
 		}
 	}
 }
-
-if(keyboard_check_pressed(ord("B")))
-{
-	//buil;d!
-	global.current_gui = gui.BLUEPRINT
-}
-
-//o_Player.hp--

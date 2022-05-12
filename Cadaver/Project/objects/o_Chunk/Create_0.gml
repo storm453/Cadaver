@@ -30,30 +30,4 @@ function init_chunk(loc_x, loc_y)
 	idy = loc_y
 	
 	random_set_seed(rand(idx, idy) * 10000 + o_WorldGen.seed)
-
-	for(var i = 0; i < 5; i++)
-	{
-		create_obj_chunk(o_Plants1, random_range(x, x + chunk_size), random_range(y, y + chunk_size))
-	}
-
-	for(var i = 0; i < 3; i++)
-	{
-		if (random(1) > 0.8) 
-		{
-			create_obj_chunk(o_Tree1, random_range(x, x + chunk_size), random_range(y, y + chunk_size))
-		}
-	}
-	
-	for(var i = 0; i < 2; i++)
-	{
-		if(random(1) > 0.6)
-		{
-			create_obj_chunk(o_Rock1, random_range(x, x + chunk_size), random_range(y, y + chunk_size))	
-		}
-	}
-	
-	if(random(1) > 0.4)
-	{
-		create_obj_chunk(o_Tree2, random_range(x, x + chunk_size), random_range(y, y + chunk_size))
-	}
 }

@@ -1,6 +1,9 @@
 player_distance = distance_to_object(o_Player)
 
-enemy_data.hit--
+if(o_Player.state != player_state.attack)
+{
+	enemy_data.hit = 0
+}
 
 z = -bbox_bottom
 

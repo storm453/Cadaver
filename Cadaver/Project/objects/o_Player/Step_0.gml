@@ -173,7 +173,7 @@ if(state == player_state.attack)
 						{
 							if(check_dealt) dealt_damage = 1
 							
-							attack_list[|i].enemy_data.hit = 120
+							attack_list[|i].enemy_data.hit = 1
 
 							var damage = global.items_list[items.air].item_data.damage
 							var kb = global.items_list[items.air].item_data.kb

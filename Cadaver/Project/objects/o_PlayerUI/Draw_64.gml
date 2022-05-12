@@ -672,7 +672,45 @@ if(global.current_gui == gui.PROFILE)
 	ui_draw_window("Profile", start_x, start_y, profile_width, profile_height)
 }
 
-if(global.current_gui == gui.JOURNAL)
+if(global.current_gui == gui.SELECTBLUE)
 {
-	
+	var start_x = display_get_gui_width() / 2
+	var start_y = display_get_gui_height() / 2
+
+	var rec_scale = 100
+
+	var rec_amt_x = 8
+	var rec_amt_y = 5
+
+	var rec_pad = 25
+
+	var boxes_width = (rec_scale * rec_amt_x) + ((rec_amt_x - 1) * rec_pad)
+	var boxes_height = (rec_scale * rec_amt_y) + ((rec_amt_y - 1) * rec_pad)
+
+	start_x -= boxes_width / 2
+	start_y -= boxes_height / 2
+
+	ui_draw_window("Blueprints", start_x - 25, start_y - 25, boxes_width + 50, boxes_height + 50)
+
+	for(var i = 0; i < rec_amt_x; i++)
+	{
+		for(var j = 0; j < rec_amt_y; j++)
+		{
+			if(building_grid[i,j] != 0)
+			{
+				var sprite_scale = 2.5 * (32 / sprite_get_width(building_grid[i,j].spr))
+
+				var blueprint_button = ui_draw_button_sprite(building_grid[i,j].spr, 0, start_x + (i * (rec_scale + rec_pad)), start_y + (j * (rec_scale + rec_pad)), rec_scale, rec_scale, button_color, button_h_color, c_white, sprite_scale, false)
+				if(blueprint_button[0])
+				{
+					global.current_gui = gui.BLUEPRINT
+					blueprint_obj = building_grid[i,j].obj
+				}
+			}
+			else
+			{
+				ui_draw_rectangle(start_x + (i * (rec_scale + rec_pad)), start_y + (j * (rec_scale + rec_pad)), rec_scale, rec_scale, button_color, 1, false)
+			}
+		}
+	}
 }
