@@ -1,5 +1,8 @@
 {
-  "spriteId": null,
+  "spriteId": {
+    "name": "s_Plants2",
+    "path": "sprites/s_Plants2/s_Plants2.yy",
+  },
   "solid": false,
   "visible": true,
   "spriteMaskId": null,

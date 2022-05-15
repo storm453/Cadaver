@@ -1,3 +1,4 @@
+//@Declare(o_Player)
 ds_list_add(o_RenderManager.entities, self)
 
 global.linking = noone
@@ -18,15 +19,19 @@ ds_list_add(list_movable, gui.SELECTBLUE)
 spawn_x = x
 spawn_y = y
 
-hp = 100;
-energy = 100;
+//@Field(spawn_x, float)
+//@Field(spawn_y, float)
 
-energy_time = 60
+//@Field(x, float)
+//@Field(y, float)
 
-//energy timer
-alarm[0] = energy_time
+hp = 100; //@Field(hp, float)
+energy = 100; //@Field(energy, float)
 
-walk_speed = 100 
+energy_time = 0
+heal_duration = 0
+
+walk_speed = 50 
 acceleration = 50
 
 velocity = vec2(0, 0);
@@ -37,6 +42,7 @@ enum player_state
 {
 	idle,
 	run,
+	walk,
 	attack,
 	dead
 }
@@ -128,11 +134,12 @@ function input()
 }
 
 sprites_array[player_state.idle] = s_Player
+sprites_array[player_state.walk] = s_PlayerWalk
 sprites_array[player_state.run] = s_PlayerRun
 sprites_array[player_state.attack] = s_PlayerAttack
 sprites_array[player_state.dead] = s_PlayerDead
 
-function movement() 
+function movement(spd = 1) 
 {
 	var move_speed = walk_speed
 	var target_velocity = vec_mul(vec_normalized(vec2(in_x, in_y)), vec2(move_speed))
@@ -147,12 +154,12 @@ function movement()
 	// move the player
 	if(!place_meeting(x + velocity.x * get_delta_time(), y, o_Collision))
 	{
-		x += velocity.x * get_delta_time()
+		x += velocity.x * get_delta_time() * spd
 	}
 	
 	if(!place_meeting(x, y + velocity.y * get_delta_time(), o_Collision))
 	{
-		y += velocity.y * get_delta_time()	
+		y += velocity.y * get_delta_time() * spd	
 	}
 }
 

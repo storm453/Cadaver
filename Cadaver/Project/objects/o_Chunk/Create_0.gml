@@ -7,7 +7,7 @@ objects = ds_list_create()
 
 function render()
 {
-	ui_draw_rectangle(x, y, chunk_size, chunk_size, 0x547D5B, 1, false)
+	bfSubmit(buffer)
 }
 
 function render_shadow()
@@ -30,4 +30,22 @@ function init_chunk(loc_x, loc_y)
 	idy = loc_y
 	
 	random_set_seed(rand(idx, idy) * 10000 + o_WorldGen.seed)
+	
+	buffer = bfCreate()
+
+	repeat(irandom_range(50, 150))
+	{
+		var random_y = floor(idy * chunk_size + random(chunk_size))
+		
+		bfDraw(buffer, floor(idx * chunk_size + random(chunk_size)), random_y, 32, 32, (-random_y) / 1000, s_GrassTest, irandom(2), c_white, 1)
+	}
+	
+	bfFinish(buffer)
+	
+	if(random(0.6))
+	{
+		var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", o_Barrel)	
+	
+		ds_list_add(objects, obj)
+	}
 }

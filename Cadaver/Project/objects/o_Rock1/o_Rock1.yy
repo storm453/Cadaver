@@ -1,7 +1,7 @@
 {
   "spriteId": {
-    "name": "s_Rock1",
-    "path": "sprites/s_Rock1/s_Rock1.yy",
+    "name": "s_Rock2",
+    "path": "sprites/s_Rock2/s_Rock2.yy",
   },
   "solid": false,
   "visible": true,

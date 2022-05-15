@@ -49,4 +49,10 @@ switch(level)
 	break;
 }
 
+if(o_GUI.day_factor == 1.00)
+{
+	//spawn enemies at night
+	repeat(3) spawn_enemy(175, o_Mutant)
+}
+
 spawn_timer++

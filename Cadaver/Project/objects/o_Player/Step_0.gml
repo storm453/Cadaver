@@ -1,6 +1,31 @@
 z = -bbox_bottom
 
+energy_time++
+
 hurt_alpha -= 0.05
+
+//healing test
+if(hp < 75)
+{
+	if(energy_time mod 600 == 0)
+	{
+		heal_duration = 120
+	}
+}
+
+if(heal_duration >= 0)
+{
+	heal_duration--
+	
+	if(hp < 100)
+	{
+		if(energy > 65)
+		{
+			hp += 0.05
+			energy -= 0.07
+		}
+	}
+}
 
 //check list movable if player should be able to move in this gui state
 var move = true
@@ -53,12 +78,28 @@ if(state = player_state.idle)
 	
 	if(vec_length(velocity) > walk_speed / 2) 
 	{
-		state = player_state.run
+		if(energy >= 33)
+		{
+			if(!shift)
+			{
+				state = player_state.walk
+			}
+			else
+			{
+				state = player_state.run	
+			}
+		}
+		else
+		{
+			state = player_state.walk	
+		}
 	}
 }
 
-if(state == player_state.run)
+if(state == player_state.walk)
 {
+	if(energy_time mod 100 == 0) energy -= 0.2
+	
 	input()
 	movement()
 	player_animation()
@@ -67,6 +108,26 @@ if(state == player_state.run)
 	{
 		state = player_state.idle
 	}
+	
+	if(shift) state = player_state.run
+}
+
+if(state == player_state.run)
+{
+	if(energy_time mod 50 == 0) energy -= 0.5
+	
+	input()
+	movement(2)
+	player_animation()
+	
+	if(vec_length(velocity) < walk_speed / 2) 
+	{
+		state = player_state.idle
+	}
+	
+	if(!shift) state = player_state.walk
+	
+	if(energy <= 33) state = player_state.walk
 }
 
 if(state == player_state.attack)

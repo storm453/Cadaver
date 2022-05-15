@@ -1,10 +1,6 @@
 inv_data = create_inv_data(10, 5, 3)
 inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
 
-add_item(inv, inv_data, items.stonehatchet, 1)
-add_item(inv, inv_data, items.pickaxe, 1)
-add_item(inv, inv_data, items.basicknife, 1)
-
 held = 0
 cooldown = 0
 
