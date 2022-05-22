@@ -3,6 +3,7 @@
   "glyphOperations": 0,
   "interpreter": 0,
   "pointRounding": 1,
+  "applyKerning": 0,
   "fontName": "Arial",
   "styleName": "Regular",
   "size": 32.0,
@@ -20,6 +21,7 @@
     "path": "texturegroups/Default",
   },
   "ascenderOffset": 0,
+  "ascender": 0,
   "glyphs": {
     "32": {"x":2,"y":2,"w":12,"h":49,"character":32,"shift":12,"offset":0,},
     "33": {"x":449,"y":104,"w":6,"h":49,"character":33,"shift":12,"offset":3,},

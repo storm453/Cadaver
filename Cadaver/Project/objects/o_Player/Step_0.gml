@@ -1,29 +1,56 @@
 z = -bbox_bottom
 
-energy_time++
+rotation = lerp(rotation, 90, 0.1)
 
-hurt_alpha -= 0.05
-
-//healing test
-if(hp < 75)
+//all logic involving attacking and item types for hotbar item
+if(global.hotbar_sel_item != 0)
 {
-	if(energy_time mod 600 == 0)
-	{
-		heal_duration = 120
-	}
-}
+	var hotbar_item_data = global.items_list[global.hotbar_sel_item.item].item_data
 
-if(heal_duration >= 0)
-{
-	heal_duration--
-	
-	if(hp < 100)
+	if(hotbar_item_data.item_type == item_types.melee)
 	{
-		if(energy > 65)
+		if(attack_cooldown <= 0)
 		{
-			hp += 0.05
-			energy -= 0.07
+			if(attack)
+			{
+				gave_item = false
+				dealt_damage = false
+				attack_cooldown = attack_cooldown_set
+
+				rotation = -90
+
+				instance_create_layer(x, y,  "Instances", o_Swing)
+
+				image_index = 0
+
+				state = player_state.attack
+			}
 		}
+	}
+
+	if(hotbar_item_data.item_type == item_types.tool)
+	{
+		var selected = instance_position(mouse_x, mouse_y, o_Harvestable)
+
+		if(selected != -4) 
+		{
+			if(mouse_check_button_pressed(mb_left))
+			{
+				rotation = -90
+
+				var sel_x = selected.x + (sprite_get_width(selected.sprite_index) / 4)
+				var sel_y = selected.y + (sprite_get_height(selected.sprite_index) / 2)
+
+				selected.hp--
+
+				if(selected.hp <= 0)
+				{
+					instance_destroy(selected)
+
+					repeat(irandom(8)) create_drop(sel_x, sel_y, choose(items.wood, items.plants, items.stone), 5)
+				}
+			}
+		}	
 	}
 }
 
@@ -145,13 +172,6 @@ if(state == player_state.attack)
 	rec_y = y - sprite_height
 
 	var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, o_WorldParent, false, true)
-	
-	//var attack_list = ds_list_create()
-	
-	//var attack_rec = collision_rectangle_list(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, o_WorldParent, false, true, attack_list, true)
-
-	//ui_draw_rectangle(rec_x, rec_y, attack_range * image_xscale, attack_range, c_red, 0.1, false)
-	//draw_rectangle(rec_x, rec_y, rec_x + (attack_range * image_xscale), rec_y + attack_range, false)
 
 	for(var i = 0; i < array_length_1d(resource_drops); i++)
 	{

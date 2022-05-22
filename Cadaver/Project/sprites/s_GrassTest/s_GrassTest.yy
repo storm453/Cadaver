@@ -77,8 +77,8 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Sprites",
-    "path": "folders/Sprites.yy",
+    "name": "World",
+    "path": "folders/Sprites/World.yy",
   },
   "resourceVersion": "1.0",
   "name": "s_GrassTest",

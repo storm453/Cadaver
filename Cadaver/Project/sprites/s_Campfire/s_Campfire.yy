@@ -139,8 +139,8 @@
   ],
   "nineSlice": null,
   "parent": {
-    "name": "Sprites",
-    "path": "folders/Sprites.yy",
+    "name": "Buildings",
+    "path": "folders/Sprites/Buildings.yy",
   },
   "resourceVersion": "1.0",
   "name": "s_Campfire",

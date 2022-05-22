@@ -1,5 +1,7 @@
 var divider = window_get_height()/128;
 
+if(instance_exists(o_Player)) target = o_Player
+
 x_size = window_get_width()/divider;
 y_size = window_get_height()/divider;
 
@@ -7,7 +9,6 @@ last_x = x;
 last_y = y;
 
 var camera = view_camera[0];
-
 
 zoom += (target_zoom - zoom);
 

@@ -31,8 +31,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy",
+    "name": "Buildings",
+    "path": "folders/Objects/Buildings.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_Storage",

@@ -1,3 +1,5 @@
+//@Declare(o_RenderManager)
+//@Global(0)
 function render_game()
 {
 	// sort depths:

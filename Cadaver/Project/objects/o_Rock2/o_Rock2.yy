@@ -8,8 +8,8 @@
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
-    "name": "o_Collision",
-    "path": "objects/o_Collision/o_Collision.yy",
+    "name": "o_Harvestable",
+    "path": "objects/o_Harvestable/o_Harvestable.yy",
   },
   "physicsObject": false,
   "physicsSensor": false,
@@ -27,8 +27,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Objects",
-    "path": "folders/Objects.yy",
+    "name": "World",
+    "path": "folders/Objects/World.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_Rock2",

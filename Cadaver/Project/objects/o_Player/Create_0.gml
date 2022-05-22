@@ -1,7 +1,14 @@
 //@Declare(o_Player)
 ds_list_add(o_RenderManager.entities, self)
 
+x = random_range(-1000, 1000)
+y = random_range(-1000, 1000)
+
+instance_create_layer(x, y, "Meta", o_Camera)
+
 global.linking = noone
+
+test_x = 0
 
 hurt_alpha = 0
 
@@ -50,6 +57,8 @@ enum player_state
 attack_cooldown_set = 60
 attack_cooldown = 0
 
+attack = 0
+
 attack_range = 25
 gave_item = false
 dealt_damage = false
@@ -94,28 +103,6 @@ resource_drops[2] =
 	)
 }
 
-// Bush
-// resource_drops[2] =
-// {
-// 	object: o_Plants1,
-// 	drops : array
-// 	(
-// 		{ uid : 17, amt_min : 1, amt_max : 3, chnce : 1 },
-// 		{ uid : 31, amt_min : 1, amt_max : 1, chnce : 0.1 }
-// 	)
-// }
-
-// //Bush
-// resource_drops[3] =
-// {
-// 	object: o_Plants2,
-// 	drops : array
-// 	(
-// 		{ uid : 34, amt_min : 1, amt_max : 3, chnce : 0.5 },
-// 		{ uid : 36, amt_min : 2, amt_max : 7, chnce : 1 }
-// 	)
-// }
-
 enemies_list = ds_list_create()
 
 ds_list_add(enemies_list, o_Mutant)
@@ -132,6 +119,8 @@ function input()
 	shift = keyboard_check(vk_shift);	
 	attack = mouse_check_button(mb_left)
 }
+
+rotation = 0
 
 sprites_array[player_state.idle] = s_Player
 sprites_array[player_state.walk] = s_PlayerWalk
@@ -199,157 +188,35 @@ function render_shadow()
 function render()
 {
 	draw_self()
-  
-	//wiring
-	if(global.current_gui == gui.WIRE)
-	{
-		if(global.linking != noone)
-		{
-			draw_set_color(c_aqua)
-			gpu_set_blendmode(bm_add)
-		
-			draw_line(global.linking.x + 8, global.linking.y + 4, mouse_x, mouse_y)	
-		
-			gpu_set_blendmode(bm_normal)
-		}
-	}
-  
-	anim += 0.2
 
-	var tile_size = 16
-
-	var item_draw_scale = 0.5
-	var distance = 1
-
-	var draw_x = x + (distance) * image_xscale
-	var draw_y = y - sprite_height / 2
-
-	var melee = false
-	var ranged = false
-	var buildable = false
-	var consumable = false
-
-	if(global.hotbar_sel_item == 0)
-	{
-		melee = true	
-	}
-
+	//drawing items on player or anytihng else.
 	if(global.hotbar_sel_item != 0)
 	{
-		var struct = variable_struct_get(global.items_list[global.hotbar_sel_item.item], "item_data")
+		var hotbar_item_data = global.items_list[global.hotbar_sel_item.item].item_data
 
-		if(struct.item_type == item_types.consumable)
-		{
-			consumable = true
-		}
+		var item_draw_scale = 1
+		var distance = 1
 
-		if(struct.item_type == item_types.melee)
-		{
-			melee = true
-		}
-	
-		if(struct.item_type == item_types.building)
-		{
-			buildable = true		
-		}
-		
-		if(struct.item_type == item_types.ranged)
-		{
-			ranged = true	
-		}
-	}	
+		var draw_x = x + (distance) * image_xscale
+		var draw_y = y - sprite_height / 2 + 2
 
-	if(melee)
-	{
-		if(attack_cooldown <= 0)
+		if(hotbar_item_data.item_type == item_types.melee)
 		{
-			if(attack)
+			draw_sprite_ext(s_Test2, 0, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, rotation * image_xscale, c_white, 1)
+		}
+		if(hotbar_item_data.item_type = item_types.tool)
+		{
+			var selected = instance_position(mouse_x, mouse_y, o_Harvestable)
+
+			draw_sprite_ext(s_Test, 0, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, rotation * image_xscale, c_white, 1)
+
+			if(selected != noone)
 			{
-				//@TEMP
-				if(global.current_gui != gui.BLUEPRINT && global.current_gui != gui.WIRE)
+				with(selected)
 				{
-					gave_item = false
-					dealt_damage = false
-					attack_cooldown = attack_cooldown_set
-
-					instance_create_layer(x, y,  "Instances", o_Swing)
-
-					image_index = 0
-
-					state = player_state.attack
-				}	
-			}
-		}
-	}	
-
-	if(consumable)
-	{
-		draw_sprite_ext(s_Items, global.items_list[global.hotbar_sel_item.item].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, 0, c_white, 1)
-
-		if(mouse_check_button_pressed(mb_left))
-		{
-			attack_cooldown = 60
-
-			var slot_y = o_PlayerInventory.inv_data.slots_y - 1
-
-			o_Player.hp += global.items_list[global.hotbar_sel_item.item].item_data.hp
-			o_Player.energy += global.items_list[global.hotbar_sel_item.item].item_data.energy
-
-			remove_item_slot(o_PlayerInventory.inv, o_PlayerInventory.inv_data, 1, global.hotbar_sel, slot_y)
-		}
-	}
-
-	if(buildable)
-	{
-		var mouse_tile_x = floor(mouse_x / tile_size) * tile_size
-		var mouse_tile_y = floor(mouse_y / tile_size) * tile_size
-	
-		if(global.in_hand == 0)
-		{
-			var free = 1
-			var preview_col = c_lime
-			
-			var check = -tile_size
-			
-			repeat(3)
-			{
-				check += tile_size
-				
-				if(place_meeting(mouse_tile_x + check, mouse_tile_y + check, all))
-				{
-					free = 0
-					preview_col = c_red
-				}
-				if(place_meeting(mouse_tile_x - check, mouse_tile_y - check, all))
-				{
-					free = 0
-					preview_col = c_red
+					draw_sprite_ext(test, 0, x, y, sprite_width / 16, sprite_height / 16, 0, c_white, 0.5)
 				}
 			}
-			
-			draw_sprite_ext(s_Tile, 0, mouse_tile_x, mouse_tile_y, 1, 1, 0, preview_col, 1)
-				
-			if(mouse_check_button_pressed(mb_left))
-			{
-				//@TEMP
-				// o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1].amt--	
-			
-				// if(o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1].amt <= 0)
-				// {
-				// 	o_PlayerInventory.inv[global.hotbar_sel, o_PlayerInventory.inv_data.slots_y - 1] = 0
-				// }
-
-				var slots_y = o_PlayerInventory.inv_data.slots_y - 1
-				remove_item_slot(o_PlayerInventory.inv, o_PlayerInventory.inv_data, 1, global.hotbar_sel, slots_y)
-
-				instance_create_layer(mouse_tile_x, mouse_tile_y, "Instances", struct.building_obj)
-			}
 		}
-		
-	}
-
-	if(ranged)
-	{
-		//draw_sprite_ext(s_Items, o_InventoryBase.global.items_list[global.hotbar_sel_item[0]].spr_index, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, point_direction(x, y,  mouse_x, mouse_y), c_white, 1)	
 	}
 }

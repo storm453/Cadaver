@@ -15,6 +15,13 @@ function check_adjacent(parent)
 	}
 }
 
+function create_drop(xx, yy, item, amt)
+{
+	var drop = instance_create_layer(xx, yy, "Instances", o_ItemDropped)
+	
+	drop.data = { item: item, amt: amt }
+}
+
 function enemy_create(arg_hp = 10, arg_armor = 0, arg_knock_res = 0)
 {
 	return { hp: arg_hp, protection: 1 - (0.045 * arg_armor), knock_resistance: 1 - (0.05 * arg_knock_res), arg_knock_x : 0, arg_knock_y: 0, hit : 0 }	

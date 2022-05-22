@@ -1,6 +1,6 @@
 function create_inv_data(arg_slots_x, arg_slots_y, arg_draw_scale)
 {
-	return { slots_x: arg_slots_x, slots_y: arg_slots_y, slot_space: arg_draw_scale * global.slot_size, draw_scale: arg_draw_scale }
+	return { slots_x: arg_slots_x, slots_y: arg_slots_y, slot_space: arg_draw_scale * slot_size, draw_scale: arg_draw_scale }
 }
 
 function create_inventory(slots_x, slots_y)
@@ -16,6 +16,112 @@ function create_inventory(slots_x, slots_y)
 	}
 	
 	return inv;
+}
+
+function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size)
+{
+	var mx = device_mouse_x_to_gui(0)
+	var my = device_mouse_y_to_gui(0)
+	
+	for(var i = 0; i < arg_inv_data.slots_x; i++)
+	{
+		for(var j = 0; j < arg_inv_data.slots_y; j++)
+		{
+			var rec_x = inv_x + (i * (slot_size * inv_scale + slot_gap))
+			var rec_y = inv_y + (j * (slot_size * inv_scale + slot_gap))
+
+			if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
+			{
+				if(mouse_check_button(mb_left))
+				{
+					held++
+					
+					if(arg_inv[i,j] != 0)
+					{
+						if(held == 25)
+						{
+							global.in_hand = { item: arg_inv[i,j].item, amt: arg_inv[i,j].amt }	
+							
+							drag_slot.xx = i
+							drag_slot.yy = j
+							
+							array_set(arg_inv[i], j, 0)
+						}
+					}
+				}
+				else
+				{
+					if(held > 25) 
+					{
+						held = 0	
+						
+						if(arg_inv[i,j] == 0)
+						{
+							array_set(arg_inv[i], j, global.in_hand)
+					
+							global.in_hand = 0
+						}
+						else
+						{
+							var backup = arg_inv[i,j]
+							
+							array_set(arg_inv[i], j, global.in_hand)
+							array_set(arg_inv[drag_slot.xx], drag_slot.yy, backup)
+							
+							global.in_hand = 0
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+function draw_inventory(arg_inv, arg_inv_data, arg_x, arg_y, c, slot_a, item_a, inv_check = true, draw_check = true)
+{
+	var mx = device_mouse_x_to_gui(0)
+	var my = device_mouse_y_to_gui(0)
+
+	for(var i = 0; i < arg_inv_data.slots_x; i++)
+	{
+		for(var j = 0; j < arg_inv_data.slots_y; j++)
+		{
+			if(draw_check)
+			{
+				var color = c
+
+				var rec_x = inv_x + (i * (slot_size * inv_scale + slot_gap))
+				var rec_y = inv_y + (j * (slot_size * inv_scale + slot_gap))
+
+				if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
+				{
+					color = c_ltgray
+				}
+
+				ui_draw_rectangle(arg_x + (i * (slot_size * inv_scale + slot_gap)), arg_y + (j * (slot_size * inv_scale + slot_gap)), slot_size * inv_scale, slot_size * inv_scale, color, slot_a, false)
+			
+				if(arg_inv[i,j] != 0)
+				{
+					var item = arg_inv[i,j]
+					var item_offset = ((slot_size * inv_scale) - (16 * inv_scale)) / 2
+
+					draw_sprite_ext(s_Items, item.item, arg_x + (i * (slot_size * inv_scale + slot_gap)) + item_offset, arg_y + (j * (slot_size * inv_scale + slot_gap)) + item_offset, inv_scale, inv_scale, 0, c_white, item_a)
+				
+					var amt_width = string_width(string(item.amt))
+					draw_set_alpha(item_a)
+					draw_set_color(c_black)
+					ui_draw_string(arg_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, arg_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
+					draw_set_color(c_white)
+					ui_draw_string(arg_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, arg_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
+				}
+			}
+
+			if(inv_check) 
+			{
+				inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, slot_gap)
+			}
+		}
+	}
 }
 
 function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)

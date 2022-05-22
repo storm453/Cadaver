@@ -20,9 +20,12 @@ function load_a_o_Player( input_buffer ) {
 }
 
 function load_crap( which_room, input_buffer ) {
+	room_instance_add( which_room, 0, 0, o_RenderManager );
+	room_instance_add( which_room, 0, 0, o_Camera );
 	var actor_count = buffer_read( input_buffer , buffer_u32 );
 	for(var idx = 0; idx < actor_count; ++idx) {
 		var actor_type = buffer_read( input_buffer , buffer_string );
+		show_debug_message(actor_type)
 		if (actor_type == "o_Player") {
 			var actor = load_a_o_Player( input_buffer );
 			var _x = 0, _y = 0;

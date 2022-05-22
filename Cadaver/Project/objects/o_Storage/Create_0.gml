@@ -6,8 +6,8 @@ inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
 
 block_data = create_multiblock(gui.LOOT, inv, inv_data, inv, inv_data)
 
-loot_width = inv_data.slots_x * global.slot_size * inv_data.draw_scale
-loot_height = inv_data.slots_y * global.slot_size * inv_data.draw_scale
+loot_width = inv_data.slots_x * slot_size * inv_data.draw_scale
+loot_height = inv_data.slots_y * slot_size * inv_data.draw_scale
 var inv_title_height = string_height_font("Title", ft_Title) + pad * 2
 
 inv_x = display_get_gui_width() / 2 - loot_width / 2

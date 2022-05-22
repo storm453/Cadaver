@@ -25,8 +25,6 @@ const traverse = function(dir, result = []) {
 };
 
 
-
-
 function parse_save_load_metadata(src)
 {
 	let actor_type = null;
@@ -62,9 +60,23 @@ function parse_save_load_metadata(src)
 			
 			fields.push({ name: argParts[0], type: argParts[1] });
 		}
+
+	}
+
+	if (actor_type) {
+		for (let line of lines) {
+			let global = line.indexOf("@Global(");
+			if (global != -1)
+			{
+				let globalEnd = line.substr(global).indexOf(")");
+				let indexStr = line.substr(global + "@Global(".length, globalEnd - "@Global(".length);
+				let index = parseInt(indexStr);
+				return { is_global: true, actor: null, global: { index: index, actor_type: actor_type } };
+			}
+		}
 	}
 	
-	return { actor: actor_type, fields: fields };
+	return {  is_global: false, actor: actor_type, fields: fields };
 }
 
 
@@ -122,12 +134,20 @@ function emit_actor_load_function(actor)
 let files = traverse("objects");
 
 let actors = [];
+let globals = [];
 
 for (let file of files)
 {
 	let actor = parse_save_load_metadata(fs.readFileSync(file.path));
-	if (actor.actor == null) continue;
-	actors.push(actor);
+	if (actor.is_global)
+	{
+		globals[actor.global.index] = actor.global.actor_type;
+	}
+	else
+	{
+		if (actor.actor == null) continue;
+		actors.push(actor);
+	}
 }
 
 
@@ -142,6 +162,12 @@ for (let actor of actors)
 {
 	let t = [];
 	t.push("function load_crap( which_room, input_buffer ) {");
+
+	for (let global_actor of globals)
+	{
+		t.push("\troom_instance_add( which_room, 0, 0, " + global_actor + " );");
+	}
+
 	t.push("\tvar actor_count = buffer_read( input_buffer , buffer_u32 );");
 
 	t.push("\tfor(var idx = 0; idx < actor_count; ++idx) {");	
