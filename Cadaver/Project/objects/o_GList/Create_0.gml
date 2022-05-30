@@ -70,7 +70,8 @@ function create_struct()
 		energy: 0,
 		damage: 0,
 		kb: 1,
-		sweep: 0
+		sweep: 0,
+		hand_sprite: s_Empty
 	}
 
 	return return_struct
@@ -134,6 +135,7 @@ function create_item(arg_name)
 	item.item_data.damage = 8
 	item.item_data.kb = 0
 	item.item_data.sweep = 1
+	item.item_data.hand_sprite = s_Sword
 }
 
 {
@@ -244,10 +246,11 @@ function create_item(arg_name)
 {
 	var item = create_item("Pickaxe")
 
-	item.item_data.item_type = item_types.melee
+	item.item_data.item_type = item_types.tool
 	item.item_data.damage = 4
 	item.item_data.kb = 3
 	item.item_data.sweep = 1
+	item.item_data.hand_sprite = s_Pickaxe
 }
 
 {
@@ -257,6 +260,7 @@ function create_item(arg_name)
 	item.item_data.damage = 5
 	item.item_data.kb = 1.5
 	item.item_data.sweep = 1
+	item.item_data.hand_sprite = s_Axe
 }	
 
 {

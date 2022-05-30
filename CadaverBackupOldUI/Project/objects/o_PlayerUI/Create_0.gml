@@ -38,7 +38,7 @@ enum gui
 }
 
 global.current_gui = gui.NONE
-
+ 
 enum crafting_lvls
 {
 	ALL,

@@ -1,8 +1,9 @@
+ui_draw_rectangle(0, 0,display_get_gui_width(), display_get_gui_height(), c_black, overlay_alpha, false)
 //mouse variables
 var mx = device_mouse_x_to_gui(0)
 var my = device_mouse_y_to_gui(0)
 
-var hot_width = (hot_data.slots_x * slot_size * inv_scale) + ((hot_data.slots_x - 1) * slot_gap)
+var hot_width = (inv_data.slots_x * slot_size * inv_scale) + ((inv_data.slots_x - 1) * slot_gap)
 var hot_height = slot_size * inv_scale
 
 inv_x = display_get_gui_width() / 2 - hot_width / 2
@@ -17,88 +18,147 @@ for(var i = 0; i < ds_list_size(show_list); i++)
 
 if(open)
 {
-	ui_draw_rectangle(0, 0,display_get_gui_width(), display_get_gui_height(), c_black, 0.5, false)
-	
 	if(inv_alpha < 1) inv_alpha += 0.1
+	if(overlay_alpha < 0.5) overlay_alpha += 0.05
 }
 else
 {
 	if(inv_alpha > 0) inv_alpha -= 0.1	
+	if(overlay_alpha > 0) overlay_alpha -= 0.05
 }
 
 //hotbar
-if(open)
+for(var i = 0; i < inv_data.slots_x; i++)
 {
-	draw_inventory(hot, hot_data, inv_x, inv_y, c_gray, 0.75, 1, open = true)
-}
-else
-{
-	for(var i = 0; i < hot_data.slots_x; i++)
+	var inv_j = inv_data.slots_y - 1
+	var pos_j = 0
+	
+	if(keyboard_check_pressed(ord(i + 1)))
 	{
-		var key = i + 1
-		
-		if(keyboard_check_pressed(ord(key)))
+		global.hotbar_sel_slot = i
+	}
+	
+	var color = c_gray
+	
+	if(open)
+	{
+		var rec_x = inv_x + (i * (slot_size * inv_scale + slot_gap))
+		var rec_y = inv_y
+
+		if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
 		{
-			global.hotbar_sel_slot = i
+			color = c_ltgray	
 		}
-
-		for(var j = 0; j < hot_data.slots_y; j++)
-		{
-			color = c_gray
-
-			if(global.hotbar_sel_slot == i) color = c_aqua
-
-			ui_draw_rectangle(inv_x + (i * (slot_size * inv_scale + slot_gap)), inv_y + (j * (slot_size * inv_scale + slot_gap)), slot_size * inv_scale, slot_size * inv_scale, color, 0.5, false)
+	}
+	else
+	{
+		if(global.hotbar_sel_slot == i) color = c_aqua	
+	}
+	
+	ui_draw_rectangle(inv_x + (i * (slot_size * inv_scale + slot_gap)), inv_y, slot_size * inv_scale, slot_size * inv_scale, color, 0.5, false)
 		
-			if(hot[i,j] != 0)
-			{
-				var item = hot[i,j]
-				var item_offset = ((slot_size * inv_scale) - (16 * inv_scale)) / 2
+	if(inv[i,inv_j] != 0)
+	{
+		var item = inv[i,inv_j]
+		var item_offset = ((slot_size * inv_scale) - (16 * inv_scale)) / 2
 
-				draw_sprite_ext(s_Items, item.item, inv_x + (i * (slot_size * inv_scale + slot_gap)) + item_offset, inv_y + (j * (slot_size * inv_scale + slot_gap)) + item_offset, inv_scale, inv_scale, 0, c_white, 1)
+		var item_half = (sprite_get_width(s_Items) / 2) * inv_scale
+
+		draw_sprite_ext(s_Items, item.item, inv_x + (i * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, inv_y + item_offset + item_half, inv_scale, inv_scale, 0, c_white, 1)
 			
-				var amt_width = string_width(string(item.amt))
-				draw_set_alpha(1)
-				draw_set_color(c_black)
-				ui_draw_string(inv_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, inv_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
-				draw_set_color(c_white)
-				ui_draw_string(inv_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, inv_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
-			}
+		if(item.amt > 1)
+		{
+			var amt_width = string_width(string(item.amt))
+			draw_set_alpha(1)
+			draw_set_color(c_black)
+			ui_draw_string(inv_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, inv_y, string(item.amt), ft_Default)
+			draw_set_color(c_white)
+			ui_draw_string(inv_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, inv_y, string(item.amt), ft_Default)
 		}
 	}
 }
 
-global.hotbar_sel_item = hot[global.hotbar_sel_slot, 0]
+global.hotbar_sel_item = inv[global.hotbar_sel_slot, inv_data.slots_y - 1]
 
 var inv_width = (inv_data.slots_x * slot_size * inv_scale) + ((inv_data.slots_x - 1) * slot_gap)
 var inv_height = (inv_data.slots_y * slot_size * inv_scale) + ((inv_data.slots_y - 1) * slot_gap)
+
+//remove hotbar
+inv_height -= slot_size * inv_scale + slot_gap
 
 //readjust x and y values for drawing inventory
 inv_x = display_get_gui_width() / 2 - inv_width / 2
 inv_y = display_get_gui_height() - hot_height - scr_hot_shift - inv_hot_shift - inv_height
 
 //inventory
-draw_inventory(inv, inv_data, inv_x, inv_y, c_gray, 0.5, 1, open = true, open = true)
+var data_temp = { slots_x: inv_data.slots_x, slots_y: inv_data.slots_y - 1 }
+draw_inventory(inv, data_temp, inv_x, inv_y, c_gray, 0.5, 1, 0, open = true)
+
+var mx = device_mouse_x_to_gui(0)
+var my = device_mouse_y_to_gui(0)
+	
+for(var i = 0; i < inv_data.slots_x; i++)
+{
+	for(var j = 0; j < inv_data.slots_y; j++)
+	{
+		var rec_x = inv_x + (i * (slot_size * inv_scale + slot_gap))
+		var rec_y = inv_y + (j * (slot_size * inv_scale + slot_gap))
+		
+		if(j > inv_data.slots_y - 1)
+		{
+			  rec_y -= inv_hot_shift
+		}
+
+		if(open)
+		{
+			if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
+			{
+				if(mouse_check_button(mb_left))
+				{
+					held += (delta_time / 10000) * 3
+					
+					if(inv[i,j] != 0)
+					{
+						if(round(held) == 25)
+						{
+							global.in_hand = { item: inv[i,j].item, amt: inv[i,j].amt }	
+							
+							drag_slot.xx = i
+							drag_slot.yy = j
+							
+							array_set(inv[i], j, 0)
+						}
+					}
+				}
+				else
+				{
+					if(held > 25) 
+					{	
+						held = 0	
+						
+						if(inv[i,j] == 0)
+						{
+							array_set(inv[i], j, global.in_hand)
+					
+							global.in_hand = 0
+						}
+						else
+						{
+							var backup = inv[i,j]
+							
+							array_set(inv[i], j, global.in_hand)
+							array_set(inv[drag_slot.xx], drag_slot.yy, backup)
+							
+							global.in_hand = 0
+						}
+					}
+				}
+			}
+		}
+	}
+}
 
 if(open)
 {
-	var inv_text = "INVENTORY"
-	var inv_text_height = string_height_font(inv_text, ft_Default)
-
-	inv_y -= pad + inv_text_height
-
-	draw_set_color(text_color)
-	ui_draw_string(inv_x, inv_y, inv_text, ft_Default)
-	draw_set_color(c_white)
-	draw_set_alpha(1)
+	window_text(inv_x, inv_y, "INVENTORY")
 }
-
-//if(!open)
-//{
-//	if(global.in_hand != 0)
-//	{
-//		array_set(inv[global.last_slot.xx], global.last_slot.yy, global.in_hand)
-		
-//		global.in_hand = 0	
-//	}
-//}

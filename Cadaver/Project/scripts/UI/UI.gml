@@ -32,6 +32,19 @@ function ui_draw_button_color(txt, sx, sy, w, h, c, hov_c, txt_c, brd)
 	return return_data
 }
 
+function window_text(arg_x, arg_y, arg_text)
+{
+	var inv_text = arg_text
+	var inv_text_height = string_height_font(inv_text, ft_Default)
+
+	arg_y -= pad + inv_text_height
+
+	draw_set_color(text_color)
+	ui_draw_string(arg_x, arg_y, inv_text, ft_Default)
+	draw_set_color(c_white)
+	draw_set_alpha(1)
+}
+
 function rm_draw_button_color(sx, sy, w, h, c, hov_c, txt_c, brd)
 {	
 	var mx = mouse_x
@@ -172,6 +185,8 @@ function ui_draw_string(sx, sy, t, fnt)
 	draw_set_font(fnt)
 	draw_text(sx, sy, t)	
 	draw_set_font(ft_Default)
+	
+	return string_height_font(t, fnt)
 }
 
 function string_height_font(str, fnt)

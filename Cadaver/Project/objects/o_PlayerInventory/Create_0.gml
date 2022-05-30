@@ -1,11 +1,9 @@
-inv_data = create_inv_data(5, 3, 1)
+inv_data = create_inv_data(5, 4, 1)
 inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
 
 add_item(inv, inv_data, items.stonehatchet, 1)
-add_item(inv, inv_data, items.basicknife, 1)
 
-hot_data = create_inv_data(5, 1, 1)
-hot = create_inventory(hot_data.slots_x, hot_data.slots_y)
+overlay_alpha = 0
 
 show_list = ds_list_create()
 
@@ -13,6 +11,7 @@ held = 0
 
 ds_list_add(show_list, gui.INVENTORY)
 ds_list_add(show_list, gui.LOOT)
+ds_list_add(show_list, gui.CRAFT)
 
 #macro slot_size 18
 #macro inv_scale 3.5
@@ -38,4 +37,5 @@ global.in_hand = 0
 global.hotbar_sel_slot = 0
 global.hotbar_sel_item = 0
 
-#macro player_inv_height (inv_data.slots_y * slot_size * inv_scale) + ((inv_data.slots_y - 1) * slot_gap) + (slot_size * inv_scale) + scr_hot_shift + inv_hot_shift
+#macro player_inv_width (o_PlayerInventory.inv_data.slots_x * (slot_size * inv_scale)) + ((o_PlayerInventory.inv_data.slots_x - 1) * slot_gap)
+#macro player_inv_height ((o_PlayerInventory.inv_data.slots_y * (slot_size * inv_scale)) + ((o_PlayerInventory.inv_data.slots_y - 1) * slot_gap) + scr_hot_shift + inv_hot_shift + 49)	

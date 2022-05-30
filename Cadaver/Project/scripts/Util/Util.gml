@@ -11,6 +11,11 @@ function array() {
 	return arr;
 }
 
+function color_hex(arg)
+{
+	return (arg & $FF) << 16 | (arg & $FF00) | (arg & $FF0000) >> 16;	
+}
+
 function instance_nearest_notme(obj)
 {
     instance_deactivate_object(self);

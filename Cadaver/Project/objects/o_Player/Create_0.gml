@@ -1,8 +1,8 @@
 //@Declare(o_Player)
 ds_list_add(o_RenderManager.entities, self)
 
-x = random_range(-1000, 1000)
-y = random_range(-1000, 1000)
+//x = random_range(-1000, 1000)
+//y = random_range(-1000, 1000)
 
 instance_create_layer(x, y, "Meta", o_Camera)
 
@@ -43,6 +43,8 @@ acceleration = 50
 
 velocity = vec2(0, 0);
 
+part_sys = part_system_create()
+
 state = player_state.idle
 
 enum player_state
@@ -74,13 +76,23 @@ resource_drops[0] =
 	  
  	all_drops: array
 	(
-		{ item: items.air, drops:  array( { uid : items.wood, amt_min : 3, amt_max : 6, chnce : 1 } ) }, 
-		{ item: items.stonehatchet, drops: array( { uid : items.wood, amt_min : 5, amt_max : 11, chnce : 1 } ) },
+		{ item: items.stonehatchet, drops: array( { uid : items.wood, amt_min : 3, amt_max : 7, chnce : 1 } ) }
+	)
+}
+
+resource_drops[1] =
+{
+  	object: o_Tree2,
+	  
+ 	all_drops: array
+	(
+		{ item: items.air, drops:  array( { uid : items.wood, amt_min : 1, amt_max : 3, chnce : 1 } ) }, 
+		{ item: items.stonehatchet, drops: array( { uid : items.wood, amt_min : 1, amt_max : 3, chnce : 1 } ) },
 	)
 }
 
 //Rock 1
-resource_drops[1] =
+resource_drops[2] =
 {
 	object: o_Rock1,
 
@@ -92,14 +104,22 @@ resource_drops[1] =
 }
 
 //Bush
-resource_drops[2] =
+resource_drops[3] =
 {
 	object: o_Plants1,
 
 	all_drops: array
 	(
-		{ item: items.air, drops:  array( { uid : items.plants, amt_min : 2, amt_max : 4, chnce : 1 } ) }, 
-		{ item: items.basicknife, drops: array( { uid : items.plants, amt_min : 2, amt_max : 7, chnce : 1 }, { uid : items.rareplants, amt_min : 1, amt_max : 1, chnce : 0.1 } ) }
+		{ item: items.stonehatchet, drops: array( { uid : items.plants, amt_min : 3, amt_max : 8, chnce : 1 }, { uid : items.rareplants, amt_min : 1, amt_max : 1, chnce : 0.1 } ) }
+	)
+}
+resource_drops[4] =
+{
+	object: o_Plants3,
+
+	all_drops: array
+	(
+		{ item: items.air, drops:  array( { uid : items.plants, amt_min : 2, amt_max : 4, chnce : 1 } ) }
 	)
 }
 
@@ -117,10 +137,14 @@ function input()
 	in_y = keyboard_check(ord("S")) - keyboard_check(ord("W"))
 	
 	shift = keyboard_check(vk_shift);	
-	attack = mouse_check_button(mb_left)
+	attack = mouse_check_button_pressed(mb_left)
 }
 
 rotation = 0
+melee_rot = 0
+
+tool_cooldown = 0
+tool_cooldown_set = 30
 
 sprites_array[player_state.idle] = s_Player
 sprites_array[player_state.walk] = s_PlayerWalk
@@ -154,10 +178,26 @@ function movement(spd = 1)
 
 function player_animation() 
 {
-	sprite = sprites_array[state]
+	switch(state)
+	{
+		case(player_state.idle):
+		case(player_state.walk):
+			if(!global.hotbar_sel_item) 
+			{
+				sprite_index = s_Player
+			}
+			else
+			{
+				sprite_index = s_PlayerAttack
+			}
+		break;
+		
+		case(player_state.run):
+			sprite_index = s_PlayerRun
+		break;
+	}
 
-	sprite_index = sprite
-
+	//image_xscale and sacaling
 	var sign_mouse = sign(mouse_x - x)
 
 	if(sign_mouse == 0) 
@@ -180,6 +220,8 @@ function player_animation()
 }
 #endregion
 
+flash_alpha = 0
+
 function render_shadow()
 {
 	
@@ -194,27 +236,194 @@ function render()
 	{
 		var hotbar_item_data = global.items_list[global.hotbar_sel_item.item].item_data
 
+		var tool = false
+		
+		if(hotbar_item_data.item_type = item_types.tool) tool = true
+		if(global.hotbar_sel_item == 0) tool = true
+
 		var item_draw_scale = 1
 		var distance = 1
 
 		var draw_x = x + (distance) * image_xscale
 		var draw_y = y - sprite_height / 2 + 2
 
+		var hand_sprite = global.items_list[global.hotbar_sel_item.item].item_data.hand_sprite
+
 		if(hotbar_item_data.item_type == item_types.melee)
 		{
-			draw_sprite_ext(s_Test2, 0, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, rotation * image_xscale, c_white, 1)
-		}
-		if(hotbar_item_data.item_type = item_types.tool)
+			var melee_angle = (point_direction(x, y, mouse_x, mouse_y) + 90) + (melee_rot * image_xscale)
+			
+			draw_sprite_ext(hand_sprite, 0, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, melee_angle, c_white, 1)
+		}	
+		if(tool)
 		{
-			var selected = instance_position(mouse_x, mouse_y, o_Harvestable)
+			var correct_tool = false
+		
+			var selected = collision_circle(mouse_x, mouse_y, 10, o_Harvestable, false, true)
 
-			draw_sprite_ext(s_Test, 0, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, rotation * image_xscale, c_white, 1)
+			if(selected != -4) 
+			{
+				//DROPS
+				for(var i = 0; i < array_length_1d(resource_drops); i++)
+				{
+					if(selected != noone)
+					{
+						//IF NOT -4 GIVE RESOURCES BECAUSE ITS RESOURCE DROPS
+						if(selected.object_index == resource_drops[i].object)
+						{
+							var drops_array = resource_drops[i].all_drops
+
+							for(var j = 0; j < array_length_1d(drops_array); j++)
+							{
+								var do_item_check = (global.hotbar_sel_item.item == drops_array[j].item)
+								
+								if(global.hotbar_sel_item == 0) do_item_check = true
+								
+								if(do_item_check) 
+								{
+									correct_tool = true
+									
+									if(mouse_check_button(mb_left))
+									{	
+										if(tool_cooldown <= 0)
+										{
+											tool_cooldown = tool_cooldown_set
+
+											rotation = -90
+
+											var sel_x = selected.x + (sprite_get_width(selected.sprite_index) / 2)
+											var sel_y = selected.y + (sprite_get_height(selected.sprite_index) / 4) * 3
+
+											selected.hp--
+
+											if(selected.hp <= 0)
+											{
+												instance_destroy(selected)
+
+												//you are using an item that exists, gets drops from there
+												var item_drops = drops_array[j].drops
+
+												for(var k = 0; k < array_length_1d(item_drops); k++)
+												{
+													if(random(1) < item_drops[k].chnce)
+													{
+														var drop_amt = irandom_range(item_drops[k].amt_min, item_drops[k].amt_max)
+													
+														repeat(drop_amt) create_drop(sel_x, sel_y, item_drops[k].uid, 1)
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}	
+			
+			draw_sprite_ext(hand_sprite, 0, draw_x, draw_y, image_xscale * item_draw_scale, item_draw_scale, rotation * image_xscale, c_white, 1)
 
 			if(selected != noone)
 			{
 				with(selected)
 				{
-					draw_sprite_ext(test, 0, x, y, sprite_width / 16, sprite_height / 16, 0, c_white, 0.5)
+					if(correct_tool) draw_sprite_ext(test, 0, x, y, sprite_width / 16, sprite_height / 16, 0, c_white, 0.5)
+				}
+			}
+		}
+	}
+	else
+	{
+		//fists
+		var selected = collision_circle(mouse_x, mouse_y, 10, o_Harvestable, false, true)
+
+		if(selected == noone)
+		{
+			//allow attacking because nothing selecteds!
+			if(attack_cooldown <= 0)
+			{
+				if(attack)
+				{
+					gave_item = false
+					dealt_damage = false
+					attack_cooldown = attack_cooldown_set
+
+					melee_rot = -135
+
+					instance_create_layer(x, y,  "Instances", o_Swing)
+
+					image_index = 0
+
+					state = player_state.attack
+				}
+			}
+		}
+		else
+		{
+			var correct_tool = false
+			
+			//tool time
+			for(var i = 0; i < array_length_1d(resource_drops); i++)
+			{
+				if(selected != noone)
+				{
+					//IF NOT -4 GIVE RESOURCES BECAUSE ITS RESOURCE DROPS
+					if(selected.object_index == resource_drops[i].object)
+					{
+						var drops_array = resource_drops[i].all_drops
+
+						for(var j = 0; j < array_length_1d(drops_array); j++)
+						{
+							if(global.hotbar_sel_item == drops_array[j].item)
+							{
+								correct_tool = true
+								
+								if(mouse_check_button(mb_left))
+								{	
+									if(tool_cooldown <= 0)
+									{
+										tool_cooldown = tool_cooldown_set
+
+										var sel_x = selected.x + (sprite_get_width(selected.sprite_index) / 2)
+										var sel_y = selected.y + (sprite_get_height(selected.sprite_index) / 4) * 3
+
+										selected.hp--
+										selected.flash_alpha = 1
+
+										part_particles_create(part_sys, mouse_x, mouse_y, global.pt_basic, 5)	
+										
+										if(selected.hp <= 0)
+										{
+											instance_destroy(selected)
+
+											part_particles_create(part_sys, mouse_x, mouse_y, global.pt_basic, 25)	
+
+											//you are using an item that exists, gets drops from there
+											var item_drops = drops_array[j].drops
+
+											for(var k = 0; k < array_length_1d(item_drops); k++)
+											{
+												if(random(1) < item_drops[k].chnce)
+												{
+													var drop_amt = irandom_range(item_drops[k].amt_min, item_drops[k].amt_max)
+													
+													repeat(drop_amt) create_drop(sel_x, sel_y, item_drops[k].uid, 1)
+												}
+											}
+										
+											return;
+										}
+									}
+								}
+							}
+						}
+					}
+					
+					with(selected)
+					{
+						if(correct_tool) draw_sprite_ext(test, 0, x, y, sprite_width / 16, sprite_height / 16, 0, c_white, 0.5)
+					}
 				}
 			}
 		}

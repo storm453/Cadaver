@@ -1,31 +1,41 @@
-var hp_x = 10;
-var hp_y = 10;
+var draw_hud = false
 
-var bar_draw = 3
+for(var i = 0; i < ds_list_size(draw_hud); i++)
+{
+	if(global.current_gui == draw_hud[|i]) draw_hud = true	
+}
 
-hp_show = lerp(hp_show, o_Player.hp, 0.2);
+if(draw_hud)
+{
+	//hp bar
+	var hp_x = 10;
+	var hp_y = 10;
 
-var hp_w = (hp_show / 100) * sprite_get_width(s_HealthBar);
-var hp_h = sprite_get_width(s_HealthBar)
+	var bar_draw = 3
 
-draw_sprite_ext(s_HealthBar, 1, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
-draw_sprite_part_ext(s_HealthBar, 0, 0, 0, hp_w, hp_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
+	hp_show = lerp(hp_show, o_Player.hp, 0.2);
 
-//energy bar
-hp_y += hp_h * bar_draw + pad
+	var hp_w = (hp_show / 100) * sprite_get_width(s_HealthBar);
+	var hp_h = sprite_get_width(s_HealthBar)
 
-energy_show = lerp(energy_show, o_Player.energy, 0.2);
+	draw_sprite_ext(s_HealthBar, 1, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
+	draw_sprite_part_ext(s_HealthBar, 0, 0, 0, hp_w, hp_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
 
-var en_w = (energy_show / 100) * sprite_get_height(s_EnergyBar);
-var en_h = sprite_get_width(s_EnergyBar)
+	//energy bar
+	hp_y += hp_h * bar_draw + pad
 
-draw_sprite_ext(s_EnergyBar, 1, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
-draw_sprite_part_ext(s_EnergyBar, 0, 0, 0, en_w, en_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
+	energy_show = lerp(energy_show, o_Player.energy, 0.2);
 
-//ITEM PICKUP DROP NOTIFICATIONS LOG HJING YEAH
+	var en_w = (energy_show / 100) * sprite_get_height(s_EnergyBar);
+	var en_h = sprite_get_width(s_EnergyBar)
+
+	draw_sprite_ext(s_EnergyBar, 1, hp_x, hp_y, bar_draw, bar_draw, 0, c_white, 1)
+	draw_sprite_part_ext(s_EnergyBar, 0, 0, 0, en_w, en_h, hp_x, hp_y, bar_draw, bar_draw, c_white, 1)
+} 
+
+//item log pikcup notifications
 var log_x = 1700
 var log_y = 1000
-
 for(var i = 0; i < ds_list_size(item_log); i++)
 {
 	var log_height = 50
@@ -53,50 +63,147 @@ for(var i = 0; i < ds_list_size(item_log); i++)
 }
 #macro pad 5
 
+//switch buttons - for switching between inventory and building
+var show = false
+
+for(var i = 0; i < ds_list_size(switch_buttons); i++)
+{
+	if(global.current_gui == switch_buttons[|i].to) show = true
+}
+
+if(show)
+{
+	var sw_width = 175
+	var sw_height = 35
+
+	var sw_gap = 30
+	
+	var sw_x = display_get_gui_width() / 2 - (((ds_list_size(switch_buttons) * sw_width)) + ((ds_list_size(switch_buttons) - 1) * sw_gap)) / 2
+	var sw_y = pad
+
+	for(var i = 0; i < ds_list_size(switch_buttons); i++)
+	{
+		var color = c_gray
+		var s_color = c_ltgray
+		
+		if(global.current_gui == switch_buttons[|i].to) 
+		{
+			color = c_orange
+			s_color = c_orange
+		}
+		
+		var button = ui_draw_button_color(switch_buttons[|i].text, sw_x + (sw_width + sw_gap) * i, sw_y, sw_width, sw_height, color, s_color, c_white, false)
+		if(button[0])
+		{
+			global.current_gui = switch_buttons[|i].to	
+			
+			if(global.current_gui == gui.BUILDING) selected_bp = noone
+		}
+	}
+}
+
 if(global.current_gui == gui.INVENTORY)
 {
 	
+
 }
 
-if(global.current_gui == gui.SELECTBLUE)
+if(global.current_gui == gui.BUILDING)
 {
-	var start_x = display_get_gui_width() / 2
-	var start_y = display_get_gui_height() / 2
-
-	var rec_scale = 100
-
-	var rec_amt_x = 8
-	var rec_amt_y = 5
-
-	var rec_pad = 25
-
-	var boxes_width = (rec_scale * rec_amt_x) + ((rec_amt_x - 1) * rec_pad)
-	var boxes_height = (rec_scale * rec_amt_y) + ((rec_amt_y - 1) * rec_pad)
-
-	start_x -= boxes_width / 2
-	start_y -= boxes_height / 2
-
-	ui_draw_window("Blueprints", start_x - 25, start_y - 25, boxes_width + 50, boxes_height + 50)
-
-	for(var i = 0; i < rec_amt_x; i++)
+	if(selected_bp == noone)
 	{
-		for(var j = 0; j < rec_amt_y; j++)
+		var bw = 300
+		var bh = 70
+	
+		var bx = display_get_gui_width() - pad - bw
+		var by = pad
+	
+		for(var i = 0; i < ds_list_size(blueprints); i++)
 		{
-			if(building_grid[i,j] != 0)
+			by = by + (bh + pad) * i
+		
+			var color = tab_color
+		
+			if(point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), bx, by, bx + bw, by + bh + pad - 1))
 			{
-				var sprite_scale = 2.5 * (32 / sprite_get_width(building_grid[i,j].spr))
-
-				var blueprint_button = ui_draw_button_sprite(building_grid[i,j].spr, 0, start_x + (i * (rec_scale + rec_pad)), start_y + (j * (rec_scale + rec_pad)), rec_scale, rec_scale, button_color, button_h_color, c_white, sprite_scale, false)
-				if(blueprint_button[0])
+				color = main_color	
+			
+				if(mouse_check_button_pressed(mb_left))
 				{
-					global.current_gui = gui.BLUEPRINT
-					blueprint_obj = building_grid[i,j].obj
+					selected_bp = blueprints[|i].obj
+				}
+
+				//info about item you hovering
+				var iw = 260
+				var ih = 230
+			
+				var ix = bx - iw - pad
+				var iy = by
+			
+				ui_draw_rectangle(ix, iy, iw, ih, main_color, 1, false)
+			
+				info = make_panel(ix + pad, iy + pad)
+			
+				draw_set_color(text_color)
+				var dh = ui_draw_string(info.at_x, info.at_y, blueprints[|i].text, ft_Default)
+			
+				pn_row(info, dh + pad)
+				
+				draw_set_color(tab_color)
+				ui_draw_string(info.at_x, info.at_y, blueprints[|i].desc, ft_Description)
+			
+				pn_row(info, 60)
+				for(var j = 0; j < array_length_1d(blueprints[|i].need); j++)
+				{
+					var need_name = global.items_list[blueprints[|i].need[j].item].name
+					var need_amt = blueprints[|i].need[j].amt
+				
+					var tw = iw - (pad * 2)
+					var th = 45
+					
+					ui_draw_rectangle(info.at_x, info.at_y + (th + pad) * j, tw, th, tab_color, 1, false)
+					
+					var spr_draw_space = th
+					var spr_scale = spr_draw_space / 16
+					var spr_offset = th / 2 - (16 * spr_scale) / 2
+					var spr_half = (16 * spr_scale) / 2
+					
+					var col = decline_color
+					
+					var item_amt = get_item_amount(o_PlayerInventory.inv, o_PlayerInventory.inv_data, blueprints[|i].need[j].item)
+					var item_need = blueprints[|i].need[j].amt
+					
+					if(item_amt >= item_need) col = confirm_color
+					
+					draw_sprite_ext(s_Items, blueprints[|i].need[j].item, info.at_x + spr_half + spr_offset, info.at_y + (th + pad) * j + spr_half + spr_offset, spr_scale, spr_scale, 0, col, 1)
+					
+					var text_height = string_height_font("Wdad", ft_Description)
+					var text_offset = th / 2 - text_height / 2
+					
+					draw_set_color(col)
+					ui_draw_string(info.at_x + (spr_half * 2) + spr_offset + pad, info.at_y + (th + pad) * j + text_offset, string(need_name) + " (" + string(item_amt) + "/" + string(need_amt) + ")", ft_Description)
+					draw_set_color(c_white)
 				}
 			}
-			else
-			{
-				ui_draw_rectangle(start_x + (i * (rec_scale + rec_pad)), start_y + (j * (rec_scale + rec_pad)), rec_scale, rec_scale, button_color, 1, false)
-			}
+			
+			ui_draw_rectangle(bx, by, bw, bh, color, 1, false)	
+	
+			var sprite_scale = 4
+			var sprite_space = 16 * sprite_scale
+		
+			var text_height = string_height_font(blueprints[|i].text, ft_Default)
+		
+			var sprite = object_get_sprite(blueprints[|i].obj)
+			var swidth = sprite_get_width(sprite)
+		
+			sprite_scale = (16 / swidth) * 4
+		
+			draw_sprite_ext(sprite, 0, bx, by, sprite_scale, sprite_scale, 0, c_white, 1)
+		
+			var tx = bx + sprite_space + pad
+			var ty = by + (bh / 2) - (text_height / 2)
+		
+			ui_draw_string(tx, ty, blueprints[|i].text, ft_Default)
 		}
 	}
 }

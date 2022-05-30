@@ -4,7 +4,10 @@ var my = device_mouse_y_to_gui(0)
 
 if(global.in_hand != 0)
 {
-	draw_sprite_ext(s_Items, global.items_list[global.in_hand.item].spr_index, mx - 32, my - 32, 3.5, 3.5, 0, c_white, 0.75);
+	
+	var item_half = (sprite_get_width(s_Items) / 2) * inv_scale
+	
+	draw_sprite_ext(s_Items, global.items_list[global.in_hand.item].spr_index, mx - 32 + item_half, my - 32 + item_half, 3.5, 3.5, 0, c_white, 0.75);
 }
 
 gpu_set_blendmode(bm_normal)

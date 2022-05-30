@@ -20,6 +20,16 @@ if(data != 0)
 	image_index = data.item
 }
 
-//scaling
-image_xscale = (5 / (5 - zz / 5) / 3) * 2
-image_yscale = (5 / (5 - zz / 5) / 3) * 2
+if(up)
+{
+	image_xscale -= 0.1	
+	image_yscale -= 0.1	
+	
+	if(image_xscale <= 0) instance_destroy()
+}
+else
+{
+	//scaling
+	image_xscale = (5 / (5 - zz / 5) / 3) * 2
+	image_yscale = (5 / (5 - zz / 5) / 3) * 2
+}

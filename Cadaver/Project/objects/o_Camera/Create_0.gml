@@ -12,8 +12,8 @@ y = target.y;
 last_x = x
 last_y = y
 
-zoom       = 2;
-target_zoom = 1;
+zoom       = 1;
+target_zoom = 2;
 min_zoom = 0.5;
 max_zoom = 100;
 

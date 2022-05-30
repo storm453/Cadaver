@@ -1,6 +1,11 @@
 z = -bbox_bottom
 
 rotation = lerp(rotation, 90, 0.1)
+melee_rot = lerp(melee_rot, 0, 0.1)
+
+tool_cooldown--
+
+part_system_depth(part_sys, -20)
 
 //all logic involving attacking and item types for hotbar item
 if(global.hotbar_sel_item != 0)
@@ -17,9 +22,9 @@ if(global.hotbar_sel_item != 0)
 				dealt_damage = false
 				attack_cooldown = attack_cooldown_set
 
-				rotation = -90
+				melee_rot = -135
 
-				instance_create_layer(x, y,  "Instances", o_Swing)
+				//instance_create_layer(x, y,  "Instances", o_Swing)
 
 				image_index = 0
 
@@ -28,30 +33,12 @@ if(global.hotbar_sel_item != 0)
 		}
 	}
 
-	if(hotbar_item_data.item_type == item_types.tool)
-	{
-		var selected = instance_position(mouse_x, mouse_y, o_Harvestable)
+	var tool = false
+	
+	if(global.hotbar_sel_item == 0) tool = true
+	if(hotbar_item_data.item_type == item_types.tool) tool = true
 
-		if(selected != -4) 
-		{
-			if(mouse_check_button_pressed(mb_left))
-			{
-				rotation = -90
-
-				var sel_x = selected.x + (sprite_get_width(selected.sprite_index) / 4)
-				var sel_y = selected.y + (sprite_get_height(selected.sprite_index) / 2)
-
-				selected.hp--
-
-				if(selected.hp <= 0)
-				{
-					instance_destroy(selected)
-
-					repeat(irandom(8)) create_drop(sel_x, sel_y, choose(items.wood, items.plants, items.stone), 5)
-				}
-			}
-		}	
-	}
+	
 }
 
 //check list movable if player should be able to move in this gui state
@@ -78,7 +65,7 @@ if(state == player_state.dead)
 		for(var i = 0; i < o_PlayerInventory.inv_data.slots_x; i++)
 		{
 			for(var j = 0; j < o_PlayerInventory.inv_data.slots_y; j++)
-			{
+			{ 
 				if(o_PlayerInventory.inv[i,j] != 0)
 				{
 					add_item(loot.inv, loot.inv_data, o_PlayerInventory.inv[i,j].item, o_PlayerInventory.inv[i,j].amt)
@@ -125,8 +112,6 @@ if(state = player_state.idle)
 
 if(state == player_state.walk)
 {
-	if(energy_time mod 100 == 0) energy -= 0.2
-	
 	input()
 	movement()
 	player_animation()
@@ -141,8 +126,6 @@ if(state == player_state.walk)
 
 if(state == player_state.run)
 {
-	if(energy_time mod 50 == 0) energy -= 0.5
-	
 	input()
 	movement(2)
 	player_animation()
@@ -170,54 +153,6 @@ if(state == player_state.attack)
 
 	rec_x = x + 10 * image_xscale
 	rec_y = y - sprite_height
-
-	var attack_rec = collision_rectangle(rec_x, rec_y, rec_x + attack_range * image_xscale, rec_y + attack_range, o_WorldParent, false, true)
-
-	for(var i = 0; i < array_length_1d(resource_drops); i++)
-	{
-		if(attack_rec != noone)
-		{
-			//IF NOT -4 GIVE RESOURCES BECAUSE ITS RESOURCE DROPS
-			if(attack_rec.object_index == resource_drops[i].object)
-			{
-				if(!gave_item)
-				{
-					gave_item = true
-
-					var drops_array = resource_drops[i].all_drops
-
-					for(var j = 0; j < array_length_1d(drops_array); j++)
-					{
-						var item = 0
-						var compare_item = 0
-
-						if(global.hotbar_sel_item != 0) compare_item = global.hotbar_sel_item.item
-
-						if(compare_item == drops_array[j].item) 
-						{
-							item = 1
-						}
-
-						if(item)
-						{
-							//you are using an item that exists, gets drops from there
-							var item_drops = drops_array[j].drops
-
-							for(var k = 0; k < array_length_1d(item_drops); k++)
-							{
-								if(random(1) < item_drops[k].chnce)
-								{
-									var drop_amt = irandom_range(item_drops[k].amt_min, item_drops[k].amt_max)
-
-									add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, item_drops[k].uid, drop_amt)
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
 
 	var attack_list = ds_list_create()
 	
@@ -285,6 +220,26 @@ if(state == player_state.attack)
 if(state == player_state.dead)
 {
 	player_animation()
+}
+
+//opening up objects with 'E'
+var scan = instance_nearest(x, y, o_Multiblock)
+
+if(keyboard_check_pressed(ord("E")))
+{
+	if(global.current_gui == gui.NONE)
+	{
+		if(global.open_instance == noone)
+		{
+			scan_distance = distance_to_object(scan)
+
+			if(scan_distance < 10)
+			{
+				global.open_instance = scan
+				global.current_gui = global.open_instance.block_data.to_gui
+			}
+		}
+	}
 }
 
 attack_cooldown--

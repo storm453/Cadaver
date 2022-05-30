@@ -38,7 +38,7 @@ function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size)
 					
 					if(arg_inv[i,j] != 0)
 					{
-						if(held == 25)
+						if(held == 35)
 						{
 							global.in_hand = { item: arg_inv[i,j].item, amt: arg_inv[i,j].amt }	
 							
@@ -51,8 +51,8 @@ function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size)
 				}
 				else
 				{
-					if(held > 25) 
-					{
+					if(held > 35) 
+					{	
 						held = 0	
 						
 						if(arg_inv[i,j] == 0)
@@ -75,6 +75,29 @@ function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size)
 			}
 		}
 	}
+}
+
+function draw_item(arg_inv, i, j, arg_x, arg_y, alpha)
+{
+	if(arg_inv[i,j] != 0)
+	{
+		var item = arg_inv[i,j]
+		var item_offset = ((slot_size * inv_scale) - (16 * inv_scale)) / 2
+
+		var item_half = (sprite_get_width(s_Items) / 2) * inv_scale
+
+		draw_sprite_ext(s_Items, item.item, arg_x + (i * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, arg_y + (j * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, inv_scale, inv_scale, 0, c_white, alpha)
+				
+		if(item.amt > 1)
+		{
+			var amt_width = string_width(string(item.amt))
+			draw_set_alpha(alpha)
+			draw_set_color(c_black)
+			ui_draw_string(arg_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, arg_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
+			draw_set_color(c_white)
+			ui_draw_string(arg_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, arg_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
+		}
+	}	
 }
 
 function draw_inventory(arg_inv, arg_inv_data, arg_x, arg_y, c, slot_a, item_a, inv_check = true, draw_check = true)
@@ -100,12 +123,48 @@ function draw_inventory(arg_inv, arg_inv_data, arg_x, arg_y, c, slot_a, item_a, 
 
 				ui_draw_rectangle(arg_x + (i * (slot_size * inv_scale + slot_gap)), arg_y + (j * (slot_size * inv_scale + slot_gap)), slot_size * inv_scale, slot_size * inv_scale, color, slot_a, false)
 			
+				draw_item(arg_inv, i, j, arg_x, arg_y, item_a)
+			}
+
+			if(inv_check) 
+			{
+				inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, slot_gap)
+			}
+		}
+	}
+}
+
+function draw_inventory_custom(arg_inv, arg_slots_x, arg_slots_y, arg_x, arg_y, c, slot_a, item_a, check)
+{
+	var mx = device_mouse_x_to_gui(0)
+	var my = device_mouse_y_to_gui(0)
+
+	for(var i = 0; i < arg_slots_x; i++)
+	{
+		for(var j = 0; j < arg_slots_y; j++)
+		{
+			if(check)
+			{
+				var color = c
+
+				var rec_x = inv_x + (i * (slot_size * inv_scale + slot_gap))
+				var rec_y = inv_y + (j * (slot_size * inv_scale + slot_gap))
+
+				if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
+				{
+					color = c_ltgray
+				}
+
+				ui_draw_rectangle(arg_x + (i * (slot_size * inv_scale + slot_gap)), arg_y + (j * (slot_size * inv_scale + slot_gap)), slot_size * inv_scale, slot_size * inv_scale, color, slot_a, false)
+			
 				if(arg_inv[i,j] != 0)
 				{
 					var item = arg_inv[i,j]
 					var item_offset = ((slot_size * inv_scale) - (16 * inv_scale)) / 2
 
-					draw_sprite_ext(s_Items, item.item, arg_x + (i * (slot_size * inv_scale + slot_gap)) + item_offset, arg_y + (j * (slot_size * inv_scale + slot_gap)) + item_offset, inv_scale, inv_scale, 0, c_white, item_a)
+					var item_half = (sprite_get_width(s_Items) / 2) * inv_scale
+
+					draw_sprite_ext(s_Items, item.item, arg_x + (i * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, arg_y + (j * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, inv_scale, inv_scale, 0, c_white, item_a)
 				
 					var amt_width = string_width(string(item.amt))
 					draw_set_alpha(item_a)
@@ -116,12 +175,19 @@ function draw_inventory(arg_inv, arg_inv_data, arg_x, arg_y, c, slot_a, item_a, 
 				}
 			}
 
-			if(inv_check) 
+			if(check) 
 			{
-				inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, slot_gap)
+				var data = { slots_x: arg_slots_x, slots_y: arg_slots_y }
+				
+				inv_move_new(arg_x, arg_y, arg_inv, data, slot_gap)
 			}
 		}
-	}
+	}	
+}
+
+function add_item_notif(message, spriteindex, timer)
+{
+	ds_list_add(o_PlayerUI.item_log, { msg : message, spr_index : spriteindex , time : timer } )		
 }
 
 function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
@@ -147,8 +213,8 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 				//@HACK
 				if(arg_inv == o_PlayerInventory.inv)
 				{
-					o_PlayerUI.add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
-				}	
+					add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
+				}
 
 				break;
 			}
@@ -179,7 +245,7 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 
 				if(arg_inv == o_PlayerInventory.inv)
 				{
-					o_PlayerUI.add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
+					add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
 				}
 
 				found_item = true
@@ -382,5 +448,14 @@ function get_item_amount(arg_inv, arg_inv_data, arg_item)
 	}
 
 	return amount
+}
 
+function make_recipe_requirement(item_id, item_mat) 
+{
+  return { iid: item_id, mat: item_mat }
+}
+
+function make_recipe(item, requirements, amount_to_craft, crafting_lvl)
+{
+	return { item_id: item, req_arr: requirements, craft_amt: amount_to_craft, craft_lvl: crafting_lvl }
 }

@@ -1,10 +1,21 @@
 z = 0
 
-hp = 5
+flash_alpha = 0
 
 function render()
 {
 	draw_self();
+	
+	if(flash_alpha > 0)
+	{
+		flash_alpha -= 0.05
+		
+		shader_set(sdhr_flash)
+		
+		draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, image_angle, c_white, flash_alpha)
+		
+		shader_reset()
+	}
 }
 
 function render_shadow()
