@@ -74,10 +74,11 @@ resource_drops[0] =
 {
   	object: o_Tree1,
 	  
- 	all_drops: array
-	(
-		{ item: items.stonehatchet, drops: array( { uid : items.wood, amt_min : 3, amt_max : 7, chnce : 1 } ) }
-	)
+ 	all_drops: 0
+	//array
+	//(
+		//{ item: items.stonehatchet, drops: array( { uid : items.log, amt_min : 3, amt_max : 7, chnce : 1 } ) }
+	//)
 }
 
 resource_drops[1] =
@@ -86,8 +87,7 @@ resource_drops[1] =
 	  
  	all_drops: array
 	(
-		{ item: items.air, drops:  array( { uid : items.wood, amt_min : 1, amt_max : 3, chnce : 1 } ) }, 
-		{ item: items.stonehatchet, drops: array( { uid : items.wood, amt_min : 1, amt_max : 3, chnce : 1 } ) },
+		{ item: items.stonehatchet, drops: array( { uid : items.log, amt_min : 1, amt_max : 3, chnce : 1 } ) },
 	)
 }
 
@@ -98,8 +98,7 @@ resource_drops[2] =
 
 	all_drops: array
 	(
-		{ item: items.air, drops:  array( { uid : items.stone, amt_min : 1, amt_max : 3, chnce : 1 } ) }, 
-		{ item: items.pickaxe, drops:  array( { uid : items.stone, amt_min : 3, amt_max : 7, chnce : 1 }, { uid : items.rawmetal, amt_min : 2, amt_max : 4, chnce: 0.5 } ) }
+		{ item: items.pickaxe, drops:  array( { uid : items.stone, amt_min : 4, amt_max : 7, chnce : 1 } ) }
 	)
 }
 
@@ -110,7 +109,8 @@ resource_drops[3] =
 
 	all_drops: array
 	(
-		{ item: items.stonehatchet, drops: array( { uid : items.plants, amt_min : 3, amt_max : 8, chnce : 1 }, { uid : items.rareplants, amt_min : 1, amt_max : 1, chnce : 0.1 } ) }
+		{ item: items.air, drops:  array( { uid : items.plants, amt_min : 2, amt_max : 4, chnce : 1 }, { uid : items.stick, amt_min : 1, amt_max : 3, chnce : 0.8 } ) },
+		{ item: items.stonehatchet, drops: array( { uid : items.plants, amt_min : 3, amt_max : 6, chnce : 1 }, { uid : items.stick, amt_min : 2, amt_max : 5, chnce : 1 } ) }
 	)
 }
 resource_drops[4] =
@@ -120,6 +120,24 @@ resource_drops[4] =
 	all_drops: array
 	(
 		{ item: items.air, drops:  array( { uid : items.plants, amt_min : 2, amt_max : 4, chnce : 1 } ) }
+	)
+}
+resource_drops[5] =
+{
+	object: o_Coal,
+
+	all_drops: array
+	(
+		{ item: items.pickaxe, drops:  array( { uid : items.coal, amt_min : 2, amt_max : 4, chnce : 1 } ) }
+	)
+}
+resource_drops[6] =
+{
+	object: o_Iron,
+
+	all_drops: array
+	(
+		{ item: items.pickaxe, drops:  array( { uid : items.ironore, amt_min : 2, amt_max : 4, chnce : 1 } ) }
 	)
 }
 

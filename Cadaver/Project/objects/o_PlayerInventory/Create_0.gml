@@ -1,13 +1,15 @@
 inv_data = create_inv_data(5, 4, 1)
 inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
 
-add_item(inv, inv_data, items.stonehatchet, 1)
+depth = 0
+
+//add_item(inv, inv_data, items.stonehatchet, 1)
+//add_item(inv, inv_data, items.pickaxe, 1)
+//add_item(inv, inv_data, items.rawmetal, 15)
 
 overlay_alpha = 0
 
 show_list = ds_list_create()
-
-held = 0
 
 ds_list_add(show_list, gui.INVENTORY)
 ds_list_add(show_list, gui.LOOT)
@@ -17,7 +19,7 @@ ds_list_add(show_list, gui.CRAFT)
 #macro inv_scale 3.5
 #macro slot_gap 6
 
-drag_slot = { xx : 0, yy : 0 }
+global.drag_slot = { xx : 0, yy : 0, inventory: inv }
 
 //amount to shift hotbar away from bottom of the screen
 #macro scr_hot_shift 50

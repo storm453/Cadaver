@@ -50,7 +50,11 @@ function init_chunk(loc_x, loc_y)
 	
 	bfFinish(buffer)
 	
-	var current_noise = noise(v3_div(v3(idx * chunk_size, idy * chunk_size, 0), v3(100)))
+	var zm = irandom_range(50, 1000)
+
+	var current_noise = noise(v3_div(v3(idx * chunk_size, idy * chunk_size, 0), v3(650)))
+	
+	show_debug_message(zm)
 	
 	if(current_noise > 0.75)
 	{
@@ -60,32 +64,48 @@ function init_chunk(loc_x, loc_y)
 	
 			ds_list_add(objects, obj)
 		}
+		
+		//var obj = instance_create_layer(idx * chunk_size + chunk_size / 2, idy * chunk_size + chunk_size / 2, "Instances", o_Tree1)
+		
+		//ds_list_add(objects, obj)
 	}
 	if(current_noise > 0.5) && (current_noise < 0.75)
 	{
-		repeat(irandom_range(2, 6))
+		repeat(irandom_range(3, 9))
 		{
 			var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", o_Tree2)
 	
 			ds_list_add(objects, obj)
 		}
+		
+		//var obj = instance_create_layer(idx * chunk_size + chunk_size / 2, idy * chunk_size + chunk_size / 2, "Instances", o_Tree2)
+		
+		//ds_list_add(objects, obj)
 	}
 	if(current_noise > 0.25) && (current_noise < 0.5)
 	{
-		repeat(irandom_range(1, 3))
+		repeat(irandom_range(2, 8))
 		{
-			var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", choose(o_Rock1, o_Rock2))	
+			var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", choose(o_Rock1, o_Iron,  o_Coal, o_RockPickup))	
 	
 			ds_list_add(objects, obj)
 		}		
+		
+		//var obj = instance_create_layer(idx * chunk_size + chunk_size / 2, idy * chunk_size + chunk_size / 2, "Instances", o_Rock1)
+		
+		//ds_list_add(objects, obj)
 	}
 	if(current_noise < 0.25)
 	{
-		repeat(irandom_range(5, 12))
+		repeat(irandom_range(5, 16))
 		{
 			var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", choose(o_Plants1, o_Plants2, o_Plants3))	
-	
+
 			ds_list_add(objects, obj)
 		}	
+		
+		//var obj = instance_create_layer(idx * chunk_size + chunk_size / 2, idy * chunk_size + chunk_size / 2, "Instances", o_Plants1)
+		
+		//ds_list_add(objects, obj)
 	}
 }

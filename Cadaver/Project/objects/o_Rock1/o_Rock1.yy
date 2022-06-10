@@ -25,7 +25,9 @@
   "physicsShapePoints": [],
   "eventList": [],
   "properties": [],
-  "overriddenProperties": [],
+  "overriddenProperties": [
+    {"propertyId":{"name":"hp","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"10","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+  ],
   "parent": {
     "name": "World",
     "path": "folders/Objects/World.yy",

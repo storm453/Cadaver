@@ -32,15 +32,15 @@ function ui_draw_button_color(txt, sx, sy, w, h, c, hov_c, txt_c, brd)
 	return return_data
 }
 
-function window_text(arg_x, arg_y, arg_text)
+function window_text(arg_x, arg_y, arg_text, arg_font = ft_Default)
 {
 	var inv_text = arg_text
-	var inv_text_height = string_height_font(inv_text, ft_Default)
+	var inv_text_height = string_height_font(inv_text, arg_font)
 
 	arg_y -= pad + inv_text_height
 
 	draw_set_color(text_color)
-	ui_draw_string(arg_x, arg_y, inv_text, ft_Default)
+	ui_draw_string(arg_x, arg_y, inv_text, arg_font)
 	draw_set_color(c_white)
 	draw_set_alpha(1)
 }
@@ -121,7 +121,7 @@ function pn_col(panel, col_width)
 	panel.at_x += col_width	
 }
 
-function ui_draw_button_sprite(spr, spr_sub, sx, sy, w, h, c, hov_c, spr_c, spr_s, brd)
+function ui_draw_button_sprite(spr, spr_sub, sx, sy, w, h, c, hov_c, spr_c, spr_s, brd, mid = false)
 {	
 	var mx = device_mouse_x_to_gui(0)
 	var my = device_mouse_y_to_gui(0)
@@ -146,7 +146,14 @@ function ui_draw_button_sprite(spr, spr_sub, sx, sy, w, h, c, hov_c, spr_c, spr_
 		}
 	}
 	
-	draw_sprite_ext(spr, spr_sub, sx + w / 2 - (sprite_get_width(spr) * spr_s / 2), sy + h / 2 - (sprite_get_width(spr) * spr_s / 2), spr_s, spr_s, 0, spr_c, 1)
+	var offset = 0
+	
+	if(mid == true)
+	{
+		offset = sprite_get_width(spr) * spr_s / 2	
+	}
+	
+	draw_sprite_ext(spr, spr_sub, sx + w / 2 - (sprite_get_width(spr) * spr_s / 2) + offset, sy + h / 2 - (sprite_get_width(spr) * spr_s / 2) + offset, spr_s, spr_s, 0, spr_c, 1)
 	
 	draw_set_color(c_white)
 	

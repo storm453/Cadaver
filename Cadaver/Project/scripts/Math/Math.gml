@@ -421,7 +421,7 @@ function hash(p)
 
 function noise( x )
 {
-    var i = v3(floor(x.x), floor(x.y), floor(x.z));
+	var i = v3(floor(x.x), floor(x.y), floor(x.z));
     var f = v3(fract(x.x), fract(x.y), fract(x.z));
     
     return lerp(lerp(lerp( hash(v3_add(i,v3(0,0,0))), 

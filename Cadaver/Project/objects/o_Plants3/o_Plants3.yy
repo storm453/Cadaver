@@ -26,7 +26,7 @@
   "eventList": [],
   "properties": [],
   "overriddenProperties": [
-    {"propertyId":{"name":"hp","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"1","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
+    {"propertyId":{"name":"hp","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"3","resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMOverriddenProperty",},
   ],
   "parent": {
     "name": "World",

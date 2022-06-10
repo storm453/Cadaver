@@ -18,58 +18,55 @@ function create_inventory(slots_x, slots_y)
 	return inv;
 }
 
-function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size)
+function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size, shift = 0)
 {
 	var mx = device_mouse_x_to_gui(0)
 	var my = device_mouse_y_to_gui(0)
 	
 	for(var i = 0; i < arg_inv_data.slots_x; i++)
 	{
+		var inv_i = i + shift
+		
 		for(var j = 0; j < arg_inv_data.slots_y; j++)
 		{
-			var rec_x = inv_x + (i * (slot_size * inv_scale + slot_gap))
-			var rec_y = inv_y + (j * (slot_size * inv_scale + slot_gap))
+			var rec_x = arg_x + (i * (slot_size * inv_scale + slot_gap))
+			var rec_y = arg_y + (j * (slot_size * inv_scale + slot_gap))
 
 			if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
 			{
-				if(mouse_check_button(mb_left))
+				//picking up, adding to a stack
+				if(mouse_check_button_pressed(mb_left))
 				{
-					held++
-					
-					if(arg_inv[i,j] != 0)
+					var old_hand = global.in_hand
+			
+					global.in_hand = arg_inv[inv_i, j]
+					array_set(arg_inv[inv_i], j, old_hand)
+
+					if(global.in_hand != 0)
 					{
-						if(held == 35)
+						if(arg_inv[inv_i,j] != 0)
 						{
-							global.in_hand = { item: arg_inv[i,j].item, amt: arg_inv[i,j].amt }	
-							
-							drag_slot.xx = i
-							drag_slot.yy = j
-							
-							array_set(arg_inv[i], j, 0)
+							if(arg_inv[inv_i,j].item == global.in_hand.item)
+							{
+								arg_inv[inv_i,j].amt += global.in_hand.amt
+								global.in_hand = 0 
+							}
 						}
 					}
 				}
-				else
+				
+				//splitting
+				if(mouse_check_button_pressed(mb_right))
 				{
-					if(held > 35) 
-					{	
-						held = 0	
+					if(global.in_hand == 0)
+					{
+						//hand is empty
+						var take_amt = round(arg_inv[inv_i,j].amt / 2)
+						var leave_amt = arg_inv[inv_i,j].amt - take_amt
 						
-						if(arg_inv[i,j] == 0)
-						{
-							array_set(arg_inv[i], j, global.in_hand)
-					
-							global.in_hand = 0
-						}
-						else
-						{
-							var backup = arg_inv[i,j]
-							
-							array_set(arg_inv[i], j, global.in_hand)
-							array_set(arg_inv[drag_slot.xx], drag_slot.yy, backup)
-							
-							global.in_hand = 0
-						}
+						global.in_hand = { item: arg_inv[inv_i,j].item, amt: take_amt }
+						
+						arg_inv[inv_i,j].amt = leave_amt
 					}
 				}
 			}
@@ -77,11 +74,11 @@ function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size)
 	}
 }
 
-function draw_item(arg_inv, i, j, arg_x, arg_y, alpha)
+function draw_item(arg_inv, i, j, arg_x, arg_y, alpha, inv_i = i)
 {
-	if(arg_inv[i,j] != 0)
+	if(arg_inv[inv_i,j] != 0)
 	{
-		var item = arg_inv[i,j]
+		var item = arg_inv[inv_i,j]
 		var item_offset = ((slot_size * inv_scale) - (16 * inv_scale)) / 2
 
 		var item_half = (sprite_get_width(s_Items) / 2) * inv_scale
@@ -113,14 +110,14 @@ function draw_inventory(arg_inv, arg_inv_data, arg_x, arg_y, c, slot_a, item_a, 
 			{
 				var color = c
 
-				var rec_x = inv_x + (i * (slot_size * inv_scale + slot_gap))
-				var rec_y = inv_y + (j * (slot_size * inv_scale + slot_gap))
+				var rec_x = arg_x + (i * (slot_size * inv_scale + slot_gap))
+				var rec_y = arg_y + (j * (slot_size * inv_scale + slot_gap))
 
 				if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
 				{
 					color = c_ltgray
 				}
-
+				
 				ui_draw_rectangle(arg_x + (i * (slot_size * inv_scale + slot_gap)), arg_y + (j * (slot_size * inv_scale + slot_gap)), slot_size * inv_scale, slot_size * inv_scale, color, slot_a, false)
 			
 				draw_item(arg_inv, i, j, arg_x, arg_y, item_a)
@@ -147,8 +144,8 @@ function draw_inventory_custom(arg_inv, arg_slots_x, arg_slots_y, arg_x, arg_y, 
 			{
 				var color = c
 
-				var rec_x = inv_x + (i * (slot_size * inv_scale + slot_gap))
-				var rec_y = inv_y + (j * (slot_size * inv_scale + slot_gap))
+				var rec_x = arg_x + (i * (slot_size * inv_scale + slot_gap))
+				var rec_y = arg_y + (j * (slot_size * inv_scale + slot_gap))
 
 				if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
 				{
@@ -157,37 +154,22 @@ function draw_inventory_custom(arg_inv, arg_slots_x, arg_slots_y, arg_x, arg_y, 
 
 				ui_draw_rectangle(arg_x + (i * (slot_size * inv_scale + slot_gap)), arg_y + (j * (slot_size * inv_scale + slot_gap)), slot_size * inv_scale, slot_size * inv_scale, color, slot_a, false)
 			
-				if(arg_inv[i,j] != 0)
-				{
-					var item = arg_inv[i,j]
-					var item_offset = ((slot_size * inv_scale) - (16 * inv_scale)) / 2
-
-					var item_half = (sprite_get_width(s_Items) / 2) * inv_scale
-
-					draw_sprite_ext(s_Items, item.item, arg_x + (i * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, arg_y + (j * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, inv_scale, inv_scale, 0, c_white, item_a)
-				
-					var amt_width = string_width(string(item.amt))
-					draw_set_alpha(item_a)
-					draw_set_color(c_black)
-					ui_draw_string(arg_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, arg_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
-					draw_set_color(c_white)
-					ui_draw_string(arg_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, arg_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
-				}
-			}
-
-			if(check) 
-			{
-				var data = { slots_x: arg_slots_x, slots_y: arg_slots_y }
-				
-				inv_move_new(arg_x, arg_y, arg_inv, data, slot_gap)
+				draw_item(arg_inv, i, j, arg_x, arg_y, 1)
 			}
 		}
 	}	
+	
+	if(check) 
+	{
+		var _data = create_inv_data(2, 1, 1)
+			
+		inv_move_new(arg_x, arg_y, arg_inv, _data, slot_gap)
+	}
 }
 
-function add_item_notif(message, spriteindex, timer)
+function add_item_notif(message, spriteindex, timer, arg_type)
 {
-	ds_list_add(o_PlayerUI.item_log, { msg : message, spr_index : spriteindex , time : timer } )		
+	ds_list_add(o_PlayerUI.item_log, { msg : message, spr_index : spriteindex , time : timer , type : arg_type, cur_y: 0 } )		
 }
 
 function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
@@ -213,7 +195,9 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 				//@HACK
 				if(arg_inv == o_PlayerInventory.inv)
 				{
-					add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
+					var str = "+ " + string(global.items_list[arg_item_id].name) + " x" + string(arg_amount)
+					
+					add_item_notif(str, 0, 3, 1)
 				}
 
 				break;
@@ -245,7 +229,9 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 
 				if(arg_inv == o_PlayerInventory.inv)
 				{
-					add_item_notif(global.items_list[arg_item_id].name + " x" + string(arg_amount), 0, 2)
+					var str = "+ " + string(global.items_list[arg_item_id].name) + " x" + string(arg_amount)
+					
+					add_item_notif(str, 0, 3, 1)
 				}
 
 				found_item = true
@@ -268,6 +254,10 @@ function remove_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 	found_item = false
 	removed_amt = 0
 	
+	var str = "- " + string(global.items_list[arg_item_id].name) + " x" + string(arg_amount)
+					
+	add_item_notif(str, 0, 6, 0)
+	
 	for(var j = 0; j < arg_inv_data.slots_y; j++)
 	{
 		for(var i = 0; i < arg_inv_data.slots_x; i++)
@@ -286,6 +276,11 @@ function remove_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 						if(arg_inv[i,j].amt <= 0)
 						{
 							array_set(arg_inv[i], j, 0)
+							
+							if(arg_inv == o_PlayerInventory.inv)
+							{
+								
+							}
 						}
 					}
 				}
@@ -450,12 +445,12 @@ function get_item_amount(arg_inv, arg_inv_data, arg_item)
 	return amount
 }
 
-function make_recipe_requirement(item_id, item_mat) 
+function recipe_req(item_id, item_mat)
 {
-  return { iid: item_id, mat: item_mat }
+	return { item: item_id, amt: item_mat }	
 }
 
-function make_recipe(item, requirements, amount_to_craft, crafting_lvl)
+function recipe(arg_item, requirements, amount_to_craft)
 {
-	return { item_id: item, req_arr: requirements, craft_amt: amount_to_craft, craft_lvl: crafting_lvl }
+	return { item: arg_item, req_arr: requirements, craft_amt: amount_to_craft }
 }

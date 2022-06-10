@@ -16,7 +16,7 @@ switch(level)
 			
 				repeat( irandom_range(1, 2) )
 				{
-					spawn_enemy(500, o_Mutant)	
+					//spawn_enemy(500, o_Mutant)	
 				}
 			}
 		}
@@ -34,13 +34,13 @@ switch(level)
 			
 				repeat( irandom_range(2, 5) )
 				{
-					spawn_enemy(450, o_Mutant)	
+					//spawn_enemy(450, o_Mutant)	
 				}
 				
 				//vaulkers
 				if(chance(0.005))
 				{
-					spawn_enemy(300, o_Walker)	
+					//spawn_enemy(300, o_Walker)	
 				}
 			}
 		}
@@ -51,8 +51,8 @@ switch(level)
 
 if(o_GUI.day_factor == 1.00)
 {
-	//spawn enemies at night
-	repeat(3) spawn_enemy(175, o_Mutant)
+	///spawn enemies at night
+	//repeat(3) spawn_enemy(175, o_Mutant)
 }
 
 spawn_timer++

@@ -15,20 +15,20 @@ enum items
 {
 	air,
 	stone,
-	wood,
-	plastic,
-	forgedmetal,
+	log,
+	sledgehammer,
+	iron,
 	basicknife,
 	syringe,
 	bottle,
 	meat,
 	cookedmeat,
-	salt,
-	glass,
-	tools,
+	wood,
+	stick,
+	hammer,
 	bread,
-	fuel,
-	metal,
+	metalblades,
+	coal,
 	electronics,
 	plants,
 	medicalsolution,
@@ -48,7 +48,7 @@ enum items
 	metalpipes,
 	medicalparts,
 	grains,
-	rawmetal,
+	ironore,
 	straw,
 	crushedsand,
 	workbench,
@@ -63,11 +63,9 @@ function create_struct()
 		description : "No description has been set for this item.",
 		burn_time : 0,
 		smelt: items.air,
+		mill: 0,
 		item_type : item_types.resource,
 		building_obj : o_Campfire,
-		scrap: false,
-		hp: 0,
-		energy: 0,
 		damage: 0,
 		kb: 1,
 		sweep: 0,
@@ -85,7 +83,6 @@ function create_item(arg_name)
 	global.items_list[current_item] = 
 	{
 		name : arg_name,
-		stack : 10,
 		spr_index : current_item,
 		item_data : create_struct()
 	}
@@ -107,29 +104,27 @@ function create_item(arg_name)
 	var item = create_item("Stone")
 	
 	item.item_data.item_type = item_types.ranged
-	item.item_data.smelt = items.stone
 	item.item_data.description = "Heavy.. A very useful resource that is used in many different recipes. Pretty solid huh? I know, my joke rocks."
 }
 
 {
-	var item = create_item("Wood")
+	var item = create_item("Log")
 	
-	item.item_data.burn_time = 300
-	item.item_data.description = "A small piece of wood taken from a tree. Mainly used as a fuel for fires."
+	item.item_data.mill = 8
+	item.item_data.description = "A log taken from a tree. Can be turned into wood at a workbench or sawmill."
 }
 
 {
-	var item = create_item("Plastic")
+	var item = create_item("Sledgehammer")
 }
 
 {
-	var item = create_item("Forged Metal")
+	var item = create_item("Iron")
 }
 	
 {
 	var item = create_item("Basic Knife")
-	
-	item.item_data.scrap = true
+
 	item.item_data.item_type = item_types.melee
 	item.item_data.description = "A versatile weapon for taking down the infected and chopping unwanted foliage."
 	item.item_data.damage = 8
@@ -140,8 +135,6 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Syringe")
-
-	item.item_data.hp += 60
 }
 
 {
@@ -157,32 +150,40 @@ function create_item(arg_name)
 }
 
 {
-	var item = create_item("Salt")
-}
-
-{
-	var item = create_item("Glass")
-}
-
-{
-	var item = create_item("Tools")
+	var item = create_item("Wood")
 	
-	item.item_data.description = "Low quality general purpose tools forged in a furnace. Essential for crafting workbenchs and anything alike."
+	item.item_data.burn_time = 1
+	item.item_data.description = "Processed sticks and logs."
+}
+
+{
+	var item = create_item("Stick")
+}
+
+{
+	var item = create_item("Hammer")
+	
+	item.item_data.description = "Used for building bases."
+	item.item_data.hand_sprite = s_Hammer
+	item.item_data.item_type = item_types.tool
 }
 
 {
 	var item = create_item("Bread")
 
 	item.item_data.item_type = item_types.consumable
-	item.item_data.energy = 35
 }
 
 {
-	var item = create_item("Fuel")
+	var item = create_item("Metal Blades")
+	
+	item.item_data.description = "Be careful when handling."
 }
 
 {
-	var item = create_item("Metal")
+	var item = create_item("Coal")
+	
+	item.item_data.burn_time = 2
 }
 
 {
@@ -195,8 +196,6 @@ function create_item(arg_name)
 	var item = create_item("Plants")
 	
 	item.item_data.item_type = item_types.consumable
-	item.item_data.hp = 1
-	item.item_data.energy = 3
 }
 
 {
@@ -207,8 +206,6 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Medical Kit")
-
-	item.item_data.hp += 85
 }
 
 {
@@ -217,8 +214,6 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Bandage")
-
-	item.item_data.hp += 35
 }
 
 {
@@ -251,8 +246,9 @@ function create_item(arg_name)
 	item.item_data.kb = 3
 	item.item_data.sweep = 1
 	item.item_data.hand_sprite = s_Pickaxe
+	item.item_data.description = "Breaks rocks."
 }
-
+	
 {
 	var item = create_item("Stone Hatchet")
 
@@ -261,6 +257,7 @@ function create_item(arg_name)
 	item.item_data.kb = 1.5
 	item.item_data.sweep = 1
 	item.item_data.hand_sprite = s_Axe
+	item.item_data.description = "Cuts small trees."
 }	
 
 {
@@ -294,9 +291,9 @@ function create_item(arg_name)
 }
 
 {
-	var item = create_item("Raw Metal")
+	var item = create_item("Iron Ore")
 	
-	item.item_data.smelt = items.metal
+	item.item_data.smelt = items.iron
 }
 
 {
@@ -308,7 +305,7 @@ function create_item(arg_name)
 {
 	var item = create_item("Crushed Sand")
 	
-	item.item_data.smelt = items.glass
+	item.item_data.smelt = items.stick
 }
 
 {

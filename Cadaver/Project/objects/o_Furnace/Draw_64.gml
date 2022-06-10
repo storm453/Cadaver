@@ -1,191 +1,70 @@
-if(o_PlayerUI.open_instance == id)
+if(global.open_instance == id)
 {
-	ui_draw_window("Furnace", work_window_x, work_window_y, furn_width, furn_height)
+	//draw ui
+    ui_draw_rectangle(dx, dy, dw, dh, main_color, 1, false)
 
-	furn_panel = make_panel(work_window_x + pad, work_window_y + pad)
+    window_text(dx, dy, "FURNACE")
 
-	text_gap(furn_panel, "Fuel")
+    furn_panel = make_panel(dx, dy)
 
-	if(fuel_inv[0, 0] != 0)
-	{
-		var on_button = ui_draw_button_sprite(s_PowerIcon, 0, furn_panel.at_x, furn_panel.at_y, fuel_inv_data.slot_space, fuel_inv_data.slot_space, button_color, button_h_color, text_color, 0.5, false)
-		if(on_button[0])
-		{
-			if(fuel_inv[0,0] != 0)
-			{
-				if(global.items_list[fuel_inv[0,0].item].item_data.burn_time > 0)
-				{
-					on = !on
-				}
-			}
-		}
-	}
-	else
-	{
-		ui_draw_button_sprite(s_PowerIcon, 0, furn_panel.at_x, furn_panel.at_y, fuel_inv_data.slot_space, fuel_inv_data.slot_space, tab_color, tab_color, text_color, 0.5, false)
-	}
+    var prod_slot = 2
+    var reac_slot = 1
 
-	pn_col(furn_panel, fuel_inv_data.slot_space + pad)
+    var total_w = (slot_size * inv_scale) * (prod_slot + reac_slot) + (((prod_slot + reac_slot) - 1) * slot_gap) + (pad * 2) + compl_w
+
+    var offset_x = (dw / 2) - (total_w / 2)
+    var offset_y = (dh / 2) - ((slot_size * inv_scale - (string_height_font("H", ft_Description))) / 2)
+
+	draw_inventory_custom(furn, 2, 1, furn_panel.at_x + offset_x, furn_panel.at_y + offset_y, c_gray, 0.5, 1, 1)
 	
-	//draw fuel slot
-	for(var i = 0; i < fuel_inv_data.slots_x; i++)
-	{
-		for(var j = 0; j < fuel_inv_data.slots_y; j++)
-		{
-			var mx = device_mouse_x_to_gui(0)
-			var my = device_mouse_y_to_gui(0)
-			
-			var select = 0
-
-			if(point_in_rectangle(mx, my, furn_panel.at_x, furn_panel.at_y, furn_panel.at_x + fuel_inv_data.slot_space, furn_panel.at_y + fuel_inv_data.slot_space))
-			{
-				select = 1
-			}
-
-			//draw slot
-			draw_sprite_ext(s_SlotFurnace, select, furn_panel.at_x + (fuel_inv_data.slot_space * i), furn_panel.at_y, fuel_inv_data.draw_scale, fuel_inv_data.draw_scale, 0, c_white, 1)
-
-			//draw item
-			if(fuel_inv[i,j] != 0)
-			{
-				draw_sprite_ext(s_Items, fuel_inv[i,j].item, furn_panel.at_x, furn_panel.at_y, fuel_inv_data.draw_scale, fuel_inv_data.draw_scale, 0, c_white, 1,)	
-				
-				draw_set_color(text_color)
-				ui_draw_string(furn_panel.at_x + 3, furn_panel.at_y + 1, fuel_inv[i,j].amt, ft_Default)
-				draw_set_color(text_color)
-				draw_text(furn_panel.at_y + 3, furn_panel.at_y + 1, fuel_inv[i,j].amt)
-			}
-
-			//draw fire
-			if(on) draw_sprite_ext(s_Fire, 0, furn_panel.at_x, furn_panel.at_y, 3, 3, 0, c_white, 1)
-		}
-	}
+	window_text(furn_panel.at_x + offset_x, furn_panel.at_y + offset_y, "Fuel", ft_Description)
 	
-	if(fuel_inv[0,0] == 0)
+	pn_col(furn_panel, slot_size * inv_scale + slot_gap)
+	
+	window_text(furn_panel.at_x + offset_x, furn_panel.at_y + offset_y, "Ore", ft_Description)
+	
+    pn_col(furn_panel, slot_size * inv_scale + slot_gap)
+
+    //smelting bar
+    var compl_offset = (slot_size * inv_scale) / 2 - (10) / 2
+    ui_draw_rectangle(furn_panel.at_x + offset_x, furn_panel.at_y + offset_y + compl_offset, compl_w, 10, tab_color, 1, false)
+	
+	var percent_bar = compl_w * (burn_time / 120)
+	
+	ui_draw_rectangle(furn_panel.at_x + offset_x, furn_panel.at_y + offset_y + compl_offset, percent_bar, 10, c_orange, 1, false)
+	
+	pn_col(furn_panel, (pad * 2) + compl_w)
+	
+	//final slot
+	var mx = device_mouse_x_to_gui(0)
+	var my = device_mouse_y_to_gui(0)
+
+	for(var i = 0; i < 1; i++)
 	{
-		if(global.in_hand != 0)
-		{
-			if(global.items_list[global.in_hand.item].item_data.burn_time > 0)
-			{
-				inv_move(fuel_inv, fuel_inv_data, furn_panel.at_x, furn_panel.at_y)
-			}
-		}
-	}
-	else
-	{
-		if(global.in_hand == 0)
-		{
-			inv_move(fuel_inv, fuel_inv_data, furn_panel.at_x, furn_panel.at_y)
-		}
-	}
+		var inv_i = 2
+
+        var rec_x = furn_panel.at_x + offset_x + (i * (slot_size * inv_scale + slot_gap))
+        var rec_y = furn_panel.at_y + offset_y + (slot_size * inv_scale + slot_gap)
+
+        var color = c_gray
+
+        if(point_in_rectangle(mx, my, rec_x, furn_panel.at_y + offset_y, rec_x + slot_size * inv_scale, furn_panel.at_y + offset_y + slot_size * inv_scale))
+        {
+            color = c_ltgray
+        }
+
+        ui_draw_rectangle(furn_panel.at_x + offset_x  + (i * (slot_size * inv_scale + slot_gap)), furn_panel.at_y + offset_y, slot_size * inv_scale, slot_size * inv_scale, color, 0.5, false)
+
+		var _data = { slots_x: 1, slots_y: 1 }
+
+		//moving items to the slot
+        inv_move_new(furn_panel.at_x + offset_x, furn_panel.at_y + offset_y, furn, _data, slot_gap, 2)
 		
-	var gap = 20
-	
-	pn_row(furn_panel, fuel_inv_data.slot_space + pad + gap)
-	
-	text_gap(furn_panel, "Smelting")
-
-	//smelting slots
-	var smelt_scale = smelt_inv_data.slot_space + pad
-
-	for(var i = 0; i < smelt_inv_data.slots_x; i++)
-	{
-		for(var j = 0; j < smelt_inv_data.slots_y; j++)
+		if(furn[inv_i, 0] != 0)
 		{
-			var select = 0
-
-			if(point_in_rectangle(mx, my, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, furn_panel.at_x + (smelt_scale * i) + smelt_scale, furn_panel.at_y + smelt_scale))
-			{
-				select = 1
-			}
-
-			draw_sprite_ext(s_SlotFurnace, select, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, smelt_inv_data.draw_scale, smelt_inv_data.draw_scale, 0, c_white, 1)
-
-			//draw item
-			if(smelt_inv[i,j] != 0)
-			{
-				draw_sprite_ext(s_Items, smelt_inv[i,j].item, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, smelt_inv_data.draw_scale, smelt_inv_data.draw_scale, 0, c_white, 1,)	
-				
-				draw_set_color(text_color)
-				ui_draw_string(furn_panel.at_x + 3 + (smelt_scale * i), furn_panel.at_y + 1, smelt_inv[i,j].amt, ft_Default)
-				draw_set_color(text_color)
-				draw_text(furn_panel.at_y + 3 + (smelt_scale * i), furn_panel.at_y + 1, smelt_inv[i,j].amt)
-			}
-		}
-		
-		if(smelted[i] > 0)
-		{
-			var smelt_bar = (smelt_inv_data.slot_space - (pad * 2)) * (smelted[i] / 300)
-			
-			var rect_height = smelt_inv_data.slot_space / 8
-
-			var rect_x = furn_panel.at_x + (smelt_scale * i) + pad
-			var rect_y = furn_panel.at_y + smelt_inv_data.slot_space - rect_height - pad
-
-			ui_draw_rectangle(rect_x - 4, rect_y - 2, smelt_bar + 4, rect_height + 4, tab_color, 1, false)
-			ui_draw_rectangle(rect_x, rect_y, smelt_bar, rect_height, c_red, 0.9, false)
+			draw_item(furn, 0, 0, furn_panel.at_x + offset_x, furn_panel.at_y + offset_y, 1, inv_i)
 		}
 	}
 
-	inv_move(smelt_inv, smelt_inv_data, furn_panel.at_x, furn_panel.at_y, smelt_scale)
-	
-	pn_row(furn_panel, smelt_scale + gap)
-	
-	text_gap(furn_panel, "Inventory")
-
-	var slots = 3
-	
-	for(var i = 0; i < slots; i++)
-	{
-		ui_draw_rectangle(furn_panel.at_x, furn_panel.at_y + (35 * i), furn_width - (pad * 2), 30, tab_color, 1, false)
-	}
-	
-	var center = string_height("H") / 2 - 30 / 2
-	
-	var metal_count = get_item_amount(stored_inv, stored_inv_data, items.metal)
-	var glass_count = get_item_amount(stored_inv, stored_inv_data, items.glass)
-	var stone_count = get_item_amount(stored_inv, stored_inv_data, items.stone)
-	
-	draw_set_color(text_color)
-	ui_draw_string(furn_panel.at_x + 3, furn_panel.at_y - center, "Metal: " + string(metal_count), ft_Default)
-
-	pn_row(furn_panel, 35)
-
-	ui_draw_string(furn_panel.at_x + 3, furn_panel.at_y - center, "Glass: " + string(glass_count), ft_Default)
-
-	pn_row(furn_panel, 35)
-
-	ui_draw_string(furn_panel.at_x + 3, furn_panel.at_y - center, "Stone: " + string(stone_count), ft_Default)
-
-	pn_row(furn_panel, 35 + gap)
-	
-	text_gap(furn_panel, "Output")
-	
-	for(var i = 0; i < crafted_inv_data.slots_x; i++)
-	{
-		for(var j = 0; j < crafted_inv_data.slots_y; j++)
-		{
-			var select = 0
-
-			if(point_in_rectangle(mx, my, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, furn_panel.at_x + (smelt_scale * i) + smelt_scale, furn_panel.at_y + smelt_scale))
-			{
-				select = 1
-			}
-
-			draw_sprite_ext(s_SlotFurnace, select, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, crafted_inv_data.draw_scale, crafted_inv_data.draw_scale, 0, c_white, 1)
-
-			//draw item
-			if(crafted_inv[i,j] != 0)
-			{
-				draw_sprite_ext(s_Items, crafted_inv[i,j].item, furn_panel.at_x + (smelt_scale * i), furn_panel.at_y, crafted_inv_data.draw_scale, crafted_inv_data.draw_scale, 0, c_white, 1,)	
-				
-				draw_set_color(text_color)
-				ui_draw_string(furn_panel.at_x + 3 + (smelt_scale * i), furn_panel.at_y + 1, crafted_inv[i,j].amt, ft_Default)
-				draw_set_color(text_color)
-				draw_text(furn_panel.at_y + 3 + (smelt_scale * i), furn_panel.at_y + 1, crafted_inv[i,j].amt)
-			}
-		}
-	}
-
-	inv_move(crafted_inv, crafted_inv_data, furn_panel.at_x, furn_panel.at_y)
+    window_text(furn_panel.at_x + offset_x, furn_panel.at_y + offset_y, "Output", ft_Description)
 }

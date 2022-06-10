@@ -1,47 +1,78 @@
 z = -bbox_bottom
 
-//if there is an item in fuel slot
-if(fuel_inv[0, 0] != 0)
+if(fuel_slot != furn[0,0])
 {
-	burn_timer++
+	//new item in fuel slot
+	burned = 0	
+}
+if(ore_slot != furn[1,0])
+{
+	//new ore placed
+	burn_time = 0	
+}
 
-	if(burn_timer >= global.items_list[fuel_inv[0, 0].item].item_data.burn_time)
-	{	
-		burn_timer = 0
+fuel_slot = furn[0,0]
+ore_slot  = furn[1,0]
 
-		if(fuel_inv[0, 0].amt == 1) on = false
-
-		remove_item_slot(fuel_inv, fuel_inv_data, 1, 0, 0)
+//item in both fuel & ore
+if(ore_slot != 0)
+{
+	if(fuel_slot != 0)
+	{
+		var recipe_result = global.items_list[ore_slot.item].item_data.smelt
+		
+		if(recipe_result != items.air)
+		{
+			var check = false
+			
+			if(furn[2,0] != 0)
+			{
+				if(furn[2,0].item == recipe_result)
+				{
+					check = true
+				}
+			}
+			else
+			{
+				check = true	
+			}
+			
+			if(check)
+			{
+				//smelt items
+				burn_time++
+		
+				if(round(burn_time) > 120)
+				{
+					burn_time = 0
+					burned++
+			
+					show_debug_message(global.items_list[fuel_slot.item].item_data.burn_time)
+			
+					if(burned >= global.items_list[fuel_slot.item].item_data.burn_time)
+					{
+						burned = 0
+				
+						remove_item_slot(furn, furn_data, 1, 0, 0)
+					}
+			
+					remove_item_slot(furn, furn_data, 1, 1, 0)
+			
+					set_item_slot(furn, 2, 0, recipe_result, 1)
+				}
+			}
+			else
+			{
+				burn_time = 0	
+			}
+		}
+	}
+	else
+	{
+		burn_time = 0
 	}
 }
 else
 {
-	on = false
+	burn_time = 0	
 }
-
-//smelting
-if(on)
-{
-	for(var i = 0; i < smelt_inv_data.slots_x; i++)
-	{
-		if(smelt_inv[i, 0] != 0)
-		{
-			if(global.items_list[smelt_inv[i, 0].item].item_data.smelt != 0)
-			{
-				smelted[i]++
-			}
-		}
-	}
-	for(var j = 0; j < array_length_1d(smelted); j++)
-	{
-		if(smelted[j] > 300)
-		{
-			smelted[j] = 0
-		
-			add_item(stored_inv, stored_inv_data, global.items_list[smelt_inv[j, 0].item].item_data.smelt, 1)
-			remove_item_slot(smelt_inv, smelt_inv_data, 1, j, 0)	
-		}
-	}
-}
-
-queue_count(queue_list, crafted_inv, crafted_inv_data)

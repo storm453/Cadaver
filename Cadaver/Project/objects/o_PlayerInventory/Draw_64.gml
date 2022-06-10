@@ -113,44 +113,39 @@ for(var i = 0; i < inv_data.slots_x; i++)
 		{
 			if(point_in_rectangle(mx, my, rec_x, rec_y, rec_x + slot_size * inv_scale, rec_y + slot_size * inv_scale))
 			{
-				if(mouse_check_button(mb_left))
+				//picking up
+				if(mouse_check_button_pressed(mb_left))
 				{
-					held += (delta_time / 10000) * 3
-					
-					if(inv[i,j] != 0)
+					var old_hand = global.in_hand
+			
+					global.in_hand = inv[i, j]
+					array_set(inv[i], j, old_hand)
+
+					if(global.in_hand != 0)
 					{
-						if(round(held) == 25)
+						if(inv[i,j] != 0)
 						{
-							global.in_hand = { item: inv[i,j].item, amt: inv[i,j].amt }	
-							
-							drag_slot.xx = i
-							drag_slot.yy = j
-							
-							array_set(inv[i], j, 0)
+							if(inv[i,j].item == global.in_hand.item)
+							{
+								inv[i,j].amt += global.in_hand.amt
+								global.in_hand = 0 
+							}
 						}
 					}
 				}
-				else
+				
+				//splitting 
+				if(mouse_check_button_pressed(mb_right))
 				{
-					if(held > 25) 
-					{	
-						held = 0	
+					if(global.in_hand == 0)
+					{
+						//hand is empty
+						var take_amt = round(inv[i,j].amt / 2)
+						var leave_amt = inv[i,j].amt - take_amt
 						
-						if(inv[i,j] == 0)
-						{
-							array_set(inv[i], j, global.in_hand)
-					
-							global.in_hand = 0
-						}
-						else
-						{
-							var backup = inv[i,j]
-							
-							array_set(inv[i], j, global.in_hand)
-							array_set(inv[drag_slot.xx], drag_slot.yy, backup)
-							
-							global.in_hand = 0
-						}
+						global.in_hand = { item: inv[i,j].item, amt: take_amt }
+						
+						inv[i,j].amt = leave_amt
 					}
 				}
 			}

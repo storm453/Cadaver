@@ -1,13 +1,8 @@
 z = -bbox_bottom
 
-if(mouse_check_button_pressed(mb_left))
+if(selected_item != -1)
 {
-	moo = !moo
-}
-
-if(moo)
-{
-	dx = lerp(dx, 0, 0.1)	
+	dx = lerp(dx, lerp_x, 0.15)	
 }
 else
 {
