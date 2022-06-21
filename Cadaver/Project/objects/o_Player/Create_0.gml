@@ -1,6 +1,11 @@
 //@Declare(o_Player)
 ds_list_add(o_RenderManager.entities, self)
 
+walk_speed = 50 
+acceleration = 50
+
+velocity = vec2(0, 0);
+
 //x = random_range(-1000, 1000)
 //y = random_range(-1000, 1000)
 
@@ -38,12 +43,8 @@ energy = 100; //@Field(energy, float)
 energy_time = 0
 heal_duration = 0
 
-walk_speed = 50 
-acceleration = 50
-
-velocity = vec2(0, 0);
-
 part_sys = part_system_create()
+part_system_depth(part_sys, -20)
 
 state = player_state.idle
 
@@ -143,20 +144,10 @@ resource_drops[6] =
 
 enemies_list = ds_list_create()
 
-ds_list_add(enemies_list, o_Mutant)
+ds_list_add(enemies_list, o_Infected)
 ds_list_add(enemies_list, o_Walker)
 
 anim = 0
-
-#region player functions
-function input()
-{
-	in_x = keyboard_check(ord("D")) - keyboard_check(ord("A"))
-	in_y = keyboard_check(ord("S")) - keyboard_check(ord("W"))
-	
-	shift = keyboard_check(vk_shift);	
-	attack = mouse_check_button_pressed(mb_left)
-}
 
 rotation = 0
 melee_rot = 0
@@ -164,79 +155,25 @@ melee_rot = 0
 tool_cooldown = 0
 tool_cooldown_set = 30
 
+scripts_array[player_state.idle] = player_idle
+scripts_array[player_state.walk] = player_walk
+scripts_array[player_state.run] = player_run
+scripts_array[player_state.attack] = player_attack
+scripts_array[player_state.dead] = player_dead
+
 sprites_array[player_state.idle] = s_Player
 sprites_array[player_state.walk] = s_PlayerWalk
 sprites_array[player_state.run] = s_PlayerRun
 sprites_array[player_state.attack] = s_PlayerAttack
 sprites_array[player_state.dead] = s_PlayerDead
 
-function movement(spd = 1) 
-{
-	var move_speed = walk_speed
-	var target_velocity = vec_mul(vec_normalized(vec2(in_x, in_y)), vec2(move_speed))
+//circle melee hitbox
+py = 0
+			
+angle = 0
 
-	var velocity_change = vec_sub(target_velocity, velocity)
-	var velocity_increase = vec_mul(velocity_change, vec2(acceleration * get_delta_time()))
-
-    if (vec_length(velocity_increase) > vec_length(velocity_change)) velocity_increase = velocity_change
-	
-	velocity = vec_add(velocity, velocity_increase)
-
-	// move the player
-	if(!place_meeting(x + velocity.x * get_delta_time(), y, o_Collision))
-	{
-		x += velocity.x * get_delta_time() * spd
-	}
-	
-	if(!place_meeting(x, y + velocity.y * get_delta_time(), o_Collision))
-	{
-		y += velocity.y * get_delta_time() * spd	
-	}
-}
-
-function player_animation() 
-{
-	switch(state)
-	{
-		case(player_state.idle):
-		case(player_state.walk):
-			if(!global.hotbar_sel_item) 
-			{
-				sprite_index = s_Player
-			}
-			else
-			{
-				sprite_index = s_PlayerAttack
-			}
-		break;
-		
-		case(player_state.run):
-			sprite_index = s_PlayerRun
-		break;
-	}
-
-	//image_xscale and sacaling
-	var sign_mouse = sign(mouse_x - x)
-
-	if(sign_mouse == 0) 
-	{
-		sign_mouse = 1
-	}
-
-    if(in_x != 0 && sign(in_x) != sign_mouse) 
-	{
-		image_speed = -1
-	}
-	else {
-		image_speed = 1
-	}
-	
-	if(sign_mouse != 0)
-	{
-		image_xscale = sign_mouse;	
-	}
-}
-#endregion
+ex = 0
+ey = 0
 
 flash_alpha = 0
 
@@ -248,6 +185,14 @@ function render_shadow()
 function render()
 {
 	draw_self()
+
+	//move col x & y
+	py = y - 10
+
+	angle = point_direction(x, py, mouse_x, mouse_y)
+
+	ex = cos(angle * 2 * pi / 360) * 25 + x
+	ey = -sin(angle * 2 * pi / 360) * 25 + py
 
 	//drawing items on player or anytihng else.
 	if(global.hotbar_sel_item != 0)
@@ -358,6 +303,11 @@ function render()
 
 		if(selected == noone)
 		{
+			//draw hitbox for fists
+			draw_set_alpha(0.1)
+			draw_circle_color(ex, ey, 10, c_red, c_maroon, 0)
+			draw_set_alpha(1)
+			
 			//allow attacking because nothing selecteds!
 			if(attack_cooldown <= 0)
 			{
@@ -369,7 +319,7 @@ function render()
 
 					melee_rot = -135
 
-					instance_create_layer(x, y,  "Instances", o_Swing)
+					swing()
 
 					image_index = 0
 
@@ -402,6 +352,8 @@ function render()
 									if(tool_cooldown <= 0)
 									{
 										tool_cooldown = tool_cooldown_set
+
+										swing()
 
 										var sel_x = selected.x + (sprite_get_width(selected.sprite_index) / 2)
 										var sel_y = selected.y + (sprite_get_height(selected.sprite_index) / 4) * 3

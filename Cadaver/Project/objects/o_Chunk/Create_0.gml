@@ -53,9 +53,7 @@ function init_chunk(loc_x, loc_y)
 	var zm = irandom_range(50, 1000)
 
 	var current_noise = noise(v3_div(v3(idx * chunk_size, idy * chunk_size, 0), v3(650)))
-	
-	show_debug_message(zm)
-	
+
 	if(current_noise > 0.75)
 	{
 		repeat(irandom_range(3, 7))

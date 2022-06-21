@@ -17,6 +17,7 @@ blueprints = ds_list_create()
 ds_list_add(blueprints, { text: "Furnace", obj: o_Furnace, need: array( { item: items.stone, amt: 20 } ), desc: "Used for smelting ores." } )
 ds_list_add(blueprints, { text: "Basic Workbench", obj: o_BasicStation, need: array( { item: items.stick, amt: 5 } ), desc: "Craft items." } )
 ds_list_add(blueprints, { text: "Sawing Table", obj: o_SawMill, need: array( { item: items.wood, amt: 20 }, { item: items.metalblades, amt: 1 } ), desc: "Faster wood production." } )
+ds_list_add(blueprints, { text: "Campfire", obj: o_Campfire, need: array( { item: items.wood, amt: 5 }, { item: items.stone, amt: 3 } ), desc: "See at night." } )
 
 selected_bp = noone
 sel_bp_id = -1

@@ -19,7 +19,7 @@ var shake_offset_y = random_range(-1, 1) * shake;
 shake *= shake_damp;
 
 var scroll = mouse_wheel_down() - mouse_wheel_up();
-target_zoom += scroll / 4;
+//target_zoom += scroll / 4;
 
 target_zoom = clamp(target_zoom, min_zoom, max_zoom);
 

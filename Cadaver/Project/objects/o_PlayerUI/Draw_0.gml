@@ -56,9 +56,6 @@ if(global.hotbar_sel_item != 0)
 {
 	if(global.hotbar_sel_item.item == items.hammer)
 	{
-		//hammer selcted
-		show_debug_message("hello")
-		
 		var bp_op = housing[|selected_housing].obj
 		var sprite = object_get_sprite(bp_op)
 		

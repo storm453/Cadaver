@@ -46,9 +46,7 @@ if(ore_slot != 0)
 				{
 					burn_time = 0
 					burned++
-			
-					show_debug_message(global.items_list[fuel_slot.item].item_data.burn_time)
-			
+
 					if(burned >= global.items_list[fuel_slot.item].item_data.burn_time)
 					{
 						burned = 0

@@ -8,7 +8,7 @@ switch(level)
 	case(0):
 	
 		//level one
-		if(chance(0.0005))
+		if(chance(0.0001))
 		{
 			if(spawn_timer >= spawn_set)
 			{
@@ -16,7 +16,7 @@ switch(level)
 			
 				repeat( irandom_range(1, 2) )
 				{
-					//spawn_enemy(500, o_Mutant)	
+					spawn_enemy(500, o_Infected)	
 				}
 			}
 		}
