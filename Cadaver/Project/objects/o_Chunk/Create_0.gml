@@ -37,73 +37,29 @@ function init_chunk(loc_x, loc_y)
 	{
 		var random_y = floor(idy * chunk_size + random(chunk_size))
 		
-		bfDraw(buffer, floor(idx * chunk_size + random(chunk_size)), random_y, 32, 32, (-random_y) / 1000, s_GrassTest, irandom(2), c_white, 1)
+		//bfDraw(buffer, floor(idx * chunk_size + random(chunk_size)), random_y, 32, 32, (-random_y) / 1000, s_GrassTest, irandom(2), c_white, 1)
 	}
 	
-	//for(var i = 0; i < chunk_size / 16; i++)
-	//{
-	//	for(var j = 0; j < chunk_size / 16; j++)
-	//	{
-	//		bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, s_ChunkTest, 0, noise(v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16,0), v3(100))) * 255, 0.5)
-	//	}
-	//}
+	var zm = 256
+	
+	for(var i = 0; i < chunk_size / 16; i++)
+	{
+		for(var j = 0; j < chunk_size / 16; j++)
+		{
+			var nois = v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16,0), v3(zm))
+			
+			nois.x = floor(nois.x)
+			nois.y = floor(nois.y)
+			
+			nois = v3_div(nois, v3(2))
+			 
+			bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, s_ChunkTest, 0, noise(nois) * 255, 0.5)
+		}
+	}
 	
 	bfFinish(buffer)
 	
 	var zm = irandom_range(50, 1000)
 
 	var current_noise = noise(v3_div(v3(idx * chunk_size, idy * chunk_size, 0), v3(650)))
-
-	if(current_noise > 0.75)
-	{
-		repeat(irandom_range(3, 7))
-		{
-			var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", o_Tree1)
-	
-			ds_list_add(objects, obj)
-		}
-		
-		//var obj = instance_create_layer(idx * chunk_size + chunk_size / 2, idy * chunk_size + chunk_size / 2, "Instances", o_Tree1)
-		
-		//ds_list_add(objects, obj)
-	}
-	if(current_noise > 0.5) && (current_noise < 0.75)
-	{
-		repeat(irandom_range(3, 9))
-		{
-			var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", o_Tree2)
-	
-			ds_list_add(objects, obj)
-		}
-		
-		//var obj = instance_create_layer(idx * chunk_size + chunk_size / 2, idy * chunk_size + chunk_size / 2, "Instances", o_Tree2)
-		
-		//ds_list_add(objects, obj)
-	}
-	if(current_noise > 0.25) && (current_noise < 0.5)
-	{
-		repeat(irandom_range(2, 8))
-		{
-			var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", choose(o_Rock1, o_Iron,  o_Coal, o_RockPickup))	
-	
-			ds_list_add(objects, obj)
-		}		
-		
-		//var obj = instance_create_layer(idx * chunk_size + chunk_size / 2, idy * chunk_size + chunk_size / 2, "Instances", o_Rock1)
-		
-		//ds_list_add(objects, obj)
-	}
-	if(current_noise < 0.25)
-	{
-		repeat(irandom_range(5, 16))
-		{
-			var obj = instance_create_layer(floor(idx * chunk_size + random(chunk_size)), floor(idy * chunk_size + random(chunk_size)), "Instances", choose(o_Plants1, o_Plants2, o_Plants3))	
-
-			ds_list_add(objects, obj)
-		}	
-		
-		//var obj = instance_create_layer(idx * chunk_size + chunk_size / 2, idy * chunk_size + chunk_size / 2, "Instances", o_Plants1)
-		
-		//ds_list_add(objects, obj)
-	}
 }

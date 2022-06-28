@@ -6,6 +6,7 @@ global.time += (delta_time / 1000000)
 if(keyboard_check_pressed(vk_f1))
 {
 	game_restart()	
+	rand_seed()
 }
 
 if(keyboard_check_pressed(vk_f11))

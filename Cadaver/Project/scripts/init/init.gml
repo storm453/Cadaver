@@ -1,5 +1,16 @@
 display_set_gui_size(view_wport[0], view_hport[0])
 
+function rand_seed()
+{
+	random_set_seed(current_second)
+	
+	global.seed_rx = random(2514234)
+	global.seed_ry = random(2514234)
+	global.seed_rz = random(2514234)
+}
+
+rand_seed()
+
 //initialize particle types
 var pt = part_type_create()
 

@@ -421,8 +421,8 @@ function hash(p)
 
 function noise( x )
 {
-	var i = v3(floor(x.x), floor(x.y), floor(x.z));
-    var f = v3(fract(x.x), fract(x.y), fract(x.z));
+	var i = v3(floor(x.x + global.seed_rx), floor(x.y + global.seed_ry), floor(x.z + global.seed_rz));
+    var f = v3(fract(x.x + global.seed_rx), fract(x.y + global.seed_ry), fract(x.z + global.seed_rz));
     
     return lerp(lerp(lerp( hash(v3_add(i,v3(0,0,0))), 
                         hash(v3_add(i,v3(1,0,0))),f.x),
