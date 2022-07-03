@@ -1,1 +1,0 @@
-draw_sprite_ext(hurt_overlay, 0, 0, 0, 1, 1, 0, c_white, hurt_alpha)

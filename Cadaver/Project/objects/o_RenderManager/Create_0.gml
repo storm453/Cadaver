@@ -20,7 +20,7 @@ ds_list_copy(render_list, entities);
 	  render_list[|i] = a;
 	}
 	
-	draw_sprite_tiled(s_DirtTest, 0, 0, 0)
+	//draw_sprite_tiled(s_DirtTest, 0, 0, 0)
 	
 	for(var i = 0; i < ds_list_size(render_list); i++)
 	{

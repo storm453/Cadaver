@@ -1,1 +1,0 @@
-z = -bbox_bottom

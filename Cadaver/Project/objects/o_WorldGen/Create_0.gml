@@ -1,4 +1,4 @@
-chunk_load = 4
+chunk_load = 2
 
 #macro chunk_size 256
 

@@ -5,8 +5,28 @@ idy = 0
 
 objects = ds_list_create()
 
+zm = 256
+
 function render()
 {
+	//for(var i = 0; i < chunk_size / 16; i++)
+	//{
+	//	for(var j = 0; j < chunk_size / 16; j++)
+	//	{
+	//		var current_noise = noise(v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 0), v3(zm)))
+			
+	//		//nois.x = floor(nois.x)
+	//		//nois.y = floor(nois.y)
+			
+	//		//nois = v3_div(nois, v3(2))
+			 
+	//		 if(current_noise > 0.5)
+	//		{
+	//			draw_sprite_ext(grass, 0, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 1, 1, 0, c_white, 1)
+	//		}
+	//	}
+	//}
+
 	bfSubmit(buffer)
 }
 
@@ -40,26 +60,39 @@ function init_chunk(loc_x, loc_y)
 		//bfDraw(buffer, floor(idx * chunk_size + random(chunk_size)), random_y, 32, 32, (-random_y) / 1000, s_GrassTest, irandom(2), c_white, 1)
 	}
 	
-	var zm = 256
-	
 	for(var i = 0; i < chunk_size / 16; i++)
 	{
 		for(var j = 0; j < chunk_size / 16; j++)
 		{
-			var nois = v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16,0), v3(zm))
+			var seed_input = v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 0), v3(zm))
+
+			seed_input = v3_div(seed_input, v3(10))
 			
-			nois.x = floor(nois.x)
-			nois.y = floor(nois.y)
+			var current_noise = noise(seed_input)
+
+			if(current_noise > 0.4)
+			{
+				bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, grass, 0, c_white, 1)
+			}
+			if(current_noise < 0.4) && (current_noise > 0.35)
+			{
+				bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, sand, 0, c_white, 1)		
+			}
+			if(current_noise < 0.35)
+			{
+				bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, water, 0, c_white, 1)		
+			}
 			
-			nois = v3_div(nois, v3(2))
+			//var nois = v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16,0), v3(zm))
+			
+			////nois.x = floor(nois.x)
+			////nois.y = floor(nois.y)
+			
+			//nois = v3_div(nois, v3(2))
 			 
-			bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, s_ChunkTest, 0, noise(nois) * 255, 0.5)
+			//bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, s_ChunkTest, 0, noise(nois) * 255, 0.5)
 		}
 	}
 	
 	bfFinish(buffer)
-	
-	var zm = irandom_range(50, 1000)
-
-	var current_noise = noise(v3_div(v3(idx * chunk_size, idy * chunk_size, 0), v3(650)))
 }
