@@ -253,7 +253,7 @@ function create_item(arg_name)
 	var item = create_item("Stone Hatchet")
 
 	item.item_data.item_type = item_types.tool
-	item.item_data.damage = 5
+	item.item_data.damage = 4
 	item.item_data.kb = 1.5
 	item.item_data.sweep = 1
 	item.item_data.hand_sprite = s_Axe

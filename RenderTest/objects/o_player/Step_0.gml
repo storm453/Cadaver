@@ -14,5 +14,3 @@ if(keyboard_check(ord("D")))
 {
 	x += 5
 }
-
-z = -bbox_bottom

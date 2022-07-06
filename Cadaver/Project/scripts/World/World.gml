@@ -15,6 +15,13 @@ function check_adjacent(parent)
 	}
 }
 
+function create_obj_chunk(object, xx, yy)
+{
+	var obj = instance_create_layer(xx, yy, "World", object)	
+	
+	ds_list_add(objects, obj)
+}
+
 function create_drop(xx, yy, item, amt)
 {
 	var drop = instance_create_layer(xx, yy, "Instances", o_ItemDropped)

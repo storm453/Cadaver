@@ -1,4 +1,4 @@
-time_speed = 0.01
+time_speed = 0.0
 
 draw_set_font(ft_Default)
 
@@ -10,7 +10,7 @@ texture_lut_night = sprite_get_texture(spr_night, 0);
 day_factor = 0
 global.time = 0;
 
-colour_grade = 0
+colour_grade = 1
 
 //cursor
 //window_set_cursor(cr_none)

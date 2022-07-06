@@ -1,5 +1,11 @@
 z = -bbox_bottom
 
+with(light)
+{
+	x = other.x
+	y = other.y
+}
+
 rotation = lerp(rotation, 90, 0.1)
 melee_rot = lerp(melee_rot, 0, 0.1)
 
@@ -37,8 +43,6 @@ if(global.hotbar_sel_item != 0)
 	
 	if(global.hotbar_sel_item == 0) tool = true
 	if(hotbar_item_data.item_type == item_types.tool) tool = true
-
-	
 }
 
 //check list movable if player should be able to move in this gui state

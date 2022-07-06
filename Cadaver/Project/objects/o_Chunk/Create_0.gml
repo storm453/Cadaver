@@ -5,43 +5,9 @@ idy = 0
 
 objects = ds_list_create()
 
-zm = 256
-
 function render()
 {
-	//for(var i = 0; i < chunk_size / 16; i++)
-	//{
-	//	for(var j = 0; j < chunk_size / 16; j++)
-	//	{
-	//		var current_noise = noise(v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 0), v3(zm)))
-			
-	//		//nois.x = floor(nois.x)
-	//		//nois.y = floor(nois.y)
-			
-	//		//nois = v3_div(nois, v3(2))
-			 
-	//		 if(current_noise > 0.5)
-	//		{
-	//			draw_sprite_ext(grass, 0, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 1, 1, 0, c_white, 1)
-	//		}
-	//	}
-	//}
-
 	bfSubmit(buffer)
-}
-
-function render_shadow()
-{
-	
-}
-
-ds_list_add(o_RenderManager.entities, self)
-
-function create_obj_chunk(object, xx, yy)
-{
-	var obj = instance_create_layer(xx, yy, "Instances", object)	
-	
-	ds_list_add(objects, obj)
 }
 
 function init_chunk(loc_x, loc_y)
@@ -49,50 +15,111 @@ function init_chunk(loc_x, loc_y)
 	idx = loc_x
 	idy = loc_y
 	
-	random_set_seed(rand(idx, idy) * 10000 + o_WorldGen.seed)
-	
-	buffer = bfCreate()
+	random_set_seed(rand(idx, idy) * 10000 + global.seed)
 
-	repeat(irandom_range(50, 150))
+	//we need to check if this chunk save already exists
+	file_name = string(idx) + "_" + string(idy) + ".chunk"
+	if(file_exists(MAPDIR + file_name))
 	{
-		var random_y = floor(idy * chunk_size + random(chunk_size))
+		//file exists load!
+		var bf = buffer_load(MAPDIR + file_name)
 		
-		//bfDraw(buffer, floor(idx * chunk_size + random(chunk_size)), random_y, 32, 32, (-random_y) / 1000, s_GrassTest, irandom(2), c_white, 1)
+		var count = buffer_read(bf, buffer_u32)
+		
+		for(var i = 0; i < count; i++)
+		{
+			var uid = buffer_read(bf, buffer_u32)
+			var _x  = buffer_read(bf, buffer_f64)
+			var _y  = buffer_read(bf, buffer_f64)	
+			
+			create_obj_chunk(uid, _x, _y)	
+		}
+		
+		buffer_delete(bf)
+	}
+	else
+	{
+		//it doesnt exist!
+		
+		//create obj
+		repeat(20)
+		{
+			if(chance(0.25))
+			{
+				create_obj_chunk(o_Tree2, idx * chunk_size + random(chunk_size), idy * chunk_size + random(chunk_size))	
+			}
+		}
+		
+		//create a file
+		var file = file_bin_open(MAPDIR + file_name, 1)
+		file_bin_close(file)
+	}
+
+	buffer = bfCreate()
+	grid = ds_grid_create(chunk_size / tile_size, chunk_size / tile_size)
+
+	for(var i = 0; i < chunk_size / 16; i++)
+	{
+		for(var j = 0; j < chunk_size / 16; j++)
+		{
+			var current_noise = value_noise(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 3, 0.5, 0.001, 2.1042)
+	
+			var waterlevel = 0.2
+			var spr = 0
+			
+			//grass
+			if(in_range(current_noise, 0.4, 0.7))
+			{
+				var rnd = rand(i, j)
+				
+				if(rnd > max((current_noise - 0.6) / 0.1, 0))
+				{
+					bfDraw(buffer, floor(idx * chunk_size + i * 16 + rand(i,j) * (tile_size * choose(-1,1))), floor(idy * chunk_size + j * 16 + rand(j,i) * (tile_size * choose(-1,1))), 32, 32, 0, s_GrassTest, 1, c_white, 1)	
+				}
+			}
+			
+			if(in_range(current_noise, 0.6, 1))
+			{
+				spr = s_TileDirt
+				ds_grid_set(grid, i, j, tile.dirt)
+			}
+			else if(in_range(current_noise, 0.4, 0.6))
+			{
+				spr = s_TileGrass
+				ds_grid_set(grid, i, j, tile.grass)
+			}
+			else if(in_range(current_noise, 0.35, 0.4))
+			{
+				spr = s_TileSand
+				ds_grid_set(grid, i, j, tile.sand)
+			}
+			else if(in_range(current_noise, 0.25, 0.35))
+			{
+				spr = s_TileWater
+				ds_grid_set(grid, i, j, tile.water)
+			}
+			else if(in_range(current_noise, 0.0, 0.25))
+			{
+				spr = s_TileWaterdeep
+				ds_grid_set(grid, i, j, tile.waterdeep)
+			}
+
+			//debug: draw noise
+			//bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, s_ChunkTest, 0, current_noise * 255, 0.5)
+			
+			bfDraw(buffer, idx * chunk_size + i * tile_size, idy * chunk_size + j * tile_size, tile_size, tile_size, 10, spr, 0, c_white, 1)	
+		}
 	}
 	
 	for(var i = 0; i < chunk_size / 16; i++)
 	{
 		for(var j = 0; j < chunk_size / 16; j++)
 		{
-			var seed_input = v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 0), v3(zm))
-
-			seed_input = v3_div(seed_input, v3(10))
-			
-			var current_noise = noise(seed_input)
-
-			if(current_noise > 0.4)
-			{
-				bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, grass, 0, c_white, 1)
-			}
-			if(current_noise < 0.4) && (current_noise > 0.35)
-			{
-				bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, sand, 0, c_white, 1)		
-			}
-			if(current_noise < 0.35)
-			{
-				bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, water, 0, c_white, 1)		
-			}
-			
-			//var nois = v3_div(v3(idx * chunk_size + i * 16, idy * chunk_size + j * 16,0), v3(zm))
-			
-			////nois.x = floor(nois.x)
-			////nois.y = floor(nois.y)
-			
-			//nois = v3_div(nois, v3(2))
-			 
-			//bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, s_ChunkTest, 0, noise(nois) * 255, 0.5)
+			//bfDraw(buffer, idx * chunk_size + i * tile_size, idy * chunk_size + j * tile_size, tile_size, tile_size, 10, spr, 0, c_white, 1)	
 		}
 	}
-	
+
 	bfFinish(buffer)
 }
+
+ds_list_add(o_RenderManager.terrain, self)

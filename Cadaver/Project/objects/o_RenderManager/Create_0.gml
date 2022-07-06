@@ -2,36 +2,46 @@
 //@Global(0)
 function render_game()
 {
-	// sort depths:
-
-	ds_list_clear(render_list);
-ds_list_copy(render_list, entities);
-
-	for (var i = 0; i < ds_list_size(render_list); i++) {
-	  var closest = i;
-	  for (var j = i + 1; j < ds_list_size(render_list); j++) {
-	    if (render_list[|closest].z < render_list[|j].z) {
-	      closest = j;
-	    }
-	  }
-
-	  var a = render_list[|closest];
-	  render_list[|closest] = render_list[|i];
-	  render_list[|i] = a;
-	}
+	gpu_set_zwriteenable(true)
+	gpu_set_ztestenable(true)
+	gpu_set_alphatestenable(true)
 	
-	//draw_sprite_tiled(s_DirtTest, 0, 0, 0)
-	
-	for(var i = 0; i < ds_list_size(render_list); i++)
+	for(var i = 0; i < ds_list_size(terrain); i++)
 	{
-		render_list[|i].render_shadow()
+		terrain[|i].render()
 	}
 	
+	gpu_set_zwriteenable(false)
+	gpu_set_ztestenable(false)
+	gpu_set_alphatestenable(false)
+	
+	// sort depths
+	ds_list_clear(render_list);
+	ds_list_copy(render_list, entities);
+
+	for (var i = 0; i < ds_list_size(render_list); i++) 
+	{
+		var closest = i;
+		
+		for (var j = i + 1; j < ds_list_size(render_list); j++) 
+		{
+			if (render_list[|closest].z < render_list[|j].z) 
+			{
+				closest = j;
+		    }
+		 }
+
+		 var a = render_list[|closest];
+		 render_list[|closest] = render_list[|i];
+		 render_list[|i] = a;
+	}
+
 	for(var i = 0; i < ds_list_size(render_list); i++)
 	{
 		render_list[|i].render()
 	}
 }
 
+terrain = ds_list_create()
 entities = ds_list_create()
 render_list = ds_list_create()

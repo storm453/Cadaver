@@ -3,7 +3,7 @@ function player_animation()
 	sprite_index = sprites_array[state]
 
 	//exceptions go here!
-	
+	if(global.hotbar_sel_item != 0) sprite_index = s_PlayerAttack
 
 	//image_xscale and sacaling
 	var sign_mouse = sign(mouse_x - x)

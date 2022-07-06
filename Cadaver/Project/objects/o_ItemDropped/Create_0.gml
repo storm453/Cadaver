@@ -43,9 +43,4 @@ function render()
 	}
 }
 
-function render_shadow()
-{
-
-}
-
 ds_list_add(o_RenderManager.entities, self)

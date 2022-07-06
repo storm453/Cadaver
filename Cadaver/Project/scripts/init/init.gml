@@ -2,14 +2,16 @@ display_set_gui_size(view_wport[0], view_hport[0])
 
 function rand_seed()
 {
-	random_set_seed(current_second)
+	randomize()
+	random_set_seed(current_second * irandom(25241))
 	
-	global.seed_rx = random(2514234)
-	global.seed_ry = random(2514234)
-	global.seed_rz = random(2514234)
+	global.seed = random_get_seed()
 }
 
 rand_seed()
+
+#macro MAPDIR working_directory + "/"+string(global.seed)+"/"
+if(!directory_exists(MAPDIR)) directory_create(MAPDIR)
 
 //initialize particle types
 var pt = part_type_create()

@@ -323,19 +323,19 @@ function m4_translate(v) {
 	return result;
 }
 
-function m4_rotation_axis_angle(axis_ref, angle)
-{
-	var axis = v3_normalized(axis_ref);
+//function m4_rotation_axis_angle(axis_ref, angle)
+//{
+//	var axis = v3_normalized(axis_ref);
 
-	var s = msin(angle);
-	var c = mcos(angle);
-	var oc = 1.0 - c;
+//	var s = msin(angle);
+//	var c = mcos(angle);
+//	var oc = 1.0 - c;
 
-	return m4_full(oc * axis.x * axis.x + c, oc * axis.x * axis.y - axis.z * s, oc * axis.z * axis.x + axis.y * s, 0.0,
-		oc * axis.x * axis.y + axis.z * s, oc * axis.y * axis.y + c, oc * axis.y * axis.z - axis.x * s, 0.0,
-		oc * axis.z * axis.x - axis.y * s, oc * axis.y * axis.z + axis.x * s, oc * axis.z * axis.z + c, 0.0,
-		0.0, 0.0, 0.0, 1.0);
-}
+//	return m4_full(oc * axis.x * axis.x + c, oc * axis.x * axis.y - axis.z * s, oc * axis.z * axis.x + axis.y * s, 0.0,
+//		oc * axis.x * axis.y + axis.z * s, oc * axis.y * axis.y + c, oc * axis.y * axis.z - axis.x * s, 0.0,
+//		oc * axis.z * axis.x - axis.y * s, oc * axis.y * axis.z + axis.x * s, oc * axis.z * axis.z + c, 0.0,
+//		0.0, 0.0, 0.0, 1.0);
+//}
 
 
 function m4_rotation_euler(rotation)
@@ -432,6 +432,72 @@ function noise( x )
                         hash(v3_add(i,v3(1,0,1))),f.x),
                    lerp( hash(v3_add(i,v3(0,1,1))), 
                         hash(v3_add(i,v3(1,1,1))),f.x),f.y),f.z);
+}
+
+
+function noise2d(xx, yy) 
+{
+	modnum = argument0 + argument1 * 65536; 
+
+	var seed = global.seed + modnum;
+
+	random_set_seed(seed);
+
+	irnum = random_range(0,1); // Can be (0.3 <=> 0.5, 1) for pre-island gen. Will give you less small islands.
+
+	return irnum;
+}
+
+function interpolate(xx, yy) 
+{
+	var XIndex = floor(xx);
+	var remX = xx - XIndex
+
+	var YIndex = floor(yy);
+	var remY = yy - YIndex;
+
+	var a = noise2d(XIndex, YIndex);
+	var b = noise2d(XIndex + 1, YIndex);        
+	var c = noise2d(XIndex, YIndex + 1);
+	var d = noise2d(XIndex + 1, YIndex + 1);  
+
+	var ftx = remX * pi;
+	var fx = (1 - cos(ftx)) / 2;    
+
+	var i1 = a * (1 - fx) + b * fx;
+	var i2 = c * (1 - fx) + d * fx;
+
+	var fty = remY * pi;
+	var fy = (1 - cos(fty)) / 2;
+
+	var interpolated = i1 * (1 - fy) + i2 * fy;
+
+	return interpolated;
+}
+
+function value_noise(xx, yy, octaves, pers, _freq, lac) 
+{
+	var value = 0;
+
+	var freq = _freq; // Frequency of starting octave.
+	var amp = pers;
+
+	var namp = 0; // Amplitude normalisation variable
+
+	for(var z =  0; z < octaves; z++){
+    
+	    namp += amp;
+               
+	    value += interpolate(xx * freq, yy * freq) * amp;  
+            
+	    freq *= lac;
+	    amp *= pers;
+            
+	    fv = value / namp; // Basic range normalisation.
+               
+	}
+
+	return fv;
 }
 
 function m4_xform(xform) {

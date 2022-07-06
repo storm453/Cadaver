@@ -1,14 +1,18 @@
 {
   "resources": [
     {"id":{"name":"o_RenderManager","path":"objects/o_RenderManager/o_RenderManager.yy",},"order":0,},
+    {"id":{"name":"o_Camera","path":"objects/o_Camera/o_Camera.yy",},"order":8,},
+    {"id":{"name":"Map","path":"scripts/Map/Map.yy",},"order":2,},
     {"id":{"name":"o_Player","path":"objects/o_Player/o_Player.yy",},"order":5,},
     {"id":{"name":"o_Tree","path":"objects/o_Tree/o_Tree.yy",},"order":2,},
+    {"id":{"name":"s_Ground2","path":"sprites/s_Ground2/s_Ground2.yy",},"order":3,},
     {"id":{"name":"AdamBuffer","path":"scripts/AdamBuffer/AdamBuffer.yy",},"order":1,},
     {"id":{"name":"s_test","path":"sprites/s_test/s_test.yy",},"order":1,},
     {"id":{"name":"s_Ground","path":"sprites/s_Ground/s_Ground.yy",},"order":2,},
-    {"id":{"name":"o_Ground","path":"objects/o_Ground/o_Ground.yy",},"order":6,},
+    {"id":{"name":"o_Chunk","path":"objects/o_Chunk/o_Chunk.yy",},"order":6,},
     {"id":{"name":"SeanBuffer","path":"scripts/SeanBuffer/SeanBuffer.yy",},"order":0,},
     {"id":{"name":"s_Tree","path":"sprites/s_Tree/s_Tree.yy",},"order":0,},
+    {"id":{"name":"o_Worldgen","path":"objects/o_Worldgen/o_Worldgen.yy",},"order":7,},
     {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":0,},
   ],
   "Options": [
@@ -18,7 +22,7 @@
     {"name":"Windows","path":"options/windows/options_windows.yy",},
     {"name":"operagx","path":"options/operagx/options_operagx.yy",},
   ],
-  "defaultScriptType": 1,
+  "isDnDProject": false,
   "isEcma": false,
   "configs": {
     "name": "Default",
@@ -47,11 +51,11 @@
     {"targets":-1,"resourceVersion":"1.3","name":"audiogroup_default","resourceType":"GMAudioGroup",},
   ],
   "TextureGroups": [
-    {"isScaled":true,"compressFormat":"bz2","autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,"resourceVersion":"1.3","name":"Default","resourceType":"GMTextureGroup",},
+    {"isScaled":true,"autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,"resourceVersion":"1.3","name":"Default","resourceType":"GMTextureGroup",},
   ],
   "IncludedFiles": [],
   "MetaData": {
-    "IDEVersion": "2022.5.1.16",
+    "IDEVersion": "2022.2.1.618",
   },
   "resourceVersion": "1.5",
   "name": "RenderTest",

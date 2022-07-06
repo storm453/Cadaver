@@ -3,7 +3,7 @@ py = o_Player.y
 
 if(keyboard_check_pressed(ord("L")))
 {
-	chunk_load++		
+	chunk_load++	
 }
 
 var p_locx = floor(px / chunk_size)
@@ -22,6 +22,11 @@ for(var j = -chunk_load; j <= chunk_load; j++)
 		{
 			var new_chunk = instance_create_layer(grid_locx * chunk_size, grid_locy * chunk_size, "World", o_Chunk)
 			ds_list_add(chunk_list, new_chunk)
+			
+			//ini_open(string(global.seed) + "map.ini")
+			//ini_write_real("Chunks", "ch" + string(grid_locx) + "x", grid_locx)
+			//ini_write_real("Chunks", "ch" + string(grid_locy) + "y", grid_locy)
+			//ini_close()
 			
 			new_chunk.init_chunk(grid_locx, grid_locy)
 		}

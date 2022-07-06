@@ -8,7 +8,7 @@ switch(level)
 	case(0):
 	
 		//level one
-		if(chance(0.0001))
+		if(chance(0.0005))
 		{
 			if(spawn_timer >= spawn_set)
 			{
@@ -49,10 +49,14 @@ switch(level)
 	break;
 }
 
-if(o_GUI.day_factor == 1.00)
+if(o_GUI.day_factor > 0.9)
 {
 	///spawn enemies at night
-	//repeat(3) spawn_enemy(175, o_Mutant)
+	if(!night) 
+	{
+		repeat(7) spawn_enemy(75, o_Infected)
+		night = true
+	}
 }
 
 spawn_timer++

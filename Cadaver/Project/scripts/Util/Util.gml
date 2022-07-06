@@ -1,3 +1,31 @@
+function split_string(string, delimiter)
+{
+	container[0] = "";
+	previous_position = 1;
+	container_index = 0;
+
+	for (i = 1; i < string_length(string); i++) 
+	{
+	    // If the character at the current location is equivalent to the delimiter
+	    if(string_char_at(string, i) == delimiter)
+		{
+	        container[container_index] = "";
+			
+	        letters = i - previous_position;
+			
+	        for(j = 0; j < letters; j++)
+			{
+	            container[container_index] += string_char_at(string, previous_position + j);
+	        }
+	
+	        container_index += 1;
+	        previous_position = i;
+		}
+	}
+	
+	return container;
+}
+
 function chance(probability) {
 	return probability > random(1);
 }
@@ -29,4 +57,16 @@ function instance_nearest_notme(obj)
 function move_towards(target)
 {
     return v2_normalized(v2_sub(target, self))
+}
+
+function in_range(check, _min, _max)
+{
+    if(_min < check && check < _max)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

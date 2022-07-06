@@ -3,9 +3,7 @@ inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
 
 depth = 0
 
-//add_item(inv, inv_data, items.stonehatchet, 1)
-//add_item(inv, inv_data, items.pickaxe, 1)
-//add_item(inv, inv_data, items.rawmetal, 15)
+add_item(inv, inv_data, items.stonehatchet, 1)
 
 overlay_alpha = 0
 

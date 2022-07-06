@@ -16,8 +16,10 @@ else
 {
 	if (surface_exists(surf)) 
 	{
-		var _cw = o_Camera.x_size * o_Camera.zoom * 1.1
-		var _ch = o_Camera.y_size * o_Camera.zoom * 1.1
+		var _cw = o_Camera.x_size * o_Camera.zoom
+		var _ch = o_Camera.y_size * o_Camera.zoom
+		
+		surface_resize(surf, _cw, _ch)
 		
 		var _cx = o_Camera.x - _cw / 2
 		var _cy = o_Camera.y - _ch / 2
