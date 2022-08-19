@@ -38,14 +38,14 @@ var log_x = 1700
 var log_y = 1000
 for(var i = 0; i < ds_list_size(item_log); i++)
 {
-	var log_height = 50
+	var log_height = 35
 		
 	var item_entry = item_log[|i]
 		
 	var item_spr_index = item_entry.spr_index
 	//var item_name = o_iitem_entry.spr_index
 	
-	var fade_time = 0.5
+	var fade_time = 0.25
 	var fade_alpha = clamp(item_entry.time / fade_time, 0, 1)
 	
 	var target_y = log_y - (log_height + pad) * i
@@ -53,14 +53,16 @@ for(var i = 0; i < ds_list_size(item_log); i++)
 	item_entry.cur_y = lerp(item_entry.cur_y, target_y, 0.1)
 	
 	//text coloring
-	var text_c = decline_s_color
+	var text_c = decline_color
 	
-	if(item_entry.type) text_c = confirm_s_color
+	if(item_entry.type) text_c = confirm_color
 	
 	//@TODO Smooth moving
 	//@HACK
 	draw_set_alpha(fade_alpha)
-	ui_draw_title(item_entry.msg, log_x, item_entry.cur_y, 200, log_height, tab_color, text_c, false)
+	draw_set_font(ft_Medium)
+	draw_sprite_ext(s_PickupTitle, 0, log_x, item_entry.cur_y, inv_scale, inv_scale, 0, c_white, fade_alpha)
+	ui_draw_title_text(item_log[|i].msg, log_x, item_entry.cur_y, 200, log_height, text_c, text_c, false)
 	draw_set_alpha(1)	
 	
 	item_entry.time -= get_delta_time()
@@ -72,279 +74,199 @@ for(var i = 0; i < ds_list_size(item_log); i++)
 }
 #macro pad 5
 
-//switch buttons - for switching between inventory and building
-var show = false
-
-for(var i = 0; i < ds_list_size(switch_buttons); i++)
+if(global.current_gui == gui.CRAFT)
 {
-	if(global.current_gui == switch_buttons[|i].to) show = true
-}
-
-if(show)
-{
-	var sw_width = 175
-	var sw_height = 35
-
-	var sw_gap = 30
+	var craft_width = sprite_get_width(s_CraftUI) * inv_scale
+	var craft_height = sprite_get_height(s_CraftUI) * inv_scale
 	
-	var sw_x = display_get_gui_width() / 2 - (((ds_list_size(switch_buttons) * sw_width)) + ((ds_list_size(switch_buttons) - 1) * sw_gap)) / 2
-	var sw_y = pad
+	var cra_x = display_get_gui_width() / 2 - craft_width / 2
+	var cra_y = display_get_gui_height() / 2 - craft_height / 2
+	
+	window_text(cra_x, cra_y, "Crafting", ft_Large, color_hex(0xe4d2aa))
+	
+	draw_sprite_ext(s_CraftUI, 0, cra_x, cra_y, inv_scale, inv_scale, 0, c_white, 1)
+	
+	cra_pan = make_panel(cra_x + slot_from_top, cra_y + slot_from_top)
 
-	for(var i = 0; i < ds_list_size(switch_buttons); i++)
+	for(var i = 0; i < ds_list_size(craft_categories); i++)
 	{
-		var color = c_gray
-		var s_color = c_ltgray
+		//ui_craft_list_button(craft_categories[|i], cra_pan.at_x,)
 		
-		if(global.current_gui == switch_buttons[|i].to) 
+		//list button
+		var mx = device_mouse_x_to_gui(0)
+		var my = device_mouse_y_to_gui(0)
+
+		//var spr_index = 0
+		var spr_index = 0
+		
+		var inc_y = cra_pan.at_y + (i * ((sprite_get_height(s_CraftListButton) * inv_scale) + slot_spacing))
+		
+		if(point_in_rectangle(mx, my, cra_pan.at_x, inc_y, cra_pan.at_x + (sprite_get_width(s_CraftListButton) * inv_scale), inc_y + sprite_get_height(s_CraftListButton) * inv_scale))
 		{
-			color = c_orange
-			s_color = c_orange
+			spr_index = 1
+
+			if(mouse_check_button_pressed(mb_left))
+			{
+				craft_selcat = i	
+				
+				craft_selrec = 0
+			}
 		}
 		
-		var button = ui_draw_button_color(switch_buttons[|i].text, sw_x + (sw_width + sw_gap) * i, sw_y, sw_width, sw_height, color, s_color, c_white, false)
-		if(button[0])
-		{
-			global.current_gui = switch_buttons[|i].to	
-			
-			if(global.current_gui == gui.BUILDING) selected_bp = noone
-		}
+		if(craft_selcat == i) spr_index = 2
+		
+		draw_sprite_ext(s_CraftListButton, spr_index, cra_pan.at_x, inc_y, inv_scale, inv_scale, 0, c_white, 1)
+		
+		var text_x = cra_pan.at_x + (sprite_get_width(s_CraftListButton) * inv_scale) / 2 - string_width(craft_categories[|i]) / 2
+		var text_y = inc_y + (sprite_get_height(s_CraftListButton) * inv_scale) / 2 - string_height(craft_categories[|i]) / 2
+		
+		draw_set_color(c_black)
+		draw_text(text_x, text_y, craft_categories[|i])
+		draw_set_color(c_white)
 	}
-}
-
-if(global.current_gui == gui.INVENTORY)
-{
 	
-
-}
-
-if(global.current_gui == gui.BUILDING)
-{
-	if(selected_bp == noone)
+	pn_col(cra_pan, sprite_get_width(s_CraftListButton) * inv_scale + slot_spacing)
+	
+	//draw all recipes of current category
+	for(var i = 0; i < ds_list_size(craft_recipes[craft_selcat]); i++)
 	{
-		var bw = 300
-		var bh = 70
-	
-		var bx = display_get_gui_width() - pad - bw
-		var by = pad
-	
-		for(var i = 0; i < ds_list_size(blueprints); i++)
+		var sel_recipe = craft_recipes[craft_selcat][|i]
+		
+		var tx_draw = cra_pan.at_x + slot_spacing
+		var ty_draw = cra_pan.at_y + slot_spacing
+		
+		draw_set_color(c_black)
+		
+		var gap = 40
+		
+		if(point_in_rectangle(mx, my, tx_draw, ty_draw + (i * gap), tx_draw + 100, ty_draw + gap + (i * gap)))
 		{
-			by = by + (bh + pad) * i
-		
-			var color = tab_color
-		
-			if(point_in_rectangle(device_mouse_x_to_gui(0), device_mouse_y_to_gui(0), bx, by, bx + bw, by + bh + pad - 1))
+			draw_set_color(0xcbefff)
+			
+			if(mouse_check_button_pressed(mb_left))
 			{
-				color = main_color	
-
-				//info about item you hovering
-				var iw = 260
-				var ih = 230
-			
-				var ix = bx - iw - pad
-				var iy = by
-			
-				ui_draw_rectangle(ix, iy, iw, ih, main_color, 1, false)
-			
-				info = make_panel(ix + pad, iy + pad)
-			
-				draw_set_color(text_color)
-				var dh = ui_draw_string(info.at_x, info.at_y, blueprints[|i].text, ft_Default)
-			
-				pn_row(info, dh + pad)
-				
-				draw_set_color(tab_color)
-				ui_draw_string(info.at_x, info.at_y, blueprints[|i].desc, ft_Description)
-			
-				var craft = true
-			
-				pn_row(info, 60)
-				for(var j = 0; j < array_length_1d(blueprints[|i].need); j++)
-				{
-					var need_name = global.items_list[blueprints[|i].need[j].item].name
-					var need_amt = blueprints[|i].need[j].amt
-				
-					var tw = iw - (pad * 2)
-					var th = 45
-					
-					ui_draw_rectangle(info.at_x, info.at_y + (th + pad) * j, tw, th, tab_color, 1, false)
-					
-					var spr_draw_space = th
-					var spr_scale = spr_draw_space / 16
-					var spr_offset = th / 2 - (16 * spr_scale) / 2
-					var spr_half = (16 * spr_scale) / 2
-					
-					var col = decline_color
-					
-					var item_amt = get_item_amount(o_PlayerInventory.inv, o_PlayerInventory.inv_data, blueprints[|i].need[j].item)
-					var item_need = blueprints[|i].need[j].amt
-					
-					if(item_amt < item_need) craft = false
-					
-					if(item_amt >= item_need) col = confirm_color
-					
-					draw_sprite_ext(s_Items, blueprints[|i].need[j].item, info.at_x + spr_half + spr_offset, info.at_y + (th + pad) * j + spr_half + spr_offset, spr_scale, spr_scale, 0, col, 1)
-					
-					var text_height = string_height_font("Wdad", ft_Description)
-					var text_offset = th / 2 - text_height / 2
-					
-					draw_set_color(col)
-					ui_draw_string(info.at_x + (spr_half * 2) + spr_offset + pad, info.at_y + (th + pad) * j + text_offset, string(need_name) + " (" + string(item_amt) + "/" + string(need_amt) + ")", ft_Description)
-					draw_set_color(c_white)
-				}
-				
-				if(mouse_check_button_pressed(mb_left))
-				{
-					if(craft)
-					{
-						selected_bp = blueprints[|i].obj
-						sel_bp_id = i
-					}
-				}
+				craft_selrec = i	
 			}
-			
-			ui_draw_rectangle(bx, by, bw, bh, color, 1, false)	
-	
-			var sprite_scale = 4
-			var sprite_space = 16 * sprite_scale
+		}	
 		
-			var text_height = string_height_font(blueprints[|i].text, ft_Default)
+		if(i == craft_selrec) draw_set_color(c_white)
 		
-			var sprite = object_get_sprite(blueprints[|i].obj)
-			var swidth = sprite_get_width(sprite)
+		draw_set_font(ft_24)
+		draw_text(tx_draw, ty_draw + (i * gap), global.items_list[sel_recipe.item].name)
 		
-			sprite_scale = (16 / swidth) * 4
-		
-			draw_sprite_ext(sprite, 0, bx, by, sprite_scale, sprite_scale, 0, c_white, 1)
-		
-			var tx = bx + sprite_space + pad
-			var ty = by + (bh / 2) - (text_height / 2)
-		
-			ui_draw_string(tx, ty, blueprints[|i].text, ft_Default)
-		}
+		draw_set_color(c_black)
 	}
-}
-
-var mx = device_mouse_x_to_gui(0)
-var my = device_mouse_y_to_gui(0)
-
-//hammer menu drawing
-if(global.hotbar_sel_item != 0)
-{
-	if(global.hotbar_sel_item.item == items.hammer)
+	
+	pn_col(cra_pan, 71 * inv_scale + slot_spacing)
+	
+	//selected item data
+	if(ds_list_size(craft_recipes[craft_selcat]) > 0)
 	{
-		//selected hammer
-		if(mouse_check_button(mb_right))
+		//there is atleast one item in list
+		var sel_item = craft_recipes[craft_selcat][|craft_selrec].item
+		var sel_name = global.items_list[sel_item].name
+		var sel_desc = global.items_list[sel_item].item_data.description
+	
+		draw_sprite_ext(s_CraftTitle, 0, cra_pan.at_x, cra_pan.at_y, inv_scale, inv_scale, 0, c_white, 1)
+		
+		draw_set_font(ft_Large)
+		
+		var title_w = sprite_get_width(s_CraftTitle) * inv_scale
+		var title_h = sprite_get_height(s_CraftTitle) * inv_scale
+		
+		var title_tx = cra_pan.at_x + title_w / 2 - string_width(sel_name) / 2
+		var title_ty = cra_pan.at_y + title_h / 2 - string_height(sel_name) / 2
+		
+		draw_text(title_tx, title_ty, sel_name)
+		
+		//description
+		cra_pan.at_y += title_h + slot_spacing
+
+		draw_set_font(ft_17)
+		draw_set_color(color_hex(0x71413b))
+		draw_text_ext(cra_pan.at_x, cra_pan.at_y, sel_desc, 30, title_w)
+		
+		cra_pan.at_y += 200
+		
+		draw_line(cra_pan.at_x, cra_pan.at_y, cra_pan.at_x + title_w, cra_pan.at_y)
+		
+		cra_pan.at_y += slot_spacing
+		
+		var requirements_array = craft_recipes[craft_selcat][|craft_selrec].req_arr
+		
+		var craft = true
+		
+		//draw requirements
+		for(var i = 0; i < array_length_1d(requirements_array); i++)
 		{
-			//open menu
+			var req_item = requirements_array[i].item
+			var req_amt = requirements_array[i].amt
+			var req_name = global.items_list[req_item].name
 			
+			draw_set_color(color_hex(0xb4202a))
 			
-			//ui_draw_rectangle(dx, dy, dw, dh, main_color, 0.5, false)
-			
-			for(var i = 0; i < gridx; i++)
+			var check = check_item(o_PlayerInventory.inv, req_item, req_amt)
+			if(check)
 			{
-				for(var j = 0; j < gridy; j++)
-				{
-					var cel_w_gap = cel_size + cel_gap
-					
-					var gx = dx + (cel_w_gap) * i
-					var gy = dy + (cel_w_gap) * j
-					
-					ui_draw_button_color("", gx, gy, cel_size, cel_size, c_gray, c_gray, c_white, false)
-				}
+				draw_set_color(color_hex(0x71413b))	
+			}
+			else
+			{
+				craft = false	
 			}
 			
-			window_text(dx, dy, "Building")
+			ui_draw_string(cra_pan.at_x, cra_pan.at_y + (i * 30), req_name + " x" + string(req_amt), ft_17)
 			
-			hos_x = start_dx
+			//draw (Have:)
+			var have_offset = 230
 			
-			for(var i = 0; i < ds_list_size(housing); i++)
-			{
-				var spr_scale = 5
-				var spr_half = (cel_size / 2) - (sprite_get_width(s_Floor) * spr_scale) / 2
-
-				//selected rectangle
-				if(point_in_rectangle(mx, my, hos_x, hos_y, hos_x + cel_w_gap, hos_y + cel_w_gap))
-				{
-					ui_draw_rectangle(hos_x, hos_y, cel_size, cel_size, c_ltgray, 1, false)
-					
-					selected_housing = i
-				}
-				//selected
-				if(selected_housing == i)
-				{
-					ui_draw_rectangle(hos_x, hos_y, cel_size, cel_size, c_orange, 1, false)	
-				}
-
-
-				draw_sprite_ext(housing[|i].spr, 0, hos_x + spr_half, hos_y + spr_half, spr_scale, spr_scale, 0, c_white, 1)
-				
-				hos_x += cel_w_gap
-			}
+			draw_set_color(color_hex(0xa08e73))
 			
-			//draw info
-			draw_set_halign(fa_center)
-						
-			var tx = display_get_gui_width() / 2
-					
-			ui_draw_string(tx, 50, housing[|selected_housing].text, ft_Default)
+			if(get_item_amount(o_PlayerInventory.inv, req_item) >= req_amt) draw_set_color(color_hex(0x756854))
 			
-			ui_draw_string(tx, 100, housing[|selected_housing].desc, ft_Description)
-			
-			draw_set_halign(fa_left)
+			ui_draw_string(cra_pan.at_x + have_offset, cra_pan.at_y + (i * 30), "(Have: " + string(get_item_amount(o_PlayerInventory.inv, req_item)) + ")", ft_17)
+		}
+		
+		var craft_button_w = sprite_get_width(s_CraftListButton) * inv_scale
+		var craft_button_h = sprite_get_height(s_CraftListButton) * inv_scale
+		
+		//draw craft button
+		cra_pan.at_y = display_get_gui_height() / 2 + ((sprite_get_height(s_CraftUI) * inv_scale) / 2) - slot_from_top - sprite_get_height(s_CraftListButton) * inv_scale
+		
+		var craft_index = 0
+		
+		draw_set_color(c_black)
+		
+		if(!craft) 
+		{
+			craft_index = 2
+			draw_set_color(color_hex(0xa08e73))
 		}
 		else
 		{
-			//draw text for epic
-			var nx = 1900
-			var ny = 10
-
-			var rw = 200
-			var rh = 50
-			
-			ui_draw_title(housing[|selected_housing].text, nx - rw, ny, rw, rh, c_gray, c_white, true)
-			
-			ny += 100
-			
-			draw_set_halign(fa_right)
-			
-			var need_arr = housing[|selected_housing].need
-			
-			hos_build = true
-			
-			for(var i = 0; i < array_length_1d(need_arr); i++)
+			if(point_in_rectangle(mx, my, cra_pan.at_x, cra_pan.at_y, cra_pan.at_x + craft_button_w, cra_pan.at_y + craft_button_h))
 			{
-				var color = decline_color
+				craft_index = 1	
 				
-				var item_amt = need_arr[i].amt
-				
-				if(get_item_amount(o_PlayerInventory.inv, o_PlayerInventory.inv_data, need_arr[i].item) >= item_amt)
+				if(mouse_check_button_pressed(mb_left))
 				{
-					color = confirm_color
-				}
-				else
-				{
-					hos_build = false	
-				}
-				
-				draw_text_color(nx, ny + (50 * i), global.items_list[need_arr[i].item].name + " x" + string(item_amt), color, color, color, color, 1)
-			}
-			
-			draw_set_halign(fa_left)
-			
-			//TUTORIAL TEXT FOR OPENING MENU 
-			if(global.current_gui == gui.NONE)
-			{
-				draw_set_halign(fa_center)
-						
-				var tx = display_get_gui_width() / 2
+					//remove requimrents
+					for(var i = 0; i < array_length_1d(requirements_array); i++)
+					{	
+						remove_item(o_PlayerInventory.inv, requirements_array[i].item, requirements_array[i].amt)
+					}
 					
-				draw_set_font(ft_Default)
-				draw_set_color(c_ltgray)
-				draw_text(tx, 800, "Hold RMB to Open Menu")
-			
-				draw_set_halign(fa_left)	
+					add_item(o_PlayerInventory.inv, sel_item, 1)
+				}
 			}
 		}
+		
+		draw_sprite_ext(s_CraftListButton, craft_index, cra_pan.at_x, cra_pan.at_y, inv_scale, inv_scale, 0, c_white, 1)
+		
+		draw_set_halign(fa_center)
+		draw_set_valign(fa_middle)
+		ui_draw_string(cra_pan.at_x + craft_button_w / 2, cra_pan.at_y + craft_button_h / 2, "Craft", ft_Large)
+		draw_set_halign(fa_left)
+		draw_set_valign(fa_top)
 	}
 }

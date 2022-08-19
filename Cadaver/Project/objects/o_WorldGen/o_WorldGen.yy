@@ -24,8 +24,8 @@
   "properties": [],
   "overriddenProperties": [],
   "parent": {
-    "name": "Meta",
-    "path": "folders/Objects/Meta.yy",
+    "name": "World",
+    "path": "folders/Objects/World.yy",
   },
   "resourceVersion": "1.0",
   "name": "o_WorldGen",

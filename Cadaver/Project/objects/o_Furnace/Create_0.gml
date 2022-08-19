@@ -1,30 +1,32 @@
 z = 0
 
-block_data = create_multiblock(gui.LOOT)
+inv = create_inventory(5, 3)
+
+#macro furn_height sprite_get_height(s_FurnaceInventory) * inv_scale
 
 depth = -1
 
-furn_data = create_inv_data(3, 1, 1)
-furn = create_inventory(furn_data.slots_x, furn_data.slots_y)
+block_data = create_multiblock(gui.CONTAINER)
 
-fuel_slot = 0
-ore_slot = 0
+burn_timer = 0
+burn_time = 120
 
-burned = 0
-
-burn_time = 0
-
-dw = player_inv_width
-dh = 175
-
-compl_w = 50
-
-dx = display_get_gui_width() / 2 - dw / 2
-dy = display_get_gui_height() - player_inv_height - dh
+fur_x = display_get_gui_width() / 2 - player_inv_width / 2
+fur_y = display_get_gui_height() / 2 - player_inv_height / 2 + inv_offset - pad - furn_height
 
 function render()
 {
 	draw_self();
+}
+
+smelted = 0
+
+for(var i = 0; i < array_length(inv); i++)
+{
+	for(var j = 0; j < array_height(inv) - 1; j++)
+	{
+		smelted[i,j] = 0
+	}
 }
 
 ds_list_add(o_RenderManager.entities, self)

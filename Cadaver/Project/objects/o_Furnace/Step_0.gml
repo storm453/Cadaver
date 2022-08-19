@@ -1,76 +1,70 @@
 z = -bbox_bottom
 
-if(fuel_slot != furn[0,0])
+for(var i = 0; i < array_length(inv); i++)
 {
-	//new item in fuel slot
-	burned = 0	
-}
-if(ore_slot != furn[1,0])
-{
-	//new ore placed
-	burn_time = 0	
-}
-
-fuel_slot = furn[0,0]
-ore_slot  = furn[1,0]
-
-//item in both fuel & ore
-if(ore_slot != 0)
-{
-	if(fuel_slot != 0)
+	var slots_dx = fur_x + slot_from_top + (i * (slot_size + slot_spacing))
+	var slots_dy = fur_y + slot_from_top + ((array_height(inv) - 1) * (slot_size + slot_spacing))
+	
+	var slot = inv[i, array_height(inv) - 1]
+	
+	if(slot != 0)
 	{
-		var recipe_result = global.items_list[ore_slot.item].item_data.smelt
-		
-		if(recipe_result != items.air)
+		if(global.items_list[slot.item].item_data.burn_time > 0)
 		{
-			var check = false
-			
-			if(furn[2,0] != 0)
-			{
-				if(furn[2,0].item == recipe_result)
-				{
-					check = true
-				}
-			}
-			else
-			{
-				check = true	
-			}
-			
-			if(check)
-			{
-				//smelt items
-				burn_time++
+			burn_timer++
 		
-				if(round(burn_time) > 120)
-				{
-					burn_time = 0
-					burned++
+			image_index = 1
+		
+			if(burn_timer > burn_time)
+			{
+				burn_timer = 0
 
-					if(burned >= global.items_list[fuel_slot.item].item_data.burn_time)
+				//item is found in bottom 5 slots
+				remove_item_slot(inv, 1, i, array_height(inv) - 1)
+			}
+
+			//smelt items
+			for(var i = 0; i < array_length(smelted); i++)
+			{
+				for(var j = 0; j < array_height(smelted); j++)
+				{
+					if(inv[i,j] != 0)
 					{
-						burned = 0
-				
-						remove_item_slot(furn, furn_data, 1, 0, 0)
+						if(global.items_list[inv[i,j].item].item_data.smelt != 0)
+						{
+							smelted[i,j]++
+							
+							if(smelted[i,j] > 1200)
+							{
+								smelted[i,j] = 0
+								
+								add_item(inv, global.items_list[inv[i,j].item].item_data.smelt, 1)
+								remove_item_slot(inv, 1, i, j)
+							}
+						}
+						
 					}
-			
-					remove_item_slot(furn, furn_data, 1, 1, 0)
-			
-					set_item_slot(furn, 2, 0, recipe_result, 1)
+					else
+					{
+						smelted[i,j] = 0	
+					}
 				}
 			}
-			else
-			{
-				burn_time = 0	
-			}
+			
+			exit;
 		}
 	}
 	else
 	{
-		burn_time = 0
+		//no fuel
+		image_index = 0	
+		
+		for(var i = 0; i < array_length(smelted); i++)
+		{
+			for(var j = 0; j < array_height(smelted); j++)
+			{
+				if(smelted[i,j] > 0) smelted[i,j] -= 1
+			}
+		}
 	}
-}
-else
-{
-	burn_time = 0	
 }

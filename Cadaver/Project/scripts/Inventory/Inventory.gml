@@ -1,12 +1,5 @@
-function create_inv_data(arg_slots_x, arg_slots_y, arg_draw_scale)
-{
-	return { slots_x: arg_slots_x, slots_y: arg_slots_y, slot_space: arg_draw_scale * slot_size, draw_scale: arg_draw_scale }
-}
-
 function create_inventory(slots_x, slots_y)
 {
-	var inv = 0;
-	
 	for(var i = 0; i < slots_x; i++)
 	{
 		for(var j = 0; j < slots_y; j++)
@@ -15,7 +8,42 @@ function create_inventory(slots_x, slots_y)
 		}
 	}
 	
-	return inv;
+	return inv
+}
+
+function inv_click_logic(arg_i = i, arg_j = j)
+{
+	if(mouse_check_button_pressed(mb_left))
+	{
+		var old_hand = global.in_hand
+						
+		global.in_hand = inv[arg_i, arg_j]
+		array_set(inv[arg_i], arg_j, old_hand)
+
+		if(global.in_hand != 0)
+		{
+			if(inv[arg_i,arg_j] != 0)
+			{
+				if(inv[arg_i,arg_j].item == global.in_hand.item)
+				{
+					inv[arg_i,arg_j].amt += global.in_hand.amt
+					global.in_hand = 0 
+				}
+			}
+		}
+	}	
+	if(mouse_check_button_pressed(mb_right))
+	{
+		if(inv[arg_i, arg_j] != 0)
+		{
+			var split = floor(inv[arg_i, arg_j].amt / 2)
+			//var split_leave = inv[arg_i, arg_j].amt - split
+		
+			global.in_hand = { item: inv[arg_i, arg_j].item, amt: split }
+			
+			//if(inv[arg_i, arg_j].amt 
+		}
+	}
 }
 
 function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size, shift = 0)
@@ -74,25 +102,23 @@ function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size, shift =
 	}
 }
 
-function draw_item(arg_inv, i, j, arg_x, arg_y, alpha, inv_i = i)
+function draw_item(arg_inv, i, j, arg_x, arg_y)
 {
-	if(arg_inv[inv_i,j] != 0)
+	if(arg_inv[i,j] != 0)
 	{
-		var item = arg_inv[inv_i,j]
-		var item_offset = ((slot_size * inv_scale) - (16 * inv_scale)) / 2
+		var item = arg_inv[i,j]
+		var item_offset = 16 * inv_scale / 2
 
-		var item_half = (sprite_get_width(s_Items) / 2) * inv_scale
-
-		draw_sprite_ext(s_Items, item.item, arg_x + (i * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, arg_y + (j * (slot_size * inv_scale + slot_gap)) + item_offset + item_half, inv_scale, inv_scale, 0, c_white, alpha)
+		draw_sprite_ext(s_Items, item.item, arg_x + item_offset, arg_y + item_offset, inv_scale, inv_scale, 0, c_white, 1)
 				
 		if(item.amt > 1)
 		{
-			var amt_width = string_width(string(item.amt))
-			draw_set_alpha(alpha)
-			draw_set_color(c_black)
-			ui_draw_string(arg_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, arg_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
-			draw_set_color(c_white)
-			ui_draw_string(arg_x + (i * (slot_size * inv_scale + slot_gap)) + amt_width / 4, arg_y + (j * (slot_size * inv_scale + slot_gap)), string(item.amt), ft_Default)
+			draw_set_halign(fa_left)
+			draw_set_valign(fa_top)
+			draw_set_color(0xc0f3fe)
+			draw_set_font(ft_Medium)
+			
+			draw_text(arg_x + 4, arg_y + 4, item.amt)
 		}
 	}	
 }
@@ -172,14 +198,14 @@ function add_item_notif(message, spriteindex, timer, arg_type)
 	ds_list_add(o_PlayerUI.item_log, { msg : message, spr_index : spriteindex , time : timer , type : arg_type, cur_y: 0 } )		
 }
 
-function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
+function add_item(arg_inv, arg_item_id, arg_amount)
 {
 	var found_item = false
 	
 	var i = 0;
 	var j = 0;
 
-	for (var k = 0; k < arg_inv_data.slots_x * arg_inv_data.slots_y; k++) 
+	for (var k = 0; k < array_length(arg_inv) * array_height(arg_inv); k++) 
 	{
 		var index = arg_inv[i, j]
 			
@@ -206,7 +232,7 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 			
 		i++;
 		
-		if (i >= arg_inv_data.slots_x) 
+		if (i >= array_length(arg_inv)) 
 		{
 		    j++;
 		    i = 0;
@@ -216,7 +242,7 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 	i = 0;
 	j = 0;
 	
-	for (var k = 0; k < arg_inv_data.slots_x * arg_inv_data.slots_y; k++) 
+	for (var k = 0; k < array_length(arg_inv) * array_height(arg_inv); k++) 
 	{
 		var index = arg_inv[i, j]
 
@@ -241,7 +267,7 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 			
 		i++;
 		
-		if (i >= arg_inv_data.slots_x) 
+		if (i >= array_length(arg_inv)) 
 		{
 		    j++;
 		    i = 0;
@@ -249,7 +275,7 @@ function add_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 	}		
 }
 
-function remove_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
+function remove_item(arg_inv, arg_item_id, arg_amount)
 {
 	found_item = false
 	removed_amt = 0
@@ -258,9 +284,9 @@ function remove_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 					
 	add_item_notif(str, 0, 6, 0)
 	
-	for(var j = 0; j < arg_inv_data.slots_y; j++)
+	for(var j = 0; j < array_height(arg_inv); j++)
 	{
-		for(var i = 0; i < arg_inv_data.slots_x; i++)
+		for(var i = 0; i < array_length(arg_inv); i++)
 		{
 			index = arg_inv[i,j]
 			
@@ -289,14 +315,14 @@ function remove_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 	}
 }
 
-function check_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
+function check_item(arg_inv, arg_item_id, arg_amount)
 {
 	found_item = false
 	found_amt = 0
 	
-	for(var j = 0; j < arg_inv_data.slots_y; j++)
+	for(var j = 0; j < array_height(arg_inv); j++)
 	{
-		for(var i = 0; i < arg_inv_data.slots_x; i++)
+		for(var i = 0; i < array_length(arg_inv); i++)
 		{
 			var index = arg_inv[i,j]
 			
@@ -319,7 +345,7 @@ function check_item(arg_inv, arg_inv_data, arg_item_id, arg_amount)
 	return found_item
 }
 
-function remove_item_slot(arg_inv, arg_inv_data, arg_amount, arg_slotx, arg_sloty)
+function remove_item_slot(arg_inv, arg_amount, arg_slotx, arg_sloty)
 {
 	var index = arg_inv[arg_slotx, arg_sloty]
 
@@ -365,72 +391,19 @@ function inv_move(arg_inv, arg_inv_data, arg_x, arg_y, arg_scale = 1)
 	            sj = j
 				s_slot = arg_inv[i,j]
 			
-				if(mouse_check_button_pressed(mb_left))
-				{
-					if(!keyboard_check(vk_shift))
-					{
-						if(global.current_gui != 0)
-						{
-							var old_hand = global.in_hand
-			
-							global.in_hand = arg_inv[i, j]
-							array_set(arg_inv[i], j, old_hand)
-
-							if(global.in_hand != 0)
-							{
-								if(arg_inv[i,j] != 0)
-								{
-									if(arg_inv[i,j].item == global.in_hand.item)
-									{
-										arg_inv[i,j].amt += global.in_hand.amt
-										global.in_hand = 0 
-									}
-								}
-							}
-						}
-					}
-					else
-					{
-						//shift click! move item to player inv
-						for(var p = 0; p < o_PlayerInventory.inv_data.slots_y; p++)
-						{
-							for(var l = 0; l < o_PlayerInventory.inv_data.slots_x; l++)
-							{
-								if(o_PlayerInventory.inv[l,p] == 0)
-								{
-									//free slot!!!
-									array_set(o_PlayerInventory.inv[l], p, arg_inv[i,j])
-									array_set(arg_inv[i], j, 0)
-								}
-							}
-						}
-					}
-				}
-
-				//Right clicking to select an item for info
-				if(mouse_check_button_pressed(mb_right))
-				{
-					if(arg_inv[i,j] != 0)
-					{
-						o_PlayerUI.sel_item = -1
-						o_PlayerUI.item_window_name = global.items_list[arg_inv[i, j].item].name
-						
-						global.info_sel_slot[0] = i
-						global.info_sel_slot[1] = j
-					}
-				}
+				
 	        }  
 	    }
 	}	
 }
 
-function get_item_amount(arg_inv, arg_inv_data, arg_item)
+function get_item_amount(arg_inv, arg_item)
 {
 	var amount = 0
 
-	for(var j = 0; j < arg_inv_data.slots_y; j++)
+	for(var j = 0; j < array_height(arg_inv); j++)
 	{
-		for(var i = 0; i < arg_inv_data.slots_x; i++)
+		for(var i = 0; i < array_length(arg_inv); i++)
 		{
 			if(arg_inv[i,j] != 0)
 			{

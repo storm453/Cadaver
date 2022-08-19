@@ -44,9 +44,12 @@ function create_multiblock(arg_gui)
 	return { to_gui: arg_gui, misc: extra_data() }
 }
 
-function spawn_enemy(radius, obj)
+function spawn_enemy(radius_min, radius_max, obj)
 {
 	var random_angle = irandom(360)
+	
+	randomize()
+	var radius = irandom_range(radius_min, radius_max)
 	
 	var ex = sin(random_angle) * radius + o_Player.x;
 	var ey = cos(random_angle) * radius + o_Player.y;	

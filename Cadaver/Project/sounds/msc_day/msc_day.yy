@@ -15,7 +15,7 @@
   "duration": 168.045715,
   "parent": {
     "name": "Sounds",
-    "path": "folders/Sounds.yy",
+    "path": "folders/Sprites/Enemy/Sounds.yy",
   },
   "resourceVersion": "1.0",
   "name": "msc_day",

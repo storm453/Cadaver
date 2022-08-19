@@ -1,21 +1,32 @@
-inv_data = create_inv_data(5, 4, 1)
-inv = create_inventory(inv_data.slots_x, inv_data.slots_y)
+inv = create_inventory(5, 4)
+
+inv_sx = array_length(inv)
+inv_sy = array_height(inv)
+
+//add_item(inv, items.wood, 1000)
+//add_item(inv, items.ironore, 1000)
+//add_item(inv, items.stone, 1000)
+//add_item(inv, items.iron, 1000)
+//add_item(inv, items.stick, 1000)
+//add_item(inv, items.plantfibers, 1000)
 
 depth = 0
-
-add_item(inv, inv_data, items.stonehatchet, 1)
 
 overlay_alpha = 0
 
 show_list = ds_list_create()
-
+ 
 ds_list_add(show_list, gui.INVENTORY)
-ds_list_add(show_list, gui.LOOT)
-ds_list_add(show_list, gui.CRAFT)
+ds_list_add(show_list, gui.CONTAINER)
 
-#macro slot_size 18
-#macro inv_scale 3.5
-#macro slot_gap 6
+#macro inv_offset 150
+
+#macro inv_scale 4
+#macro slot_size 16 * inv_scale
+
+//specififcs
+#macro slot_from_top 4 * inv_scale //in pixels
+#macro slot_spacing 2 * inv_scale //in pixels
 
 global.drag_slot = { xx : 0, yy : 0, inventory: inv }
 
@@ -37,5 +48,5 @@ global.in_hand = 0
 global.hotbar_sel_slot = 0
 global.hotbar_sel_item = 0
 
-#macro player_inv_width (o_PlayerInventory.inv_data.slots_x * (slot_size * inv_scale)) + ((o_PlayerInventory.inv_data.slots_x - 1) * slot_gap)
-#macro player_inv_height ((o_PlayerInventory.inv_data.slots_y * (slot_size * inv_scale)) + ((o_PlayerInventory.inv_data.slots_y - 1) * slot_gap) + scr_hot_shift + inv_hot_shift + 49)	
+#macro player_inv_width sprite_get_width(s_Inventory) * inv_scale
+#macro player_inv_height sprite_get_height(s_Inventory) * inv_scale

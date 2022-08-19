@@ -16,7 +16,7 @@ switch(level)
 			
 				repeat( irandom_range(1, 2) )
 				{
-					spawn_enemy(500, o_Infected)	
+					spawn_enemy(150, 500, o_Infected)	
 				}
 			}
 		}
@@ -25,26 +25,19 @@ switch(level)
 	
 	case(1):
 	
-		//level one
-		if(chance(0.003))
+		//level two
+		if(chance(0.001))
 		{
-			if(spawn_timer >= spawn_set / 2)
+			if(spawn_timer >= spawn_set)
 			{
 				spawn_timer = 0
 			
 				repeat( irandom_range(2, 5) )
 				{
-					//spawn_enemy(450, o_Mutant)	
-				}
-				
-				//vaulkers
-				if(chance(0.005))
-				{
-					//spawn_enemy(300, o_Walker)	
+					spawn_enemy(150, 500, o_Infected)	
 				}
 			}
 		}
-		
 		
 	break;
 }
@@ -54,9 +47,15 @@ if(o_GUI.day_factor > 0.9)
 	///spawn enemies at night
 	if(!night) 
 	{
-		repeat(7) spawn_enemy(75, o_Infected)
+		//repeat(7) spawn_enemy(75, o_Infected)
 		night = true
 	}
 }
 
 spawn_timer++
+
+//@TEMP
+if(keyboard_check(ord("G")))
+{
+	points += 100
+}

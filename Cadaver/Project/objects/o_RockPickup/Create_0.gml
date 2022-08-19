@@ -19,7 +19,7 @@ function render()
 		{
 			instance_destroy()	
 			
-			add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, items.stone, 1)
+			add_item(o_PlayerInventory.inv, items.stone, irandom_range(1,3))
 		}
 	}
 	else

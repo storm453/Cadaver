@@ -15,7 +15,7 @@
   "duration": 50.448,
   "parent": {
     "name": "Sounds",
-    "path": "folders/Sounds.yy",
+    "path": "folders/Sprites/Enemy/Sounds.yy",
   },
   "resourceVersion": "1.0",
   "name": "amb_night",

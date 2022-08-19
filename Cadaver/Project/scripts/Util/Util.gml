@@ -26,6 +26,16 @@ function split_string(string, delimiter)
 	return container;
 }
 
+function print(msg)
+{
+	show_debug_message(string(msg))
+}
+
+function array_height(arr)
+{
+	return array_length(arr[0])	
+}
+
 function chance(probability) {
 	return probability > random(1);
 }

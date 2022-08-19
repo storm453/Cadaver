@@ -33,7 +33,7 @@ function render()
 			{
 				up = true
 				
-				add_item(o_PlayerInventory.inv, o_PlayerInventory.inv_data, data.item, data.amt)
+				add_item(o_PlayerInventory.inv, data.item, data.amt)
 			}
 		}
 		

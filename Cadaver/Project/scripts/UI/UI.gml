@@ -32,14 +32,14 @@ function ui_draw_button_color(txt, sx, sy, w, h, c, hov_c, txt_c, brd)
 	return return_data
 }
 
-function window_text(arg_x, arg_y, arg_text, arg_font = ft_Default)
+function window_text(arg_x, arg_y, arg_text, arg_font, arg_text_color)
 {
 	var inv_text = arg_text
 	var inv_text_height = string_height_font(inv_text, arg_font)
 
 	arg_y -= pad + inv_text_height
 
-	draw_set_color(text_color)
+	draw_set_color(arg_text_color)
 	ui_draw_string(arg_x, arg_y, inv_text, arg_font)
 	draw_set_color(c_white)
 	draw_set_alpha(1)
@@ -175,6 +175,19 @@ function ui_draw_title(txt, sx, sy, w, h, c, txt_c, brd)
 	return return_data
 }
 
+function ui_draw_title_text(txt, sx, sy, w, h, c, txt_c, brd)
+{
+	draw_set_color(c)
+
+	draw_set_color(txt_c)
+	draw_text(sx + (w / 2) - (string_width(txt) / 2), sy + (h / 2) - (string_height(txt) / 2), txt)
+	
+	draw_set_color(c_white)
+	
+	var return_data = array(w, h)
+	return return_data
+}
+
 function ui_draw_rectangle(sx, sy, w, h, c, a, brd)
 {	
 	draw_set_color(c)
@@ -191,7 +204,6 @@ function ui_draw_string(sx, sy, t, fnt)
 {
 	draw_set_font(fnt)
 	draw_text(sx, sy, t)	
-	draw_set_font(ft_Default)
 	
 	return string_height_font(t, fnt)
 }

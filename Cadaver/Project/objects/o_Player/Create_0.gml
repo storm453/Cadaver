@@ -24,11 +24,6 @@ z = 0
 list_movable = ds_list_create()
 
 ds_list_add(list_movable, gui.INVENTORY)
-ds_list_add(list_movable, gui.PROFILE)
-ds_list_add(list_movable, gui.JOURNAL)
-ds_list_add(list_movable, gui.LOOT)
-ds_list_add(list_movable, gui.BASE)
-ds_list_add(list_movable, gui.SELECTBLUE)
 
 spawn_x = x
 spawn_y = y
@@ -90,7 +85,7 @@ resource_drops[1] =
 	  
  	all_drops: array
 	(
-		{ item: items.stonehatchet, drops: array( { uid : items.log, amt_min : 1, amt_max : 3, chnce : 1 } ) },
+		{ item: items.stonehatchet, drops: array( { uid : items.wood, amt_min : 1, amt_max : 3, chnce : 1 } ) },
 	)
 }
 
@@ -112,8 +107,8 @@ resource_drops[3] =
 
 	all_drops: array
 	(
-		{ item: items.air, drops:  array( { uid : items.plants, amt_min : 2, amt_max : 4, chnce : 1 }, { uid : items.stick, amt_min : 1, amt_max : 3, chnce : 0.8 } ) },
-		{ item: items.stonehatchet, drops: array( { uid : items.plants, amt_min : 3, amt_max : 6, chnce : 1 }, { uid : items.stick, amt_min : 2, amt_max : 5, chnce : 1 } ) }
+		{ item: items.air, drops:  array( { uid : items.plantfibers, amt_min : 2, amt_max : 4, chnce : 1 }, { uid : items.wood, amt_min : 1, amt_max : 3, chnce : 0.8 } ) },
+		{ item: items.stonehatchet, drops: array( { uid : items.plantfibers, amt_min : 3, amt_max : 6, chnce : 1 }, { uid : items.wood, amt_min : 2, amt_max : 5, chnce : 1 } ) }
 	)
 }
 resource_drops[4] =
@@ -122,7 +117,7 @@ resource_drops[4] =
 
 	all_drops: array
 	(
-		{ item: items.air, drops:  array( { uid : items.plants, amt_min : 2, amt_max : 4, chnce : 1 } ) }
+		{ item: items.air, drops:  array( { uid : items.plantfibers, amt_min : 2, amt_max : 4, chnce : 1 } ) }
 	)
 }
 resource_drops[5] =
@@ -335,6 +330,30 @@ function render()
 					if(correct_tool) draw_sprite_ext(test, 0, x, y, sprite_width / 16, sprite_height / 16, 0, c_white, 0.5)
 				}
 			}
+		}
+		if(hotbar_item_data.item_type == item_types.building)
+		{
+			var build_spr = object_get_sprite(hotbar_item_data.building_obj)
+			var build_w = sprite_get_width(build_spr)
+			var build_h = sprite_get_height(build_spr)
+			
+			var build_clr = c_red
+			
+			var check = collision_rectangle(mouse_x, mouse_y, mouse_x + build_w, mouse_y + build_h, all, 0, 1)
+			
+			if(check == noone)
+			{
+				build_clr = c_lime
+				
+				if(mouse_check_button_pressed(mb_left))
+				{
+					remove_item_slot(o_PlayerInventory.inv, 1, global.hotbar_sel_slot, array_height(o_PlayerInventory.inv) - 1)	
+					
+					instance_create_layer(mouse_x, mouse_y, "World", o_Furnace)
+				}	
+			}
+
+			draw_sprite_ext(build_spr, 0, mouse_x, mouse_y, 1, 1, 0, build_clr, 1)
 		}
 	}
 	else

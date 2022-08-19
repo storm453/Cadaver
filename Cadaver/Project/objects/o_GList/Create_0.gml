@@ -15,7 +15,7 @@ enum items
 {
 	air,
 	stone,
-	log,
+	wood,
 	sledgehammer,
 	iron,
 	basicknife,
@@ -23,14 +23,12 @@ enum items
 	bottle,
 	meat,
 	cookedmeat,
-	wood,
-	stick,
 	hammer,
 	bread,
 	metalblades,
 	coal,
 	electronics,
-	plants,
+	plantfibers,
 	medicalsolution,
 	medicalkit,
 	cloth,
@@ -53,7 +51,8 @@ enum items
 	crushedsand,
 	workbench,
 	furnace,
-	woodwall
+	woodwall,
+	woodfloor
 }
 
 function create_struct()
@@ -63,9 +62,8 @@ function create_struct()
 		description : "No description has been set for this item.",
 		burn_time : 0,
 		smelt: items.air,
-		mill: 0,
 		item_type : item_types.resource,
-		building_obj : o_Campfire,
+		building_obj : noone,
 		damage: 0,
 		kb: 1,
 		sweep: 0,
@@ -108,9 +106,9 @@ function create_item(arg_name)
 }
 
 {
-	var item = create_item("Log")
+	var item = create_item("Wood")
 	
-	item.item_data.mill = 8
+	item.item_data.burn_time = 1
 	item.item_data.description = "A log taken from a tree. Can be turned into wood at a workbench or sawmill."
 }
 
@@ -150,17 +148,6 @@ function create_item(arg_name)
 }
 
 {
-	var item = create_item("Wood")
-	
-	item.item_data.burn_time = 1
-	item.item_data.description = "Processed sticks and logs."
-}
-
-{
-	var item = create_item("Stick")
-}
-
-{
 	var item = create_item("Hammer")
 	
 	item.item_data.description = "Used for building bases."
@@ -193,9 +180,7 @@ function create_item(arg_name)
 }
 
 {
-	var item = create_item("Plants")
-	
-	item.item_data.item_type = item_types.consumable
+	var item = create_item("Plant Fibers")
 }
 
 {
@@ -207,7 +192,7 @@ function create_item(arg_name)
 {
 	var item = create_item("Medical Kit")
 }
-
+	
 {
 	var item = create_item("Cloth")
 }
@@ -304,8 +289,6 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Crushed Sand")
-	
-	item.item_data.smelt = items.stick
 }
 
 {
@@ -317,10 +300,16 @@ function create_item(arg_name)
 	
 	item.item_data.item_type = item_types.building
 	item.item_data.building_obj = o_Furnace
-}
+} 
 
 {
 	var item = create_item("Wood Wall")
+	
+	item.item_data.item_type = item_types.building
+}
 
-	global.items_list[40].item_data.item_type = item_types.building
+{
+	var item = create_item("Wood Floor")
+	
+	item.item_data.item_type = item_types.building
 }
