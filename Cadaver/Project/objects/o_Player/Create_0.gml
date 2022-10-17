@@ -176,6 +176,8 @@ flash_alpha = 0
 
 mine_distance = 20
 
+check = 0
+
 function render()
 {
 	part_system_depth(part_sys, 1000)
@@ -333,15 +335,62 @@ function render()
 		}
 		if(hotbar_item_data.item_type == item_types.building)
 		{
-			var build_spr = object_get_sprite(hotbar_item_data.building_obj)
+			var obj = hotbar_item_data.building_obj
+			
+			var build_spr = object_get_sprite(obj)
 			var build_w = sprite_get_width(build_spr)
 			var build_h = sprite_get_height(build_spr)
 			
+			var build_x = floor(mouse_x / 16) * 16
+			var build_y = floor(mouse_y / 16) * 16
+			
 			var build_clr = c_red
 			
-			var check = collision_rectangle(mouse_x, mouse_y, mouse_x + build_w, mouse_y + build_h, all, 0, 1)
+			//redo check
+			check = collision_rectangle(build_x, build_y, build_x + build_w, build_y + build_h, all, 0, 1)
 			
-			if(check == noone)
+			if(hotbar_item_data.building_obj = o_Floor)
+			{
+				check = collision_rectangle(build_x + 2, build_y + 2, build_x + 12, build_y + 12, all, 1, 1)	
+			}
+
+			if(hotbar_item_data.building_obj = o_WallCenter)
+			{
+				check = collision_rectangle(build_x + 2, build_y + 4, build_x + (build_w - 8), build_y + 8, all, 1, 1)
+				
+				//wall
+				var right = place_meeting(build_x + 18, build_y	+ 4, o_Floor)
+				draw_point_color(build_x + 18, build_y + 4, c_lime)
+				
+				var left = place_meeting(build_x - 4, build_y + 4, o_Floor)
+				draw_point_color(build_x - 4, build_y + 4, c_red)
+				
+				draw_point_color(build_x + 1, build_y, c_white)
+				
+				if(!place_meeting(build_x + 1, build_y, o_Floor))
+				{
+					if(right)
+					{
+						if(!left)
+						{
+							build_spr = s_WallSideRight
+							obj = o_WallSide
+						}
+					}
+					if(!right)
+					{
+						if(left)
+						{
+							build_spr = s_WallSideLeft
+							obj = o_WallSide
+						}
+					}
+				}
+			}
+
+			//check = col
+
+			if(check == noone || o_Floor)
 			{
 				build_clr = c_lime
 				
@@ -349,11 +398,13 @@ function render()
 				{
 					remove_item_slot(o_PlayerInventory.inv, 1, global.hotbar_sel_slot, array_height(o_PlayerInventory.inv) - 1)	
 					
-					instance_create_layer(mouse_x, mouse_y, "World", o_Furnace)
+					instance_create_layer(build_x, build_y, "World", obj)
 				}	
 			}
 
-			draw_sprite_ext(build_spr, 0, mouse_x, mouse_y, 1, 1, 0, build_clr, 1)
+			draw_sprite_ext(build_spr, 0, build_x, build_y, 1, 1, 0, build_clr, 1)
+			
+			ui_draw_rectangle(build_x + 2, build_y + 4, build_w - 8, 8, c_red, 0.5, false)
 		}
 	}
 	else

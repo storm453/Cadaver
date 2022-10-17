@@ -109,7 +109,7 @@ function init_chunk(loc_x, loc_y)
 				{
 					create_obj_chunk(o_Plants3, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
 				}
-				if(rand(idx * chunk_size / tile_size + i + 20000, idy * chunk_size / tile_size + j + 20000) < 0.005)
+				if(rand(idx * chunk_size / tile_size + i + 30000, idy * chunk_size / tile_size + j + 30000) < 0.005)
 				{
 					create_obj_chunk(o_Plants1, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
 				}

@@ -306,10 +306,12 @@ function create_item(arg_name)
 	var item = create_item("Wood Wall")
 	
 	item.item_data.item_type = item_types.building
+	item.item_data.building_obj = o_WallCenter
 }
 
 {
 	var item = create_item("Wood Floor")
 	
 	item.item_data.item_type = item_types.building
+	item.item_data.building_obj = o_Floor
 }
