@@ -55,6 +55,15 @@ enum items
 	woodfloor
 }
 
+global.recipes[items.sledgehammer] = recipe(items.sledgehammer, array( recipe_req(items.wood, 5), recipe_req(items.iron, 15) ), 1 )
+global.recipes[items.basicknife] = recipe(items.basicknife, array( recipe_req(items.wood, 3), recipe_req(items.iron, 10) ), 1)
+global.recipes[items.stonehatchet] = recipe(items.stonehatchet, array( recipe_req(items.stone, 1), recipe_req(items.wood, 2), recipe_req(items.plantfibers, 3) ), 1)
+global.recipes[items.pickaxe] = recipe(items.pickaxe, array( recipe_req(items.stone, 3), recipe_req(items.wood, 2), recipe_req(items.plantfibers, 3) ), 1)
+global.recipes[items.hammer] = recipe(items.hammer, array( recipe_req(items.wood, 3), recipe_req(items.iron, 5) ), 1, stations.workbench)
+global.recipes[items.woodwall] = recipe(items.woodwall, array( recipe_req(items.wood, 25) ), 1, stations.workbench)
+global.recipes[items.woodfloor] = recipe(items.woodfloor, array( recipe_req(items.wood, 25) ), 1, stations.workbench)
+global.recipes[items.furnace] = recipe(items.furnace, array( recipe_req(items.wood, 3), recipe_req(items.stone, 50) ), 1)
+
 function create_struct()
 {
 	var return_struct =

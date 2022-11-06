@@ -1,24 +1,31 @@
 global.open_instance = noone
 
+//buttons at top to navigate to craft, inventory, and profile
+tabnav = ds_list_create()
+
+//anything here should be able to be navigated to
+ds_list_add(tabnav, gui.CRAFT)
+ds_list_add(tabnav, gui.INVENTORY)
+
+//navtab button list
+tabnav_buttons = ds_list_create()
+
+ds_list_add(tabnav_buttons, { text: "Crafting", ui: gui.CRAFT } )
+ds_list_add(tabnav_buttons, { text: "Inventory", ui: gui.INVENTORY } )
+ds_list_add(tabnav_buttons, { text: "Profile", ui: gui.CONTAINER } )
+ds_list_add(tabnav_buttons, { text: "Injections", ui: gui.CONTAINER } )
+
+//possible stations requirements for crafting items
+enum stations
+{
+	hands,
+	workbench
+}
+
 //guis to draw hud
 draw_hud = ds_list_create()
 
 ds_list_add(draw_hud, gui.NONE)
-
-//blueprints for building
-blueprints = ds_list_create()
-
-selected_bp = noone
-sel_bp_id = -1
-
-//blueprints for hammer building
-housing = ds_list_create()
-
-hos_build = false
-
-ds_list_add(housing, { text: "Pine Floor", obj: o_Floor, spr: s_FloorIcon, desc: "Carpet made out of wood!", need: array(recipe_req(items.wood, 1)) } )
-ds_list_add(housing, { text: "Pine Wall", obj: o_Wall, spr: s_WallIcon, desc: "Keeps enemies out.", need: array(recipe_req(items.wood, 3)) } )
-ds_list_add(housing, { text: "Pine Gate", obj: o_Gate, spr: s_GateIcon, desc: "The way inside.", need: array(recipe_req(items.wood, 5),recipe_req(items.stone, 2)) } )
 
 /// CRAFTING
 craft_selcat = 0
@@ -39,19 +46,18 @@ craft_selrec = 0
 
 //recipes
 craft_recipes[0] = ds_list_create()
-ds_list_add(craft_recipes[0], recipe(items.basicknife, array( recipe_req(items.wood, 3), recipe_req(items.iron, 10) ), 1 ) )
-ds_list_add(craft_recipes[0], recipe(items.sledgehammer, array( recipe_req(items.wood, 5), recipe_req(items.iron, 15) ), 1 ) )
+ds_list_add(craft_recipes[0], global.recipes[items.basicknife])
 
 
 craft_recipes[1] = ds_list_create()
-ds_list_add(craft_recipes[1], recipe(items.stonehatchet, array( recipe_req(items.stone, 1), recipe_req(items.wood, 2), recipe_req(items.plantfibers, 3) ), 1 ) )
-ds_list_add(craft_recipes[1], recipe(items.pickaxe, array( recipe_req(items.stone, 3), recipe_req(items.wood, 2), recipe_req(items.plantfibers, 3) ), 1 ) )
-ds_list_add(craft_recipes[1], recipe(items.hammer, array( recipe_req(items.wood, 3), recipe_req(items.iron, 5) ), 1 ) )
+//ds_list_add(craft_recipes[1], global.recipes[items.stonehatchet])
+//ds_list_add(craft_recipes[1], global.recipes[items.pickaxe])
+ds_list_add(craft_recipes[1], global.recipes[items.hammer])
 
 
 craft_recipes[2] = ds_list_create()
-ds_list_add(craft_recipes[2], recipe(items.woodwall, array( recipe_req(items.wood, 25) ), 1 ) )
-ds_list_add(craft_recipes[2], recipe(items.woodfloor, array( recipe_req(items.wood, 25) ), 1 ) )
+ds_list_add(craft_recipes[2], global.recipes[items.woodwall])
+ds_list_add(craft_recipes[2], global.recipes[items.woodfloor])
 
 
 craft_recipes[3] = ds_list_create()
@@ -59,7 +65,7 @@ craft_recipes[3] = ds_list_create()
 
 
 craft_recipes[4] = ds_list_create()
-ds_list_add(craft_recipes[4], recipe(items.furnace, array( recipe_req(items.wood, 3), recipe_req(items.stone, 50) ), 1 ) )
+ds_list_add(craft_recipes[4], global.recipes[items.furnace])
 
 
 craft_recipes[5] = ds_list_create()
@@ -72,11 +78,6 @@ craft_recipes[6] = ds_list_create()
 
 craft_recipes[7] = ds_list_create()
 
-
-
-//sharpener - flint rare drop (flint + stone) = sharpener
-//stick + 2 stones = dull axe + sharper = stone aXE
-
 gridx = 10
 gridy = 4
 			
@@ -88,13 +89,6 @@ dh = (gridy * cel_size) + (gridy - 1) * cel_gap
 			
 dx = display_get_gui_width() / 2 - dw / 2
 dy = display_get_gui_height() / 2 - dh / 2
-start_dx = dx
-start_dy = dy
-
-selected_housing = 0
-
-hos_x = start_dx
-hos_y = start_dy
 
 //no exit if in these uis
 no_exit = ds_list_create()
@@ -102,13 +96,13 @@ no_exit = ds_list_create()
 ds_list_add(no_exit, gui.CONTAINER)
 
 //recipes 
-global.recipe_amount = 4
-global.recipes = array_create(global.recipe_amount)
+//global.recipe_amount = 4
+//global.recipes = array_create(global.recipe_amount)
 
-for(var i = 0; i < global.recipe_amount; i++)
-{
-	global.recipes[i] = ds_list_create()	
-}
+//for(var i = 0; i < global.recipe_amount; i++)
+//{
+//	global.recipes[i] = ds_list_create()	
+//}
 
 enum gui
 {
@@ -124,9 +118,6 @@ hp_show = 0;
 energy_show = 0;
 
 item_log = ds_list_create()
-
-//recipe example
-//ds_list_add([list], make_recipe(items.basicknife, array(make_recipe_requirement(items.forgedmetal, 6), make_recipe_requirement(items.wood, 20)), 1, crafting_lvls.WORKBENCH))
 
 #macro main_color color_hex(0x9babb2)
 #macro button_color color_hex(0xc7b08b)

@@ -12,7 +12,7 @@ if(keyboard_check_pressed(vk_f1))
 
 if(keyboard_check_pressed(vk_f11))
 {
+	if(window_get_fullscreen()) display_set_gui_size(window_get_width(), window_get_height())
+	
 	window_set_fullscreen(!window_get_fullscreen())
 }
-
-display_set_gui_size(window_get_width(), window_get_height())

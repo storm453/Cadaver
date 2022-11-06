@@ -102,7 +102,7 @@ function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size, shift =
 	}
 }
 
-function draw_item(arg_inv, i, j, arg_x, arg_y)
+function draw_item(arg_inv, i, j, arg_x, arg_y, draw_count = 1)
 {
 	if(arg_inv[i,j] != 0)
 	{
@@ -110,15 +110,18 @@ function draw_item(arg_inv, i, j, arg_x, arg_y)
 		var item_offset = 16 * inv_scale / 2
 
 		draw_sprite_ext(s_Items, item.item, arg_x + item_offset, arg_y + item_offset, inv_scale, inv_scale, 0, c_white, 1)
-				
-		if(item.amt > 1)
+		
+		if(draw_count)
 		{
-			draw_set_halign(fa_left)
-			draw_set_valign(fa_top)
-			draw_set_color(0xc0f3fe)
-			draw_set_font(ft_Medium)
+			if(item.amt > 1)
+			{
+				draw_set_halign(fa_left)
+				draw_set_valign(fa_top)
+				draw_set_color(0xc0f3fe)
+				draw_set_font(ft_Medium)
 			
-			draw_text(arg_x + 4, arg_y + 4, item.amt)
+				draw_text(arg_x + 4, arg_y + 4, item.amt)
+			}
 		}
 	}	
 }
@@ -423,7 +426,7 @@ function recipe_req(item_id, item_mat)
 	return { item: item_id, amt: item_mat }	
 }
 
-function recipe(arg_item, requirements, amount_to_craft)
+function recipe(arg_item, requirements, amount_to_craft, station_req = stations.hands)
 {
-	return { item: arg_item, req_arr: requirements, craft_amt: amount_to_craft }
+	return { item: arg_item, req_arr: requirements, craft_amt: amount_to_craft, station_needed: station_req }
 }

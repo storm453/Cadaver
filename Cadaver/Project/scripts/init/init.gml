@@ -50,7 +50,7 @@ global.pt_blood = pt
 //fire
 var pt = part_type_create()
 
-part_type_shape(pt, pt_shape_disk)
+part_type_shape(pt, pt_shape_line)
 part_type_life(pt, 40, 120)
 
 part_type_color2(pt, c_orange, c_red)

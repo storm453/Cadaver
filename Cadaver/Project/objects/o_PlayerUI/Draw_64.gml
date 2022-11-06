@@ -36,6 +36,7 @@ if(draw_hud)
 //item log pikcup notifications
 var log_x = 1700
 var log_y = 1000
+
 for(var i = 0; i < ds_list_size(item_log); i++)
 {
 	var log_height = 35
@@ -74,6 +75,50 @@ for(var i = 0; i < ds_list_size(item_log); i++)
 }
 #macro pad 5
 
+//loop through and check if current gui is in tablist
+for(var i = 0; i < ds_list_size(tabnav); i++)
+{
+	if(global.current_gui == tabnav[|i])
+	{
+		var tn_x = 0
+		var tn_y = 0
+		
+		var tab_h = 70
+		
+		//draw navtab bc gui is in tabnav list
+		draw_set_color(c_yellow)
+		draw_rectangle(tn_x, tn_y, display_get_gui_width(), tab_h, false)
+		draw_set_color(c_white) 
+		
+		tn_x += pad
+		
+		for(var i = 0; i < ds_list_size(tabnav_buttons); i++)
+		{
+			var tn_bwidth = 300
+			
+			var cur = tabnav_buttons[|i]
+			
+			var col = c_orange
+			var sel_col = c_red
+			
+			if(cur.ui == global.current_gui)
+			{
+				//current button is the gui that is selected
+				col = c_lime
+				sel_col = c_lime
+			}
+			
+			draw_set_font(ft_24)
+			
+			var button = ui_draw_button_color(cur.text, tn_x + (i * (tn_bwidth + pad)), tn_y, tn_bwidth, tab_h, col, sel_col, c_white, false)
+			if(button[0])
+			{
+				global.current_gui = cur.ui
+			}
+		}
+	}
+}
+
 if(global.current_gui == gui.CRAFT)
 {
 	var craft_width = sprite_get_width(s_CraftUI) * inv_scale
@@ -82,7 +127,21 @@ if(global.current_gui == gui.CRAFT)
 	var cra_x = display_get_gui_width() / 2 - craft_width / 2
 	var cra_y = display_get_gui_height() / 2 - craft_height / 2
 	
-	window_text(cra_x, cra_y, "Crafting", ft_Large, color_hex(0xe4d2aa))
+	//change some variables based on your station
+	var station_name = "Crafting"
+	var craft_level = stations.hands
+	
+	if(global.open_instance != noone)
+	{
+		//an instance is open
+		if(global.open_instance.block_data.misc.station == stations.workbench)
+		{
+			station_name = "Workbench"
+			craft_level = stations.workbench
+		}
+	}
+	
+	window_text(cra_x, cra_y, station_name, ft_Large, color_hex(0xe4d2aa))
 	
 	draw_sprite_ext(s_CraftUI, 0, cra_x, cra_y, inv_scale, inv_scale, 0, c_white, 1)
 	
@@ -166,6 +225,7 @@ if(global.current_gui == gui.CRAFT)
 		var sel_item = craft_recipes[craft_selcat][|craft_selrec].item
 		var sel_name = global.items_list[sel_item].name
 		var sel_desc = global.items_list[sel_item].item_data.description
+		var sel_stat = craft_recipes[craft_selcat][|craft_selrec].station_needed
 	
 		draw_sprite_ext(s_CraftTitle, 0, cra_pan.at_x, cra_pan.at_y, inv_scale, inv_scale, 0, c_white, 1)
 		
@@ -187,11 +247,15 @@ if(global.current_gui == gui.CRAFT)
 		draw_text_ext(cra_pan.at_x, cra_pan.at_y, sel_desc, 30, title_w)
 		
 		cra_pan.at_y += 200
-		
+
 		draw_line(cra_pan.at_x, cra_pan.at_y, cra_pan.at_x + title_w, cra_pan.at_y)
 		
-		cra_pan.at_y += slot_spacing
+		//draw text if a workbench is required
+		if(sel_stat == stations.workbench) window_text(cra_pan.at_x, cra_pan.at_y, "Workbench required to craft!", ft_17, c_maroon)
 		
+		
+		cra_pan.at_y += slot_spacing
+			
 		var requirements_array = craft_recipes[craft_selcat][|craft_selrec].req_arr
 		
 		var craft = true
@@ -225,6 +289,12 @@ if(global.current_gui == gui.CRAFT)
 			if(get_item_amount(o_PlayerInventory.inv, req_item) >= req_amt) draw_set_color(color_hex(0x756854))
 			
 			ui_draw_string(cra_pan.at_x + have_offset, cra_pan.at_y + (i * 30), "(Have: " + string(get_item_amount(o_PlayerInventory.inv, req_item)) + ")", ft_17)
+		}
+		
+		//disallow crafting if station requirement not met
+		if(sel_stat != stations.hands)
+		{
+			if(craft_level != sel_stat) craft = false	
 		}
 		
 		var craft_button_w = sprite_get_width(s_CraftListButton) * inv_scale

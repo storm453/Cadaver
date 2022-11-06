@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "s_CraftListButton",
   "bboxMode": 0,
   "collisionKind": 1,
   "type": 0,
@@ -14,6 +17,7 @@
   "HTile": false,
   "VTile": false,
   "For3D": false,
+  "DynamicTexturePage": false,
   "width": 86,
   "height": 21,
   "textureGroupId": {
@@ -24,18 +28,14 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"a0006f45-b08a-4441-8202-6ee7fa51d47b","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"a0006f45-b08a-4441-8202-6ee7fa51d47b","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"LayerId":{"name":"3dad518b-3c7f-4dd9-ba3b-c58fe017985b","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"s_CraftListButton","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","name":"a0006f45-b08a-4441-8202-6ee7fa51d47b","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"c888c639-9616-4d83-a41c-ca9e649f9ffa","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"c888c639-9616-4d83-a41c-ca9e649f9ffa","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"LayerId":{"name":"3dad518b-3c7f-4dd9-ba3b-c58fe017985b","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"s_CraftListButton","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","name":"c888c639-9616-4d83-a41c-ca9e649f9ffa","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"59cbf52c-7e9d-420c-a0c7-839e1c6f5b3c","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"59cbf52c-7e9d-420c-a0c7-839e1c6f5b3c","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"LayerId":{"name":"3dad518b-3c7f-4dd9-ba3b-c58fe017985b","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"s_CraftListButton","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","name":"59cbf52c-7e9d-420c-a0c7-839e1c6f5b3c","tags":[],"resourceType":"GMSpriteFrame",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"a0006f45-b08a-4441-8202-6ee7fa51d47b",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c888c639-9616-4d83-a41c-ca9e649f9ffa",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"59cbf52c-7e9d-420c-a0c7-839e1c6f5b3c",},
   ],
   "sequence": {
-    "spriteId": {"name":"s_CraftListButton","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "s_CraftListButton",
     "timeUnits": 1,
     "playback": 1,
     "playbackSpeed": 30.0,
@@ -46,11 +46,11 @@
     "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MessageEventKeyframe>",},
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
-      {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
             {"id":"b5d97bd2-649f-441b-8f39-5e3074280bdf","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"a0006f45-b08a-4441-8202-6ee7fa51d47b","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"d0e4b0c9-ad91-4fd2-8461-7e206e57c87b","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"c888c639-9616-4d83-a41c-ca9e649f9ffa","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"23af5e15-c5b7-4428-8513-83a7f1a7351f","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"59cbf52c-7e9d-420c-a0c7-839e1c6f5b3c","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -66,22 +66,13 @@
     "yorigin": 0,
     "eventToFunction": {},
     "eventStubScript": null,
-    "parent": {"name":"s_CraftListButton","path":"sprites/s_CraftListButton/s_CraftListButton.yy",},
-    "resourceVersion": "1.4",
-    "name": "s_CraftListButton",
-    "tags": [],
-    "resourceType": "GMSequence",
   },
   "layers": [
-    {"visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default","resourceVersion":"1.0","name":"3dad518b-3c7f-4dd9-ba3b-c58fe017985b","tags":[],"resourceType":"GMImageLayer",},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"3dad518b-3c7f-4dd9-ba3b-c58fe017985b","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
   ],
   "nineSlice": null,
   "parent": {
     "name": "Inventory",
     "path": "folders/Sprites/Inventory.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "s_CraftListButton",
-  "tags": [],
-  "resourceType": "GMSprite",
 }

@@ -1,9 +1,14 @@
 px = o_Player.x
 py = o_Player.y
-
+	
 if(keyboard_check_pressed(ord("L")))
 {
 	chunk_load++	
+}
+
+for(var i = 0; i < ds_list_size(chunk_list); i++)
+{
+		
 }
 
 var p_locx = floor(px / chunk_size)

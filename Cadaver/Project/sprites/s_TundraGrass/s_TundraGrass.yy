@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMSprite",
+  "resourceVersion": "1.0",
+  "name": "s_TundraGrass",
   "bboxMode": 0,
   "collisionKind": 1,
   "type": 0,
@@ -14,6 +17,7 @@
   "HTile": false,
   "VTile": false,
   "For3D": false,
+  "DynamicTexturePage": false,
   "width": 32,
   "height": 32,
   "textureGroupId": {
@@ -24,24 +28,16 @@
   "gridX": 0,
   "gridY": 0,
   "frames": [
-    {"compositeImage":{"FrameId":{"name":"c99389ce-5842-4ab5-8309-92c16a7bb712","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"c99389ce-5842-4ab5-8309-92c16a7bb712","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":{"name":"6c371442-2994-4685-91be-052c26ae960c","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"s_TundraGrass","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"c99389ce-5842-4ab5-8309-92c16a7bb712","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"db1f4362-562b-48df-91eb-27c27a80080c","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"db1f4362-562b-48df-91eb-27c27a80080c","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":{"name":"6c371442-2994-4685-91be-052c26ae960c","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"s_TundraGrass","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"db1f4362-562b-48df-91eb-27c27a80080c","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"16f42261-6455-42b2-8ddb-0c0dc2fccacd","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"16f42261-6455-42b2-8ddb-0c0dc2fccacd","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":{"name":"6c371442-2994-4685-91be-052c26ae960c","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"s_TundraGrass","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"16f42261-6455-42b2-8ddb-0c0dc2fccacd","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"f0ec7ba0-0170-4bea-b7ab-70c53ba0f400","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"f0ec7ba0-0170-4bea-b7ab-70c53ba0f400","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":{"name":"6c371442-2994-4685-91be-052c26ae960c","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"s_TundraGrass","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"f0ec7ba0-0170-4bea-b7ab-70c53ba0f400","tags":[],"resourceType":"GMSpriteFrame",},
-    {"compositeImage":{"FrameId":{"name":"cf62d925-c216-4818-a3f6-bd2aa6f994fe","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},"images":[
-        {"FrameId":{"name":"cf62d925-c216-4818-a3f6-bd2aa6f994fe","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"LayerId":{"name":"6c371442-2994-4685-91be-052c26ae960c","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMSpriteBitmap",},
-      ],"parent":{"name":"s_TundraGrass","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","name":"cf62d925-c216-4818-a3f6-bd2aa6f994fe","tags":[],"resourceType":"GMSpriteFrame",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"c99389ce-5842-4ab5-8309-92c16a7bb712",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"db1f4362-562b-48df-91eb-27c27a80080c",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"16f42261-6455-42b2-8ddb-0c0dc2fccacd",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"f0ec7ba0-0170-4bea-b7ab-70c53ba0f400",},
+    {"resourceType":"GMSpriteFrame","resourceVersion":"1.1","name":"cf62d925-c216-4818-a3f6-bd2aa6f994fe",},
   ],
   "sequence": {
-    "spriteId": {"name":"s_TundraGrass","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},
+    "resourceType": "GMSequence",
+    "resourceVersion": "1.4",
+    "name": "s_TundraGrass",
     "timeUnits": 1,
     "playback": 1,
     "playbackSpeed": 10.0,
@@ -52,13 +48,13 @@
     "events": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MessageEventKeyframe>",},
     "moments": {"Keyframes":[],"resourceVersion":"1.0","resourceType":"KeyframeStore<MomentsEventKeyframe>",},
     "tracks": [
-      {"name":"frames","spriteId":null,"keyframes":{"Keyframes":[
+      {"resourceType":"GMSpriteFramesTrack","resourceVersion":"1.0","name":"frames","spriteId":null,"keyframes":{"Keyframes":[
             {"id":"31bc692e-2ab6-4270-95cc-84cfc74a7bed","Key":0.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"c99389ce-5842-4ab5-8309-92c16a7bb712","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"e4aeb6f0-e085-46f1-ae27-66c5b61dcd56","Key":1.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"db1f4362-562b-48df-91eb-27c27a80080c","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"b8ed1b4c-78d5-475b-915a-b442af8de7ff","Key":2.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"16f42261-6455-42b2-8ddb-0c0dc2fccacd","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"c0a80e11-9be6-4740-95a5-51aa32da4853","Key":3.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"f0ec7ba0-0170-4bea-b7ab-70c53ba0f400","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
             {"id":"ede52b4d-fa32-4b02-b290-583137b8a7fb","Key":4.0,"Length":1.0,"Stretch":false,"Disabled":false,"IsCreationKey":false,"Channels":{"0":{"Id":{"name":"cf62d925-c216-4818-a3f6-bd2aa6f994fe","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},"resourceVersion":"1.0","resourceType":"SpriteFrameKeyframe",},},"resourceVersion":"1.0","resourceType":"Keyframe<SpriteFrameKeyframe>",},
-          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"resourceVersion":"1.0","tags":[],"resourceType":"GMSpriteFramesTrack","modifiers":[],},
+          ],"resourceVersion":"1.0","resourceType":"KeyframeStore<SpriteFrameKeyframe>",},"trackColour":0,"inheritsTrackColour":true,"builtinName":0,"traits":0,"interpolation":1,"tracks":[],"events":[],"isCreationTrack":false,"modifiers":[],},
     ],
     "visibleRange": null,
     "lockOrigin": false,
@@ -74,22 +70,13 @@
     "yorigin": 16,
     "eventToFunction": {},
     "eventStubScript": null,
-    "parent": {"name":"s_TundraGrass","path":"sprites/s_TundraGrass/s_TundraGrass.yy",},
-    "resourceVersion": "1.4",
-    "name": "s_TundraGrass",
-    "tags": [],
-    "resourceType": "GMSequence",
   },
   "layers": [
-    {"visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default","resourceVersion":"1.0","name":"6c371442-2994-4685-91be-052c26ae960c","tags":[],"resourceType":"GMImageLayer",},
+    {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"6c371442-2994-4685-91be-052c26ae960c","visible":true,"isLocked":false,"blendMode":0,"opacity":100.0,"displayName":"default",},
   ],
   "nineSlice": null,
   "parent": {
     "name": "World",
     "path": "folders/Sprites/World.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "s_TundraGrass",
-  "tags": [],
-  "resourceType": "GMSprite",
 }

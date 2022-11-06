@@ -36,7 +36,7 @@ function enemy_create(arg_hp = 10, arg_armor = 0, arg_knock_res = 0)
 
 function extra_data()
 {
-	return {}
+	return { station: stations.hands }
 }
 
 function create_multiblock(arg_gui)
