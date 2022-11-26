@@ -1,10 +1,14 @@
 {
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "o_Gate",
   "spriteId": {
     "name": "s_Gate",
     "path": "sprites/s_Gate/s_Gate.yy",
   },
   "solid": false,
   "visible": true,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
@@ -30,8 +34,4 @@
     "name": "Buildings",
     "path": "folders/Objects/Buildings.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "o_Gate",
-  "tags": [],
-  "resourceType": "GMObject",
 }

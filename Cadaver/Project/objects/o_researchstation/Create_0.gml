@@ -21,7 +21,11 @@ research_prog = 0
 researched = ds_list_create()
 
 //recipes unlocked
-unlocks_list[items.stone] = array(global.recipes[items.stonehatchet], global.recipes[items.pickaxe])
+unlocks_list[items.stone] = array(global.recipes[items.stonehatchet], global.recipes[items.pickaxe], global.recipes[items.furnace])
+unlocks_list[items.wood] = array(global.recipes[items.woodwall], global.recipes[items.woodfloor])
+unlocks_list[items.iron] = array(global.recipes[items.sledgehammer], global.recipes[items.hammer])
+unlocks_list[items.cloth] = array(global.recipes[items.bandage])
+unlocks_list[items.iron] = array(global.recipes[items.sturdyaxe], global.recipes[items.sturdypickaxe])
 
 function render()
 {

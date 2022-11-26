@@ -12,10 +12,10 @@ y = target.y;
 last_x = x
 last_y = y
 
-zoom       = 0;
-target_zoom = 2.25;
+zoom       = 0
+target_zoom = 1.25;
 min_zoom = 0.5;
 max_zoom = 100;
 
 shake = 0;
-shake_damp = 0.9;
+shake_damp = 0.85;

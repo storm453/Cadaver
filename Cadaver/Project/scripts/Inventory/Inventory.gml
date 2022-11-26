@@ -36,12 +36,15 @@ function inv_click_logic(arg_i = i, arg_j = j)
 	{
 		if(inv[arg_i, arg_j] != 0)
 		{
-			var split = floor(inv[arg_i, arg_j].amt / 2)
-			//var split_leave = inv[arg_i, arg_j].amt - split
+			if(inv[arg_i, arg_j].amt > 1)
+			{
+				var split = floor(inv[arg_i, arg_j].amt / 2)
+				var split_leave = inv[arg_i, arg_j].amt - split
 		
-			global.in_hand = { item: inv[arg_i, arg_j].item, amt: split }
+				global.in_hand = { item: inv[arg_i, arg_j].item, amt: split }
 			
-			//if(inv[arg_i, arg_j].amt 
+				inv[arg_i, arg_j].amt = split_leave
+			}
 		}
 	}
 }
@@ -88,13 +91,19 @@ function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size, shift =
 				{
 					if(global.in_hand == 0)
 					{
-						//hand is empty
-						var take_amt = round(arg_inv[inv_i,j].amt / 2)
-						var leave_amt = arg_inv[inv_i,j].amt - take_amt
+						if(arg_inv[inv_i,j].amt > 1)
+						{
+							//hand is empty
+							//var take_amt = floor(arg_inv[inv_i,j].amt / 2)
+							//var leave_amt = arg_inv[inv_i,j].amt - take_amt
 						
-						global.in_hand = { item: arg_inv[inv_i,j].item, amt: take_amt }
+							//global.in_hand = { item: arg_inv[inv_i,j].item, amt: take_amt }
 						
-						arg_inv[inv_i,j].amt = leave_amt
+							//var temp_slot = { item: arg_inv[inv_i,j].item, amt: leave_amt }
+							
+							//array_set(arg_inv[inv_i], j, 0)
+							////array_set(arg_inv[inv_i], j, temp_slot)
+						}
 					}
 				}
 			}
@@ -426,7 +435,7 @@ function recipe_req(item_id, item_mat)
 	return { item: item_id, amt: item_mat }	
 }
 
-function recipe(arg_item, requirements, amount_to_craft, station_req = stations.hands)
+function recipe(arg_item, requirements, amount_to_craft, station_req = stations.hands, craft_cat = 0)
 {
-	return { item: arg_item, req_arr: requirements, craft_amt: amount_to_craft, station_needed: station_req }
+	return { item: arg_item, req_arr: requirements, craft_amt: amount_to_craft, station_needed: station_req, crafting_category_index: craft_cat }
 }

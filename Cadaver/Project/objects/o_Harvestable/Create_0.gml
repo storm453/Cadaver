@@ -1,6 +1,19 @@
 z = 0
 
+outline_init()
+
 flash_alpha = 0
+
+enum resources
+{
+	plants1,
+	plants2,
+	stone1,
+	iron1,
+	tree1
+}
+
+event_user(0)
 
 function render()
 {

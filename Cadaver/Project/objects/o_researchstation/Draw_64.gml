@@ -107,7 +107,7 @@ if(research_prog > 2000)
 				
 				for(var j = 0; j < array_length_1d(index); j++)
 				{
-					ds_list_add(o_PlayerUI.craft_recipes[0], index[j])
+					ds_list_add(o_PlayerUI.craft_recipes[index[j].crafting_category_index], index[j])
 					
 					var cur_item = global.items_list[index[j].item].name
 					

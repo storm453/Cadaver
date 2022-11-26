@@ -17,7 +17,7 @@ if (colour_grade)
 	
 	var uvs_night = sprite_get_uvs(spr_night, 0);
 	shader_set_uniform_f(shader_get_uniform(shdr_colour_grade, "u_lutUvs_night"), uvs_night[0],uvs_night[1],uvs_night[2],uvs_night[3]);
-		
+
 	shader_set_uniform_f(shader_get_uniform(shdr_colour_grade, "u_bf"), day_factor); 
 	
 	draw_surface(application_surface, 0, 0);

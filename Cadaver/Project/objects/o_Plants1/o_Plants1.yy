@@ -1,10 +1,14 @@
 {
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "o_Plants1",
   "spriteId": {
     "name": "s_Plants1",
     "path": "sprites/s_Plants1/s_Plants1.yy",
   },
   "solid": false,
   "visible": true,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
@@ -25,13 +29,13 @@
   "physicsShapePoints": [],
   "eventList": [],
   "properties": [],
-  "overriddenProperties": [],
+  "overriddenProperties": [
+    {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"hp","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"2",},
+    {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"type","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"0",},
+    {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"tier","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"5",},
+  ],
   "parent": {
     "name": "World",
     "path": "folders/Objects/World.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "o_Plants1",
-  "tags": [],
-  "resourceType": "GMObject",
 }

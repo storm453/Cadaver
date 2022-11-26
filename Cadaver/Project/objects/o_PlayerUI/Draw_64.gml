@@ -1,11 +1,11 @@
-var draw_hud = false
+var do_hud = false
 
 for(var i = 0; i < ds_list_size(draw_hud); i++)
 {
-	if(global.current_gui == draw_hud[|i]) draw_hud = true	
+	if(global.current_gui == draw_hud[|i]) do_hud = true	
 }
 
-if(draw_hud)
+if(do_hud)
 {
 	//hp bar
 	var hp_x = 10;
@@ -338,5 +338,10 @@ if(global.current_gui == gui.CRAFT)
 		ui_draw_string(cra_pan.at_x + craft_button_w / 2, cra_pan.at_y + craft_button_h / 2, "Craft", ft_Large)
 		draw_set_halign(fa_left)
 		draw_set_valign(fa_top)
+	}
+	else
+	{
+		//epic
+		draw_text(cra_pan.at_x, cra_pan.at_y, "No recipes learned!")
 	}
 }

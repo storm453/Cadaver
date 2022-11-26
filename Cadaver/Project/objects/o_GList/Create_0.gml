@@ -52,17 +52,27 @@ enum items
 	workbench,
 	furnace,
 	woodwall,
-	woodfloor
+	woodfloor,
+	researchstation,
+	sturdypickaxe,
+	sturdyaxe
 }
 
-global.recipes[items.sledgehammer] = recipe(items.sledgehammer, array( recipe_req(items.wood, 5), recipe_req(items.iron, 15) ), 1 )
-global.recipes[items.basicknife] = recipe(items.basicknife, array( recipe_req(items.wood, 3), recipe_req(items.iron, 10) ), 1)
-global.recipes[items.stonehatchet] = recipe(items.stonehatchet, array( recipe_req(items.stone, 1), recipe_req(items.wood, 2), recipe_req(items.plantfibers, 3) ), 1)
-global.recipes[items.pickaxe] = recipe(items.pickaxe, array( recipe_req(items.stone, 3), recipe_req(items.wood, 2), recipe_req(items.plantfibers, 3) ), 1)
-global.recipes[items.hammer] = recipe(items.hammer, array( recipe_req(items.wood, 3), recipe_req(items.iron, 5) ), 1, stations.workbench)
-global.recipes[items.woodwall] = recipe(items.woodwall, array( recipe_req(items.wood, 25) ), 1, stations.workbench)
-global.recipes[items.woodfloor] = recipe(items.woodfloor, array( recipe_req(items.wood, 25) ), 1, stations.workbench)
-global.recipes[items.furnace] = recipe(items.furnace, array( recipe_req(items.wood, 3), recipe_req(items.stone, 50) ), 1)
+global.recipes[items.sledgehammer] = recipe(items.sledgehammer, array( recipe_req(items.wood, 5), recipe_req(items.iron, 15) ), 1, stations.hands, 0)
+global.recipes[items.basicknife] = recipe(items.basicknife, array( recipe_req(items.wood, 3), recipe_req(items.iron, 10) ), 1, stations.hands, 0)
+
+global.recipes[items.stonehatchet] = recipe(items.stonehatchet, array( recipe_req(items.stone, 1), recipe_req(items.wood, 2), recipe_req(items.plantfibers, 3) ), 1, stations.hands, 1)
+global.recipes[items.pickaxe] = recipe(items.pickaxe, array( recipe_req(items.stone, 3), recipe_req(items.wood, 2), recipe_req(items.plantfibers, 3) ), 1, stations.hands, 1)
+global.recipes[items.hammer] = recipe(items.hammer, array( recipe_req(items.wood, 3), recipe_req(items.iron, 5) ), 1, stations.workbench, 1)
+global.recipes[items.sturdyaxe] = recipe(items.sturdyaxe, array( recipe_req(items.wood, 20), recipe_req(items.iron, 10), recipe_req(items.cloth, 2) ), 1, stations.workbench, 1)
+global.recipes[items.sturdypickaxe] = recipe(items.sturdypickaxe, array( recipe_req(items.wood, 20), recipe_req(items.iron, 18), recipe_req(items.cloth, 3) ), 1, stations.workbench, 1)
+
+global.recipes[items.woodwall] = recipe(items.woodwall, array( recipe_req(items.wood, 25) ), 1, stations.workbench, 2)
+global.recipes[items.woodfloor] = recipe(items.woodfloor, array( recipe_req(items.wood, 25) ), 1, stations.workbench, 2)
+global.recipes[items.furnace] = recipe(items.furnace, array( recipe_req(items.wood, 3), recipe_req(items.stone, 20) ), 1, stations.hands, 4)
+global.recipes[items.researchstation] = recipe(items.researchstation, array( recipe_req(items.wood, 10)), 1, stations.workbench, 4)
+global.recipes[items.workbench] = recipe(items.workbench, array( recipe_req(items.wood, 15)), 1, stations.hands, 4)
+global.recipes[items.bandage] = recipe(items.bandage, array( recipe_req(items.cloth, 2), recipe_req(items.plantfibers, 1) ), 1, stations.hands, 6)
 
 function create_struct()
 {
@@ -76,7 +86,8 @@ function create_struct()
 		damage: 0,
 		kb: 1,
 		sweep: 0,
-		hand_sprite: s_Empty
+		hand_sprite: s_Empty,
+		tier: 1
 	}
 
 	return return_struct
@@ -252,6 +263,7 @@ function create_item(arg_name)
 	item.item_data.sweep = 1
 	item.item_data.hand_sprite = s_Axe
 	item.item_data.description = "Cuts small trees."
+	item.item_data.tier = 3
 }	
 
 {
@@ -302,6 +314,9 @@ function create_item(arg_name)
 
 {
 	var item = create_item("Workbench")
+	
+	item.item_data.item_type = item_types.building
+	item.item_data.building_obj = o_Workbench
 }
 
 {
@@ -323,4 +338,23 @@ function create_item(arg_name)
 	
 	item.item_data.item_type = item_types.building
 	item.item_data.building_obj = o_Floor
+}
+
+{
+	var item = create_item("Research Station")
+		
+	item.item_data.item_type = item_types.building
+	item.item_data.building_obj = o_ResearchStation
+}
+
+{
+	var item = create_item("Sturdy Pickaxe")
+		
+	item.item_data.item_type = item_types.tool
+}
+
+{
+	var item = create_item("Sturdy Axe")
+		
+	item.item_data.item_type = item_types.tool
 }

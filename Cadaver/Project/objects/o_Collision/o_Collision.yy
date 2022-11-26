@@ -1,7 +1,14 @@
 {
-  "spriteId": null,
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "o_Collision",
+  "spriteId": {
+    "name": "s_Collision",
+    "path": "sprites/s_Collision/s_Collision.yy",
+  },
   "solid": false,
   "visible": true,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
@@ -27,8 +34,4 @@
     "name": "Meta",
     "path": "folders/Objects/Meta.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "o_Collision",
-  "tags": [],
-  "resourceType": "GMObject",
 }

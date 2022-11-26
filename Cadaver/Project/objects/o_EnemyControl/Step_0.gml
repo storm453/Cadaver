@@ -8,7 +8,7 @@ switch(level)
 	case(0):
 	
 		//level one
-		if(chance(0.0005))
+		if(chance(0.0009))
 		{
 			if(spawn_timer >= spawn_set)
 			{
@@ -26,7 +26,7 @@ switch(level)
 	case(1):
 	
 		//level two
-		if(chance(0.001))
+		if(chance(0.004))
 		{
 			if(spawn_timer >= spawn_set)
 			{

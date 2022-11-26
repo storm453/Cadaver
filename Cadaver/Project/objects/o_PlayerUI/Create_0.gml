@@ -46,35 +46,21 @@ craft_selrec = 0
 
 //recipes
 craft_recipes[0] = ds_list_create()
-ds_list_add(craft_recipes[0], global.recipes[items.basicknife])
-
 
 craft_recipes[1] = ds_list_create()
-//ds_list_add(craft_recipes[1], global.recipes[items.stonehatchet])
-//ds_list_add(craft_recipes[1], global.recipes[items.pickaxe])
-ds_list_add(craft_recipes[1], global.recipes[items.hammer])
-
 
 craft_recipes[2] = ds_list_create()
-ds_list_add(craft_recipes[2], global.recipes[items.woodwall])
-ds_list_add(craft_recipes[2], global.recipes[items.woodfloor])
-
+ds_list_add(craft_recipes[2], global.recipes[items.workbench])
 
 craft_recipes[3] = ds_list_create()
 
 
-
 craft_recipes[4] = ds_list_create()
-ds_list_add(craft_recipes[4], global.recipes[items.furnace])
-
+ds_list_add(craft_recipes[4], global.recipes[items.researchstation])
 
 craft_recipes[5] = ds_list_create()
 
-
-
 craft_recipes[6] = ds_list_create()
-
-
 
 craft_recipes[7] = ds_list_create()
 

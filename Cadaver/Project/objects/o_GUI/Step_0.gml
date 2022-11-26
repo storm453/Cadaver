@@ -1,12 +1,14 @@
 //day_factor = 1
-day_factor = (-cos(global.time * time_speed) * 0.5 + 0.5)
+global.time += get_delta_time()
 
-
-global.time += (delta_time / 1000000)
-
-if(keyboard_check_pressed(vk_f1))
+function brzeczszyszrzkiewicz_curve(time_dr_freeman)
 {
-	game_restart()	
+	return -cos(pi / 2 + (pi / 2 * min(1, max(-1, cos(pi * time_dr_freeman / 1440) * steepness)))) * 0.5 + 0.5
+}
+
+if(keyboard_check_pressed(vk_f1)) 
+{
+	game_restart()
 	rand_seed()
 }
 
@@ -16,3 +18,5 @@ if(keyboard_check_pressed(vk_f11))
 	
 	window_set_fullscreen(!window_get_fullscreen())
 }
+
+day_factor = 1 - brzeczszyszrzkiewicz_curve(global.time * 50)

@@ -13,10 +13,50 @@ function player_animation()
 	
 	var block = chunk.grid[# floor((x - chunk.x) / tile_size), floor((y - chunk.y) / tile_size)]
 	
+	//music manager	
 	if(block == tile.water)
 	{
 		sprite_index = s_PlayerSwim
 	}
+	
+	function volume(arg_x)
+	{
+		if(arg_x < 3)
+		{
+			return arg_x / 3;	
+		}
+		else
+		{
+			return 1;	
+		}
+	}
+
+	if(songs[block] == current_song)
+	{
+		audio_state += (delta_time / 1000000) * 2
+		
+		if(audio_state > 10) audio_state = 10
+	}
+	else
+	{
+		audio_state -= (delta_time / 1000000) * 2
+		
+		if(audio_state <= 0) 
+		{
+			audio_state = 0
+			
+			audio_stop_sound(current_song)
+		}
+	}
+	
+	if(audio_state == 0)
+	{
+		current_song = songs[block]	
+		
+		audio_play_sound(current_song, 0, 1)
+	}
+	
+	audio_sound_gain(current_song, volume(audio_state), 0)
 	
 	//image_xscale and sacaling
 	var sign_mouse = sign(mouse_x - x)

@@ -1,7 +1,21 @@
-chunk_load = 1
+chunk_load = 4
 
-#macro chunk_size 256
+global.infect_seed_x = random(100000)
+global.infect_seed_y = random(100000)
+
+#macro chunk_size 64
 #macro tile_size 16
+
+#macro gen_deep_start 0.0
+#macro gen_deep_end 0.25
+#macro gen_shallow_start 0.25
+#macro gen_shallow_end 0.35
+#macro gen_shore_start 0.35
+#macro gen_shore_end 0.4
+#macro gen_grass_start 0.4
+#macro gen_grass_end 0.6
+#macro gen_dirt_start 0.6
+#macro gen_dirt_end 1
 
 enum tile
 {
@@ -11,7 +25,8 @@ enum tile
 	grass,
 	sand,
 	water,
-	waterdeep
+	waterdeep,
+	infected
 }
 
 //@TODO swtich to array

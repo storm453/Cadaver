@@ -1,4 +1,7 @@
 {
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "o_Workbench",
   "spriteId": {
     "name": "s_Workbench",
     "path": "sprites/s_Workbench/s_Workbench.yy",
@@ -25,7 +28,7 @@
   "physicsKinematic": false,
   "physicsShapePoints": [],
   "eventList": [
-    {"isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,"resourceVersion":"1.0","name":"","tags":[],"resourceType":"GMEvent",},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
   ],
   "properties": [],
   "overriddenProperties": [],
@@ -33,8 +36,4 @@
     "name": "Buildings",
     "path": "folders/Objects/Buildings.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "o_Workbench",
-  "tags": [],
-  "resourceType": "GMObject",
 }

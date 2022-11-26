@@ -7,26 +7,35 @@ enum state
 	idle,
 	move,
 	charging,
-	attack
+	attack,
+	backup
 }
 
 chase_distance = 128
-attack_distance = 12
+attack_distance = 30
 
 current_state = state.idle
-
-scripts_array[state.idle] = infected_idle
-scripts_array[state.move] = infected_move
-scripts_array[state.charging] = infected_charge
-scripts_array[state.attack] = infected_attack
 
 sprites_array[state.idle] = s_Mutant
 sprites_array[state.move] = s_MutantRun
 sprites_array[state.charging] = s_MutantCharge
 sprites_array[state.attack] = s_MutantAttack
+sprites_array[state.backup] = s_Mutant
+
+backup_length = 0
+backup_strength = 2
 
 charged = 0
 charge_time = 30
+
+dash_time = 0
+dash_time_amount = 0.6
+dash_strength = 2
+
+player_angle = 0
+
+cx = 0
+cy = 0
 
 attacked = 0
 attack_time = 75
@@ -39,6 +48,16 @@ function render()
 {
 	draw_self();
 	
+	player_angle = point_direction(x, y, o_Player.x, o_Player.y - 16)
+	
+	cx = cos(player_angle * 2 * pi / 360) * 25 + x
+	cy = -sin(player_angle * 2 * pi / 360) * 25 + y
+
+	if(current_state == state.attack)
+	{
+		if(dash_time < dash_time_amount) draw_sprite_ext(s_Swing, 0, cx, cy, 1, 1, player_angle, c_white, 1)
+	}
+	
 	var hp_width = 16 / 10 * enemy_data.hp
 	var hp_height = 1.5
 	
@@ -50,12 +69,6 @@ function render()
 	
 	//red bar
 	ui_draw_rectangle(h_x, h_y, hp_width, hp_height, c_red, 0.5, false)
-
-	//TEMP
-	var rec_x = x + 10 * image_xscale
-	var rec_y = y - sprite_height
-
-	if(current_state == state.attack) ui_draw_rectangle(rec_x, rec_y, attack_range * image_xscale, attack_range, c_red, 1, true)
 }
 
 ds_list_add(o_RenderManager.entities, self)
