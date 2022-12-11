@@ -19,14 +19,14 @@ global.infect_seed_y = random(100000)
 
 enum tile
 {
-	snow,
-	stone,
-	dirt,
 	grass,
-	sand,
 	water,
+	sand,
 	waterdeep,
-	infected
+	dirt,
+	stone,
+	infected,
+	length
 }
 
 //@TODO swtich to array

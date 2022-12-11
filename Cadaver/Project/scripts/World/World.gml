@@ -39,9 +39,9 @@ function extra_data()
 	return { station: stations.hands }
 }
 
-function create_multiblock(arg_gui)
+function create_multiblock(arg_name, arg_gui, arg_item)
 {
-	return { to_gui: arg_gui, misc: extra_data() }
+	return { name: arg_name, to_gui: arg_gui, block_item: arg_item, misc: extra_data() }
 }
 
 function spawn_enemy(radius_min, radius_max, obj)

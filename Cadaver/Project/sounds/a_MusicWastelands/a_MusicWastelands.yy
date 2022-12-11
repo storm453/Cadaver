@@ -15,7 +15,7 @@
     "path": "audiogroups/audiogroup_default",
   },
   "soundFile": "a_MusicWastelands.wav",
-  "duration": 103.3,
+  "duration": 84.0,
   "parent": {
     "name": "Sounds",
     "path": "folders/Sounds.yy",

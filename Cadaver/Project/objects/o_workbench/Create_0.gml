@@ -1,14 +1,5 @@
-z = 0
+event_inherited()
 
-depth = -1
-
-block_data = create_multiblock(gui.CRAFT)
+block_data = create_multiblock("Workbench", gui.CRAFT, items.workbench)
 
 block_data.misc.station = stations.workbench
-
-function render()
-{
-	draw_self();
-}
-
-ds_list_add(o_RenderManager.entities, self)

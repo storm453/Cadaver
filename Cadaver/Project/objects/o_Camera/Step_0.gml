@@ -12,8 +12,6 @@ var camera = view_camera[0];
 
 zoom += (target_zoom - zoom);
 
-print(zoom)
-
 var shake_offset_x = random_range(-1, 1) * shake;
 var shake_offset_y = random_range(-1, 1) * shake;
 

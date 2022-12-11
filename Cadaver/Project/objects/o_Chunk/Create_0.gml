@@ -62,33 +62,36 @@ function init_chunk(loc_x, loc_y)
 			
 			var grass_noise = value_noise(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 3, 0.5, 0.01, 2.1042)
 			
-			var spr = 0
+			var spr = s_FlaxTest
 
 			if(in_range(current_noise, gen_dirt_start, gen_dirt_end))
 			{
 				spr = s_TileDirt
 				ds_grid_set(grid, i, j, tile.dirt)
 				
-				if(rand(idx * chunk_size / tile_size + i, idy * chunk_size / tile_size + j) < 0.01)
+				if(!in_range(infect_noise, 0, 0.45))
 				{
-					create_obj_chunk(o_Tree3, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
-				}
-				if(rand(idx * chunk_size / tile_size + i + 15000, idy * chunk_size / tile_size + j + 15000) < 0.01)
-				{
-					create_obj_chunk(o_Tree1, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
-				}
-				if(rand(idx * chunk_size / tile_size + i + 10000, idy * chunk_size / tile_size + j + 10000) < 0.003)
-				{
-					create_obj_chunk(o_Rock1, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
-				}
-				if(rand(idx * chunk_size / tile_size + i + 20000, idy * chunk_size / tile_size + j + 20000) < 0.003)
-				{
-					create_obj_chunk(o_Iron, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
-				}
-				
-				if(rand(idx * chunk_size / tile_size + i + 20000, idy * chunk_size / tile_size + j + 20000) < 0.005)
-				{
-					create_obj_chunk(o_RockPickup, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					if(rand(idx * chunk_size / tile_size + i, idy * chunk_size / tile_size + j) < 0.01)
+					{
+						create_obj_chunk(o_Tree3, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
+					if(rand(idx * chunk_size / tile_size + i + 15000, idy * chunk_size / tile_size + j + 15000) < 0.01)
+					{
+						create_obj_chunk(o_Tree1, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
+					if(rand(idx * chunk_size / tile_size + i + 10000, idy * chunk_size / tile_size + j + 10000) < 0.003)
+					{
+						create_obj_chunk(o_Rock1, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
+					if(rand(idx * chunk_size / tile_size + i + 20000, idy * chunk_size / tile_size + j + 20000) < 0.003)
+					{
+						create_obj_chunk(o_Iron, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
+					
+					if(rand(idx * chunk_size / tile_size + i + 20000, idy * chunk_size / tile_size + j + 20000) < 0.005)
+					{
+						create_obj_chunk(o_RockPickup, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
 				}
 			}
 			else if(in_range(current_noise, gen_grass_start, gen_grass_end))
@@ -128,10 +131,10 @@ function init_chunk(loc_x, loc_y)
 									var stochastic = rand(idx * chunk_size + i * tile_size + lx, idy * chunk_size + j * tile_size + ly - 500000)
 
 									stochastic = power(stochastic, 1 / 2)
-
+									
 									var grass_color = clamp(200 + grass_noise * 3 * 30 + 15, 0, 255)
 
-									if(grass_noise > stochastic) && (grass_noise > 0.1)
+									if(grass_noise > stochastic) && (grass_noise > 0.2)
 									{
 										bfDraw(buffer, idx * chunk_size + i * tile_size + grass_rand_x + lx, idy * chunk_size + j * tile_size + grass_rand_y + ly, 16, 16, 0, s_Plants2, 0, make_color_rgb(grass_color, grass_color, grass_color), 1)
 									}
@@ -186,6 +189,11 @@ function init_chunk(loc_x, loc_y)
 			{
 				spr = s_TileInfectedGrass
 				ds_grid_set(grid, i, j, tile.infected)
+
+				if(rand(idx *  chunk_size + i * 4, idy * chunk_size + j * 4) < 0.03)
+				{
+					bfDraw(buffer, idx * chunk_size + i * tile_size, idy * chunk_size + j * tile_size, 16, 16, 0, s_InfectedDecoration, 0, c_white, 1)
+				}
 			}
 
 			//debug: draw noise
@@ -222,6 +230,8 @@ function init_chunk(loc_x, loc_y)
 				{
 					left = tile.grass
 				}
+				
+				//if(in_range(infect_noise, 0, 0.45)) left = tile.infected
 			}
 			
 			var right = grid[# i + 1,j]
@@ -234,6 +244,8 @@ function init_chunk(loc_x, loc_y)
 				{
 					right = tile.grass
 				}
+
+				//if(in_range(infect_noise, 0, 0.45)) right = tile.infected
 			}
 			
 			var up = grid[# i, j - 1]
@@ -246,6 +258,8 @@ function init_chunk(loc_x, loc_y)
 				{
 					up = tile.grass
 				}
+
+				//if(in_range(infect_noise, 0, 0.45)) up = tile.infected
 			}
 			
 			var down = grid[# i, j + 1]
@@ -258,12 +272,14 @@ function init_chunk(loc_x, loc_y)
 				{
 					down = tile.grass
 				}
+
+				//if(in_range(infect_noise, 0, 0.45)) down = tile.infected
 			}
 			
 			//dirt
 			if(grid[# i,j] == tile.dirt)
 			{
-				var rand_index = round(rand(idx * chunk_size + i * tile_size + 27000, idy * chunk_size + j * tile_size + 15000) * 2)
+				var rand_index = round(rand(idx * chunk_size + i * tile_size + 27000, idy * chunk_size + j * tile_size + 15000)) * 2
 				
 				if(left == tile.grass)
 				{
@@ -282,6 +298,7 @@ function init_chunk(loc_x, loc_y)
 					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size) + tile_size, tile_size, -tile_size, 9, s_GrassEdgeV, rand_index, c_white, 1)
 				}	
 			}
+			//shore / sand
 			if(grid[# i,j] == tile.sand)
 			{
 				if(left == tile.grass)
@@ -294,12 +311,49 @@ function init_chunk(loc_x, loc_y)
 				}
 				if(up == tile.grass)
 				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_StoneEdgeV, 0, c_white, 1)
+					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size) - 2, tile_size, tile_size, 9, s_StoneEdgeU, 0, c_white, 1)
 				}
-				//if(down == tile.grass)
-				//{
-					//bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size) + tile_size, tile_size, -tile_size, 9, s_StoneEdgeV, 0, c_white, 1)
-				//}	
+				if(down == tile.grass)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_StoneEdgeD, 0, c_white, 1)
+				}	
+				//infected
+				if(left == tile.infected)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_InfectedGrassEdgeCliffH, 0, c_white, 1)
+				}
+				if(right == tile.infected)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size) + tile_size, idy * chunk_size + (j * tile_size), -tile_size, tile_size, 9, s_InfectedGrassEdgeCliffH, 0, c_white, 1)
+				}
+				if(up == tile.infected)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_InfectedGrassEdgeCliffD, 0, c_white, 1)
+				}
+				if(down == tile.infected)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_InfectedGrassEdgeCliffU, 0, c_white, 1)
+				}	
+			}
+			//grass
+			if(grid[# i,j] == tile.grass)
+			{
+				if(left == tile.infected)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_InfectedGrassEdgeH, 0, c_white, 1)
+				}
+				if(right == tile.infected)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size) + tile_size, idy * chunk_size + (j * tile_size), -tile_size, tile_size, 9, s_InfectedGrassEdgeH, 0, c_white, 1)
+				}
+				if(up == tile.infected)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size) - 2, tile_size, tile_size, 9, s_InfectedGrassEdgeV, 0, c_white, 1)
+				}
+				if(down == tile.infected)
+				{
+					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size) + tile_size, tile_size, -tile_size, 9, s_InfectedGrassEdgeV, 0, c_white, 1)
+				}	
 			}
 		}
 	}

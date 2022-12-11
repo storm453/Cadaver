@@ -80,6 +80,12 @@ if(ok_gui)
 				inv_click_logic(i, j)
 				
 				draw_sprite_ext(s_GeneralSelected, 0, slots_dx, slots_dy, inv_scale, inv_scale, 0, c_white, 0.2)
+				
+				//draw item info above
+				if(inv[i,j] != 0)
+				{
+					draw_text(inv_x, inv_y - 200, string(inv[i,j].item))
+				}
 			}
 		}
 	}

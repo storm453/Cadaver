@@ -3,6 +3,8 @@ ds_list_add(o_RenderManager.entities, self)
 
 light = instance_create_layer(x, y, "Instances", o_Light)
 
+#macro interact_range 10
+
 outline_init()
 
 walk_speed = 50 
@@ -24,6 +26,13 @@ songs[tile.waterdeep] = a_MusicDeep
 songs[tile.dirt] = a_MusicNight
 songs[tile.stone] = a_MusicOcean
 songs[tile.infected] = a_MusicWastelands	
+
+song_playtime = 0
+
+song_position = array_create(tile.length, 0)
+
+old_block = 0
+playing_block = 0
 
 current_song = a_MusicPlains
 audio_play_sound(current_song, 1, 1)
@@ -163,8 +172,19 @@ mine_distance = 20
 
 check = 0
 
+
+current_multi = noone
+
+multi_buttons_list = ds_list_create()
+
+ds_list_add(multi_buttons_list, { text: "USE", type: 0, button_spr: s_KeyE } )
+ds_list_add(multi_buttons_list, { text: "MOVE", type: 0, button_spr: s_KeyR } )
+ds_list_add(multi_buttons_list, { text: "BREAK", type: 0, button_spr: s_KeyX } )
+
 function render()
 {
+	//if(current_multi != noone) draw_line(x, y, current_multi.x + sprite_get_width(current_multi.sprite_index) / 2, current_multi.y)
+	
 	part_system_depth(part_sys, 1000)
 	
 	//draw_circle(mouse_x, mouse_y, 5, true)

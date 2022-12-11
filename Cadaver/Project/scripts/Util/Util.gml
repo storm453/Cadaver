@@ -71,7 +71,7 @@ function move_towards(target)
 
 function in_range(check, _min, _max)
 {
-    if(_min < check && check < _max)
+    if(_min < check && check <= _max)
     {
         return true;
     }

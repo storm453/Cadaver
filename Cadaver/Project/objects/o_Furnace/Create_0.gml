@@ -1,4 +1,4 @@
-z = 0
+event_inherited()
 
 inv = create_inventory(5, 3)
 
@@ -6,18 +6,13 @@ inv = create_inventory(5, 3)
 
 depth = -1
 
-block_data = create_multiblock(gui.CONTAINER)
+block_data = create_multiblock("Furnace", gui.CONTAINER, items.furnace)
 
 burn_timer = 0
 burn_time = 120
 
 fur_x = display_get_gui_width() / 2 - player_inv_width / 2
 fur_y = display_get_gui_height() / 2 - player_inv_height / 2 + inv_offset - pad - furn_height
-
-function render()
-{
-	draw_self();
-}
 
 smelted = 0
 
@@ -28,5 +23,3 @@ for(var i = 0; i < array_length(inv); i++)
 		smelted[i,j] = 0
 	}
 }
-
-ds_list_add(o_RenderManager.entities, self)

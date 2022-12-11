@@ -1,4 +1,4 @@
-z = -bbox_bottom
+event_inherited()
 
 for(var i = 0; i < array_length(inv); i++)
 {

@@ -156,6 +156,7 @@ function check_if_attack()
 			attack_cooldown = 0.6
 			
 			state = player_state.attack
+			image_index = 0
 		}
 	}
 }
@@ -167,8 +168,6 @@ function check_if_block()
 		state = player_state.block	
 	}
 }
-
-show_debug_message(attack_cooldown)
 
 attack_cooldown -= get_delta_time()
 
@@ -266,27 +265,39 @@ function volume(arg_x)
 
 if(songs[block] == current_song)
 {
-	audio_state += (delta_time / 1000000) * 2
+	audio_state += (get_delta_time()) * 2
 		
 	if(audio_state > 10) audio_state = 10
 }
 else
 {
-	audio_state -= (delta_time / 1000000) * 2
+	audio_state -= (get_delta_time()) * 2
 		
 	if(audio_state <= 0) 
 	{
 		audio_state = 0
-			
+
+		old_block = playing_block
+
+		array_set(song_position, old_block, floor(song_playtime))
+
 		audio_stop_sound(current_song)
 	}
 }
-	
+
+song_playtime += get_delta_time()
+
 if(audio_state == 0)
 {
 	current_song = songs[block]	
 		
-	audio_play_sound(current_song, 0, 1)
+	var change = audio_play_sound(current_song, 0, 1)
+
+	playing_block = block
+
+	song_playtime = 0
+
+	audio_sound_set_track_position(change, song_position[block])
 }
 	
 audio_sound_gain(current_song, volume(audio_state), 0)
@@ -308,7 +319,32 @@ part_system_depth(part_sys, -20)
 if(hp <= 0) state = player_state.dead
 
 //opening up objects with 'E'
-var scan = instance_nearest(x, y, o_Multiblock)
+
+for(var i = 0; i < instance_number(o_Multiblock); i++)
+{
+	var cur_multiblock = instance_find(o_Multiblock, i)
+	
+	var distance_check = distance_to_object(cur_multiblock)
+
+	if(current_multi == noone)
+	{
+		current_multi = cur_multiblock
+	}
+	else
+	{
+		var current_distance = distance_to_object(current_multi)
+
+		print(round(current_distance))
+		print(round(distance_check))
+
+		if(distance_check < current_distance)
+		{
+			current_multi = cur_multiblock
+		}
+	}
+}
+
+var scan = current_multi
 
 if(keyboard_check_pressed(ord("E")))
 {
@@ -317,7 +353,7 @@ if(keyboard_check_pressed(ord("E")))
 		if(global.open_instance == noone)
 		{
 			scan_distance = distance_to_object(scan)
-
+				
 			if(scan_distance < 10)
 			{
 				global.open_instance = scan

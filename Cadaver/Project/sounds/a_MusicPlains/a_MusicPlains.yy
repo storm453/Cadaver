@@ -15,7 +15,7 @@
     "path": "audiogroups/audiogroup_default",
   },
   "soundFile": "a_MusicPlains.mp3",
-  "duration": 32.616,
+  "duration": 126.024,
   "parent": {
     "name": "Sounds",
     "path": "folders/Sounds.yy",
