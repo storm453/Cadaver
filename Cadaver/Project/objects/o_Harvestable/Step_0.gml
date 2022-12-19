@@ -1,4 +1,4 @@
-z = -bbox_bottom
+event_inherited()
 
 if(distance_to_object(o_Player) < 10)
 {

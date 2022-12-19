@@ -1,5 +1,6 @@
 //@Declare(o_RenderManager)
 //@Global(0)
+
 function render_game()
 {
 	gpu_set_zwriteenable(true)

@@ -17,8 +17,42 @@ event_user(0)
 
 function render()
 {
-	draw_self();
+	//draw_self();
+
+	var sprite_width_left = sprite_get_xoffset(sprite_index)
+	var sprite_height_top = sprite_get_yoffset(sprite_index)
+
+	var sprite_width_right = sprite_width - sprite_width_left
+	var sprite_height_bottom = sprite_height - sprite_height_top
 	
+	var top_left = vec2(x - sprite_width_left, y - sprite_height_top)
+	var top_right = vec2(x + sprite_width_right, y - sprite_height_top)
+
+	var bottom_left = vec2(x - sprite_width_left, y + sprite_height_bottom)
+	var bottom_right = vec2(x + sprite_width_right, y + sprite_height_bottom)
+
+	//parallax
+	var middle = vec2(top_left.x + sprite_width / 2, top_left.y + sprite_height / 2)
+
+	var angle_to_player = point_direction(middle.x, middle.y, o_Player.x, o_Player.y)
+	var dist_to_player = distance_to_point(o_Player.x, o_Player.y)
+
+	var side_of_player = (x - o_Player.x) / dist_to_player
+
+	var dif = vec2(o_Player.x - x, o_Player.y - y)
+
+	var dif_h = sqrt(dif.x * dif.x + dif.y * dif.y)
+
+	var mov = vec2(dif.x / dif_h, dif.y / dif_h)
+
+	var parallax = vec2(-mov.x * dist_to_player / 25, mov.y * dist_to_player / 25)
+	
+	shader_set(sh_darken);
+
+	draw_sprite_pos(sprite_index, image_index, top_left.x + parallax.x, top_left.y + parallax.y, top_right.x + parallax.x, top_right.y + parallax.y, bottom_right.x, bottom_right.y, bottom_left.x, bottom_left.y, 1)
+
+	shader_reset()
+
 	if(flash_alpha > 0)
 	{
 		flash_alpha -= 0.05
