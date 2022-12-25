@@ -3,8 +3,6 @@ inv = create_inventory(5, 4)
 inv_sx = array_length(inv)
 inv_sy = array_height(inv)
 
-add_item(inv, items.wood, 25)
-
 depth = 0
 
 overlay_alpha = 0

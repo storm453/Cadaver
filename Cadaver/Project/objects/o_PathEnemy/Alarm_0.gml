@@ -1,8 +1,8 @@
 path_delete(path)
 path = path_add()
 
-var check_x = floor(x / 256) *  256
-var check_y = floor(y / 256) * 256
+var check_x = floor(x / chunk_size) * chunk_size
+var check_y = floor(y / chunk_size) * chunk_size
 
 nearest_chunk = instance_nearest(check_x, check_y, o_Chunk)
 

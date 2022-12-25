@@ -52,46 +52,44 @@ if(keyboard_check_pressed(ord("I")))
 
 if(!move) exit;
 
+sel_breakable = noone
+
 function check_if_attack()
 {
-	if(attack)
+	if(attack_cooldown <= 0)
 	{
-		if(attack_cooldown <= 0)
+		//harvest
+		var harv_check = collision_circle(mouse_x, mouse_y, 5, o_Harvestable, 1, 1)
+
+		if(harv_check != noone)
 		{
-			var item_check = collision_circle(mouse_x, mouse_y, 5, o_ItemDropped, 1, 1)
-
-			if(item_check != noone)
+			if(harv_check.type != -1)
 			{
-				state = player_state.pickup
-				return;
-			}
+				var get_drops = resource_drops[harv_check.type]
 
-			var harv_check = collision_circle(mouse_x, mouse_y, 5, o_Harvestable, 1, 1)
-
-			if(harv_check != noone)
-			{
-				if(harv_check.type != -1)
+				for(var i = 0; i < array_length_1d(get_drops); i++)
 				{
-					var get_drops = resource_drops[harv_check.type]
+					var needed_tool = get_drops[i].tool
 
-					for(var i = 0; i < array_length_1d(get_drops); i++)
+					var tool_check = 0
+					var tier_check = 1
+					
+					if(global.hotbar_sel_item != 0)
 					{
-						var needed_tool = get_drops[i].tool
-
-						var tool_check = 0
-						var tier_check = 1
+						tool_check = global.hotbar_sel_item.item
+						tier_check = global.items_list[global.hotbar_sel_item.item].item_data.tier
+					}
+					
+					if(tool_check == needed_tool)
+					{
+						sel_breakable = harv_check
 						
-						if(global.hotbar_sel_item != 0)
-						{
-							tool_check = global.hotbar_sel_item.item
-							tier_check = global.items_list[global.hotbar_sel_item.item].item_data.tier
-						}
-
-						if(tool_check == needed_tool)
+						if(attack)
 						{
 							harv_check.hp--
 							harv_check.flash_alpha = 1
-
+							harv_check.bounce = 10
+	
 							var harv_spawn_x = harv_check.x + sprite_get_width(harv_check.sprite_index) / 2
 							var harv_spawn_y = harv_check.y + sprite_get_height(harv_check.sprite_index) / 2
 
@@ -118,7 +116,18 @@ function check_if_attack()
 					}
 				}
 			}
+		}
 		
+		if(attack)
+		{
+			var item_check = collision_circle(mouse_x, mouse_y, 5, o_ItemDropped, 1, 1)
+
+			if(item_check != noone)
+			{
+				state = player_state.pickup
+				return;
+			}
+
 			var sweep_list = ds_list_create()
 			
 			collision_circle_list(ex, ey, attack_radius, o_WorldParent, 0, 1, sweep_list, 1)
@@ -301,12 +310,6 @@ if(audio_state == 0)
 }
 	
 audio_sound_gain(current_song, volume(audio_state), 0)
-
-with(light)
-{
-	x = other.x
-	y = other.y
-}
 
 rotation = lerp(rotation, 90, 0.1)
 melee_rot = lerp(melee_rot, 0, 0.1)

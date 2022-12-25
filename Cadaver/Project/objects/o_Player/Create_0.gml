@@ -1,7 +1,7 @@
 //@Declare(o_Player)
 ds_list_add(o_RenderManager.entities, self)
 
-light = instance_create_layer(x, y, "Instances", o_Light)
+//light = instance_create_layer(x, y, "Instances", o_Light)
 
 #macro interact_range 10
 
@@ -97,6 +97,8 @@ dealt_damage = false
 
 swing_angle = 0
 
+sel_breakable = noone
+
 //test
 //resource_test[resources.tree] = 
 
@@ -109,14 +111,19 @@ resource_drops = array_create(2)
 
 resource_drops[resources.plants1] = array
 (
-	{ tool: items.air, drops: array( make_drop(items.plantfibers, 0, 17), make_drop(items.wood, 0, 9) ) },
-	{ tool: items.stonehatchet, drops: array( make_drop(items.plantfibers, 0, 31), make_drop(items.wood, 0, 23) ) },
-	{ tool: items.sturdyaxe, drops: array( make_drop(items.plantfibers, 0, 51), make_drop(items.wood, 0, 36) ) }
+	{ tool: items.stonehatchet, drops: array( make_drop(items.wood, 6, 11) ) },
+	{ tool: items.sturdyaxe, drops: array( make_drop(items.wood, 11, 17) ) }
 )
 
 resource_drops[resources.plants2] = array
 (
-	{ tool: items.air, drops: array( make_drop(items.plantfibers, 0, 11), make_drop(items.wood, 0, 5) ) },
+	{ tool: items.stonehatchet, drops: array( make_drop(items.plantfibers, 0, 21), make_drop(items.wood, 0, 16) ) },
+	{ tool: items.sturdyaxe, drops: array( make_drop(items.plantfibers, 0, 31), make_drop(items.wood, 0, 26) ) }
+)
+
+resource_drops[resources.plants3] = array
+(
+	{ tool: items.air, drops: array( make_drop(items.flax, 2, 5) ) },
 	{ tool: items.stonehatchet, drops: array( make_drop(items.plantfibers, 0, 21), make_drop(items.wood, 0, 16) ) },
 	{ tool: items.sturdyaxe, drops: array( make_drop(items.plantfibers, 0, 31), make_drop(items.wood, 0, 26) ) }
 )
@@ -201,7 +208,7 @@ function render()
 
 	draw_set_alpha(0.1)
 	draw_set_color(c_red)
-	draw_circle(ex, ey, attack_radius, 0)
+	//draw_circle(ex, ey, attack_radius, 0)
 
 	//drawing items on player or anytihng else.
 	if(global.hotbar_sel_item != 0)

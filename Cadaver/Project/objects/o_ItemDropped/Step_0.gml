@@ -1,9 +1,5 @@
 z = -bbox_bottom
 
-
-cursor_sprite = s_CrosshairCursor
-
-
 //movement
 x += spd * dx
 my += spd * dy

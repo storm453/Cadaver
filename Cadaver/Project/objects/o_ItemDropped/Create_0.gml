@@ -22,17 +22,13 @@ grav = -0.1
 
 up = false
 
-window_set_cursor(cr_none)
-
 function render()
 {
 	//pick up and draw contents text
 	if(point_in_rectangle(mouse_x, mouse_y, x - 8, y - 8, x + 8, y + 8))
 	{
 		outline_start(1, c_white)
-		
-		cursor_sprite = s_HandCursor
-		
+
 		if(mouse_check_button_pressed(mb_left))
 		{
 			if(spd == 0)

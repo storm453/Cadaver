@@ -30,7 +30,7 @@
   "eventList": [],
   "properties": [],
   "overriddenProperties": [
-    {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"hp","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"2",},
+    {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"hp","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"4",},
     {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"type","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"0",},
     {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"tier","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"5",},
   ],

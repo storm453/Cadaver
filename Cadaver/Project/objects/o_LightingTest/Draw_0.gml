@@ -1,13 +1,13 @@
 if !surface_exists(surf)
 {
-	var _cw = o_Camera.x_size * o_Camera.zoom * 1.1
-	var _ch = o_Camera.y_size * o_Camera.zoom * 1.1
+	var _cw = o_Camera.x_size * 10
+	var _ch = o_Camera.y_size * 10
 	
 	surf = surface_create(_cw, _ch)
 	
 	surface_set_target(surf)
 	
-	draw_set_colour(c_black)
+	draw_set_colour(c_blue)
 	draw_set_alpha(0)
 	draw_rectangle(0, 0, _cw, _cw, false)
 	surface_reset_target()
@@ -16,8 +16,8 @@ else
 {
 	if (surface_exists(surf)) 
 	{
-		var _cw = o_Camera.x_size * o_Camera.zoom
-		var _ch = o_Camera.y_size * o_Camera.zoom
+		var _cw = o_Camera.x_size * 10
+		var _ch = o_Camera.y_size * 10
 		
 		surface_resize(surf, _cw, _ch)
 		
@@ -34,7 +34,7 @@ else
 		
 		with (o_Light)
 		{	
-			draw_sprite_ext(s_light, 0, x - _cx, y - _cy, 1 * range + random(0.01), 0.6 * range + random(0.01), 0, c_white, 1 * o_GUI.day_factor) 
+			draw_sprite_ext(s_light, 0, x - _cx, y - _cy, 1 * range + random(0.05), 0.6 * range + random(0.05), 0, c_yellow, 1 * o_GUI.day_factor) 
 		}
 		
 		gpu_set_blendmode(bm_normal);

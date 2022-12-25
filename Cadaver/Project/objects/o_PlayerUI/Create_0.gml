@@ -45,23 +45,34 @@ craft_recipes = array(0)
 craft_selrec = 0
 
 //recipes
+
+//weapons
 craft_recipes[0] = ds_list_create()
 
+//tools
 craft_recipes[1] = ds_list_create()
+ds_list_add(craft_recipes[1], global.recipes[items.stonehatchet])
+ds_list_add(craft_recipes[1], global.recipes[items.pickaxe])
 
+//buildings
 craft_recipes[2] = ds_list_create()
 ds_list_add(craft_recipes[2], global.recipes[items.workbench])
+ds_list_add(craft_recipes[2], global.recipes[items.researchstation])
 
+//resources
 craft_recipes[3] = ds_list_create()
+ds_list_add(craft_recipes[3], global.recipes[items.plantfibers])
 
-
+//items
 craft_recipes[4] = ds_list_create()
-ds_list_add(craft_recipes[4], global.recipes[items.researchstation])
 
+//food
 craft_recipes[5] = ds_list_create()
 
+//ammunition
 craft_recipes[6] = ds_list_create()
 
+//traps
 craft_recipes[7] = ds_list_create()
 
 gridx = 10

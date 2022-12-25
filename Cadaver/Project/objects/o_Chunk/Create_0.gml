@@ -9,6 +9,8 @@ function render()
 {
 	bfSubmit(buffer)
 	
+	//mp_grid_draw(path_grid)
+	
 	//ui_draw_rectangle(x, y, chunk_size, chunk_size, c_red, 0.3, 1)
 	//ui_draw_string(x + 5, y + 5, string(idx) + " ," + string(idy), ft_17)
 }
@@ -62,7 +64,7 @@ function init_chunk(loc_x, loc_y)
 			
 			var grass_noise = value_noise(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 3, 0.5, 0.01, 2.1042)
 			
-			var spr = s_FlaxTest
+			var spr = s_BasicQuarry
 
 			if(in_range(current_noise, gen_dirt_start, gen_dirt_end))
 			{
@@ -87,10 +89,13 @@ function init_chunk(loc_x, loc_y)
 					{
 						create_obj_chunk(o_Iron, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
 					}
-					
-					if(rand(idx * chunk_size / tile_size + i + 20000, idy * chunk_size / tile_size + j + 20000) < 0.005)
+					if(rand(idx * chunk_size / tile_size + i + 25000, idy * chunk_size / tile_size + j + 20500) < 0.005)
 					{
 						create_obj_chunk(o_RockPickup, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
+					if(rand(idx * chunk_size / tile_size + i + 85000, idy * chunk_size / tile_size + j + 8500) < 0.01)
+					{
+						create_obj_chunk(o_Plants3, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
 					}
 				}
 			}
@@ -136,7 +141,7 @@ function init_chunk(loc_x, loc_y)
 
 									if(grass_noise > stochastic) && (grass_noise > 0.2)
 									{
-										bfDraw(buffer, idx * chunk_size + i * tile_size + grass_rand_x + lx, idy * chunk_size + j * tile_size + grass_rand_y + ly, 16, 16, 0, s_Plants2, 0, make_color_rgb(grass_color, grass_color, grass_color), 1)
+										bfDraw(buffer, idx * chunk_size + i * tile_size + grass_rand_x + lx, idy * chunk_size + j * tile_size + grass_rand_y + ly, ((rand(i,j) > 0.5) ? 1 : -1) * 16, 16, 0, s_Plants2, 0, make_color_rgb(grass_color, grass_color, grass_color), 1)
 									}
 								}
 							}
@@ -146,6 +151,18 @@ function init_chunk(loc_x, loc_y)
 					if(rand(idx * chunk_size / tile_size + i + 30000, idy * chunk_size / tile_size + j + 30000) < 0.005)
 					{
 						create_obj_chunk(o_Plants1, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
+					if(rand(idx * chunk_size / tile_size + i + 25000, idy * chunk_size / tile_size + j + 20500) < 0.005)
+					{
+						create_obj_chunk(o_RockPickup, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
+					if(rand(idx * chunk_size / tile_size + i + 95000, idy * chunk_size / tile_size + j + 9500) < 0.005)
+					{
+						create_obj_chunk(o_StickPickup, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					}
+					if(rand(idx * chunk_size / tile_size + i + 85000, idy * chunk_size / tile_size + j + 8500) < 0.001)
+					{
+						create_obj_chunk(o_Plants3, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
 					}
 					if(rand(idx * chunk_size / tile_size + i + 17000, idy * chunk_size / tile_size + j + 17000) < 0.01)
 					{

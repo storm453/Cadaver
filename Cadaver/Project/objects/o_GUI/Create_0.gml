@@ -10,10 +10,9 @@ texture_lut_night = sprite_get_texture(spr_night, 0);
 day_factor = 0
 global.time = 0;
 
-colour_grade = 0
+colour_grade = 1
 
 steepness = 2
 
-//cursor
-//window_set_cursor(cr_none)
+window_set_cursor(cr_none)
 //cursor_sprite = s_Cursor

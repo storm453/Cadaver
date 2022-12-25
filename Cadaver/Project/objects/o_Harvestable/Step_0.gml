@@ -1,5 +1,7 @@
 event_inherited()
 
+add = mouse_x / room_width;
+
 if(distance_to_object(o_Player) < 10)
 {
 	if(o_Player.z > z)
