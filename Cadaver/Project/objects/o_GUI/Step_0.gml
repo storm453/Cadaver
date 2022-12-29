@@ -26,22 +26,22 @@ day_factor = 1 - brzeczszyszrzkiewicz_curve(global.time * 50)
 window_set_cursor(cr_cross)
 cursor_sprite = noone
 
-var mouse_item = collision_circle(mouse_x, mouse_y, 15, o_ItemDropped, true, true)
-var mouse_harv = collision_circle(mouse_x, mouse_y, 5, o_Harvestable, true, true)
+//var mouse_item = collision_circle(mouse_x, mouse_y, 15, o_ItemDropped, true, true)
+//var mouse_harv = collision_circle(mouse_x, mouse_y, 5, o_Harvestable, true, true)
 
-function cursor_set(spr)
-{
-	window_set_cursor(cr_none)
-	cursor_sprite = spr
-}
+//function cursor_set(spr)
+//{
+//	window_set_cursor(cr_none)
+//	cursor_sprite = spr
+//}
 
-if(mouse_item != noone)
-{
-	cursor_set(s_CursorGrab)	
-}
-if(mouse_harv != noone)
-{
-	cursor_set(s_CursorHit)	
+//if(mouse_item != noone)
+//{
+//	cursor_set(s_CursorGrab)	
+//}
+//if(mouse_harv != noone)
+//{
+//	cursor_set(s_CursorHit)	
 	
-	if(o_Player.attack_cooldown > 0) cursor_set(s_NoAction)
-}
+//	if(o_Player.attack_cooldown > 0) cursor_set(s_NoAction)
+//}
