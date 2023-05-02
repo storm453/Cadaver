@@ -1,223 +1,191 @@
-function ui_draw_button_color(txt, sx, sy, w, h, c, hov_c, txt_c, brd)
-{	
+//UI UTIL
+function string_width_font(_string, _font)
+{
+	draw_set_font(_font)
+	return string_width(_string)
+}
+
+function string_height_font(_string, _font)
+{
+	draw_set_font(_font)
+	return string_height(_string)
+}
+
+//UI ASSETS
+function make_sprite(_sprite, _index, _scale, _color)
+{
+	var _width = sprite_get_width(_sprite) * _scale
+	var _height = sprite_get_height(_sprite) * _scale
+	
+	return { sprite: _sprite, index: _index, scale: _scale, color: _color, width: _width, height: _height }
+}
+
+function make_text(_text, _text_color, _font)
+{
+	var _width = string_width_font(_text, _font)
+	var _height = string_height_font(_text, _font)
+	
+	return { text: _text, color: _text_color, font: _font, width: _width, height: _height }	
+}
+
+function make_rectangle(_width, _height, _color, _alpha, _border, _sprite = -1)
+{
+	return { w: _width, h: _height, color: _color, alpha: _alpha, border: _border, sprite: _sprite }
+}
+
+//UI FUNCTIONS
+function ui_draw_rectangle(_x, _y, _rectangle)
+{
+	draw_set_alpha(_rectangle.alpha)
+	
+	if(_rectangle.sprite == -1)
+	{
+		draw_set_color(_rectangle.color)
+	
+		draw_rectangle(_x, _y, _x + _rectangle.w, _y + _rectangle.h, false)
+	
+		if(_rectangle.border != false)
+		{
+			draw_set_color(_rectangle.border)
+			draw_rectangle(_x, _y, _x + _rectangle.w, _y + _rectangle.h, true)
+		}
+	}
+	else
+	{
+		draw_sprite_stretched(_rectangle.sprite, 0, _x, _y, _rectangle.w, _rectangle.h)
+	}
+}
+
+function ui_draw_sprite(_x, _y, _sprite)
+{
+	draw_sprite_ext(_sprite.sprite, _sprite.index, _x, _y, _sprite.scale, _sprite.scale, 0, _sprite.color, 1)
+}
+
+function ui_draw_title(_x, _y, _rectangle, _text)
+{
+	ui_draw_rectangle(_x, _y, _rectangle)
+	
+	draw_set_font(_text.font)
+	draw_set_color(_text.color)
+	
+	var _text_x = (_rectangle.w / 2) - (_text.width / 2)
+	var _text_y = (_rectangle.h / 2) - (_text.height / 2)
+
+	draw_text(_x + _text_x, _y + _text_y, _text.text)
+}
+
+function ui_draw_title_sprite(_x, _y, _rectangle, _sprite)
+{
+	ui_draw_rectangle(_x, _y, _rectangle)
+	
+	var _sprite_x = (_rectangle.w / 2) - (_sprite.width / 2)
+	var _sprite_y = (_rectangle.h / 2) - (_sprite.height / 2)
+	
+	ui_draw_sprite(_x + _sprite_x, _y + _sprite_y, _sprite)
+}
+
+function ui_draw_title_both(_x, _y, _rectangle, _sprite, _text)
+{
+	ui_draw_rectangle(_x, _y, _rectangle)
+	
+	var _total_width = _sprite.width + _text.width + pad
+	
+	var _sprite_x = _x + (_rectangle.w / 2) - (_total_width / 2)
+	var _sprite_y = _y + (_rectangle.h / 2) - (_sprite.height / 2)
+	
+	var _text_x = _x + (_rectangle.w / 2) - (_total_width / 2) + _sprite.width + pad
+	var _text_y = _y + (_rectangle.h / 2) - (_text.height / 2)
+	
+	ui_draw_sprite(_sprite_x, _sprite_y, _sprite)
+	
+	draw_set_color(_text.color)
+	draw_set_font(_text.font)
+	draw_text(_text_x, _text_y , _text.text)
+}
+
+function ui_draw_title_button(_x, _y, _rectangle, _text, _rectangle_hover, _text_hover)
+{
 	var mx = device_mouse_x_to_gui(0)
 	var my = device_mouse_y_to_gui(0)
 	
-	var click = false
+	ui_draw_title(_x, _y, _rectangle, _text)
+	 
+	var _temp_rectangle_hover = _rectangle
+	var _temp_text_hover = _text
 	
-	draw_set_color(c)
-	draw_rectangle(sx, sy, sx + w, sy + h, brd)
-	
-	if(point_in_rectangle(mx, my, sx, sy, sx + w, sy + h))
+	if(_rectangle_hover != false)
 	{
-		draw_set_color(hov_c)
-		draw_rectangle(sx, sy, sx + w, sy + h, brd)
-		
-		if(mouse_check_button_pressed(mb_left))
-		{
-			click = true		
-		}
-		else
-		{
-			click = false	
-		}
+		_temp_rectangle_hover = _rectangle_hover	
+	}
+	if(_text_hover != false)
+	{
+		_temp_text_hover = _text_hover
 	}
 	
-	draw_set_color(txt_c)
-	draw_text(sx + (w / 2) - (string_width(txt) / 2), sy + (h / 2) - (string_height(txt) / 2), txt)
-	
-	draw_set_color(c_white)
-	
-	var return_data = array(click, w, h)
-	return return_data
-}
-
-function window_text(arg_x, arg_y, arg_text, arg_font, arg_text_color)
-{
-	var inv_text = arg_text
-	var inv_text_height = string_height_font(inv_text, arg_font)
-
-	arg_y -= pad + inv_text_height
-
-	draw_set_color(arg_text_color)
-	ui_draw_string(arg_x, arg_y, inv_text, arg_font)
-	draw_set_color(c_white)
-	draw_set_alpha(1)
-}
-
-function rm_draw_button_color(sx, sy, w, h, c, hov_c, txt_c, brd)
-{	
-	var mx = mouse_x
-	var my = mouse_y
-	
-	var click = false
-	
-	draw_set_color(c)
-	draw_rectangle(sx, sy, sx + w, sy + h, brd)
-	
-	if(point_in_rectangle(mx, my, sx, sy, sx + w, sy + h))
+	if(point_in_rectangle(mx, my, _x, _y, _x + _rectangle.w, _y + _rectangle.h))
 	{
-		draw_set_color(hov_c)
-		draw_rectangle(sx, sy, sx + w, sy + h, brd)
-		
-		if(mouse_check_button_pressed(mb_left))
-		{
-			click = true		
-		}
-		else
-		{
-			click = false	
-		}
+		ui_draw_title(_x, _y, _temp_rectangle_hover, _temp_text_hover)
 	}
-	
-	var return_data = array(click, w, h)
-	return return_data
 }
 
-function ui_draw_window(t, sx, sy, w, h)
+function ui_draw_title_sprite_button(_x, _y, _rectangle, _sprite, _rectangle_hover, _sprite_hover)
 {
-	ui_draw_rectangle(sx, sy, w, h, menu_color, 1, false)
-	
-	var title_height = string_height_font(t, ft_Title)
-	
-	sy -= title_height + pad
-	
-	ui_draw_rectangle(sx, sy, w, pad + title_height, tab_color, 1, false);
-	ui_draw_string(sx + pad, sy + pad, t, ft_Title) 
-		
-	return title_height + pad * 3
-}
-
-function ui_draw_button_color_manual(sel, sx, sy, w, h, c, hov_c, brd)
-{	
-	draw_set_color(c)
-	draw_rectangle(sx, sy, sx + w, sy + h, brd)
-	
-	if(sel)
-	{
-		draw_set_color(hov_c)
-		draw_rectangle(sx, sy, sx + w, sy + h, brd)
-	}
-
-	draw_set_color(c_white)
-	
-	var return_data = array(w, h)
-	return return_data
-}
-
-function make_panel(xx, yy)
-{
-	return { start_x : xx, start_y : yy, at_x : xx, at_y : yy }	
-}
-
-function pn_row(panel, row_height)
-{
-	panel.at_x =  panel.start_x
-	panel.at_y += row_height
-}
-
-function pn_col(panel, col_width)
-{
-	panel.at_x += col_width	
-}
-
-function ui_draw_button_sprite(spr, spr_sub, sx, sy, w, h, c, hov_c, spr_c, spr_s, brd, mid = false)
-{	
 	var mx = device_mouse_x_to_gui(0)
 	var my = device_mouse_y_to_gui(0)
 	
-	var click = false
+	ui_draw_title_sprite(_x, _y, _rectangle, _sprite)
 	
-	draw_set_color(c)
-	draw_rectangle(sx, sy, sx + w, sy + h, brd)
+	var _temp_rectangle_hover = _rectangle
+	var _temp_sprite_hover = _sprite
 	
-	if(point_in_rectangle(mx, my, sx, sy, sx + w, sy + h))
+	if(_rectangle_hover != false) _temp_rectangle_hover = _rectangle_hover
+	if(_sprite_hover != false) _temp_sprite_hover = _sprite_hover
+	
+	if(point_in_rectangle(mx, my, _x, _y, _x + _rectangle.w, _y + _rectangle.h))
 	{
-		draw_set_color(hov_c)
-		draw_rectangle(sx, sy, sx + w, sy + h, brd)
+		ui_draw_title_sprite(_x, _y, _temp_rectangle_hover, _temp_sprite_hover)
+	}
+	else
+	{
 		
-		if(mouse_check_button_pressed(mb_left))
-		{
-			click = true		
-		}
-		else
-		{
-			click = false	
-		}
 	}
+}
+
+function ui_draw_title_both_button(_x, _y, _rectangle, _sprite, _text, _rectangle_hover, _sprite_hover, _text_hover)
+{
+	var mx = device_mouse_x_to_gui(0)
+	var my = device_mouse_y_to_gui(0)
 	
-	var offset = 0
+	ui_draw_title_both(_x, _y, _rectangle, _sprite, _text)
 	
-	if(mid == true)
+	var _temp_rectangle_hover = _rectangle
+	var _temp_sprite_hover = _sprite
+	var _temp_text_hover = _text
+	
+	if(_rectangle_hover != false) _temp_rectangle_hover = _rectangle_hover
+	if(_sprite_hover != false) _temp_sprite_hover = _sprite_hover
+	if(_text_hover != false) _temp_text_hover = _text_hover
+	
+	if(point_in_rectangle(mx, my, _x, _y, _x + _rectangle.w, _y + _rectangle.h))
 	{
-		offset = sprite_get_width(spr) * spr_s / 2	
+		ui_draw_title_both(_x, _y, _temp_rectangle_hover, _temp_sprite_hover, _temp_text_hover)
 	}
-	
-	draw_sprite_ext(spr, spr_sub, sx + w / 2 - (sprite_get_width(spr) * spr_s / 2) + offset, sy + h / 2 - (sprite_get_width(spr) * spr_s / 2) + offset, spr_s, spr_s, 0, spr_c, 1)
-	
-	draw_set_color(c_white)
-	
-	var return_data = array(click, w, h)
-	return return_data
 }
 
-function ui_draw_title(txt, sx, sy, w, h, c, txt_c, brd)
-{	
-	draw_set_color(c)
-	draw_rectangle(sx, sy, sx + w, sy + h, brd)
-	
-	draw_set_color(txt_c)
-	draw_text(sx + (w / 2) - (string_width(txt) / 2), sy + (h / 2) - (string_height(txt) / 2), txt)
-	
-	draw_set_color(c_white)
-	
-	var return_data = array(w, h)
-	return return_data
-}
-
-function ui_draw_title_text(txt, sx, sy, w, h, c, txt_c, brd)
+function draw_text_outline(xx, yy, outline_color, color, str, font)
 {
-	draw_set_color(c)
-
-	draw_set_color(txt_c)
-	draw_text(sx + (w / 2) - (string_width(txt) / 2), sy + (h / 2) - (string_height(txt) / 2), txt)
+	draw_set_font(font)
 	
-	draw_set_color(c_white)
+	draw_set_color(outline_color);  
+	draw_text(xx + 2, yy + 2, str);  
+	draw_text(xx - 2, yy - 2, str);  
+	draw_text(xx, yy + 2, str);  
+	draw_text(xx + 2, yy, str);  
+	draw_text(xx, yy - 2, str);  
+	draw_text(xx - 2, yy, str);  
+	draw_text(xx - 2, yy + 2, str);  
+	draw_text(xx + 2, yy - 2, str);  
 	
-	var return_data = array(w, h)
-	return return_data
-}
-
-function ui_draw_rectangle(sx, sy, w, h, c, a, brd)
-{	
-	draw_set_color(c)
-	draw_set_alpha(a)
-	draw_rectangle(sx, sy, sx + w - 1, sy + h - 1, brd)
-	draw_set_alpha(1)
-	draw_set_color(c_white)
-
-	var return_data = array(w, h)
-	return return_data
-}
-
-function ui_draw_string(sx, sy, t, fnt)
-{
-	draw_set_font(fnt)
-	draw_text(sx, sy, t)	
-	
-	return string_height_font(t, fnt)
-}
-
-function string_height_font(str, fnt)
-{
-	draw_set_font(fnt)
-	return string_height(str)
-	draw_set_font(ft_Default)
-}
-
-function text_gap(panel, txt)
-{
-	draw_set_color(text_color)
-	ui_draw_string(panel.at_x, panel.at_y, txt, ft_Default)
-	pn_row(panel, string_height_font(txt, ft_Default) + pad)
+	draw_set_color(color);  
+	draw_text(xx, yy, str);  	
 }

@@ -58,24 +58,6 @@ enum items
 	sturdyaxe
 }
 
-global.recipes[items.sledgehammer] = recipe(items.sledgehammer, array( recipe_req(items.wood, 5), recipe_req(items.iron, 15) ), 1, stations.hands, 0)
-global.recipes[items.basicknife] = recipe(items.basicknife, array( recipe_req(items.wood, 3), recipe_req(items.iron, 10) ), 1, stations.hands, 0)
-
-global.recipes[items.stonehatchet] = recipe(items.stonehatchet, array( recipe_req(items.stone, 1), recipe_req(items.wood, 3), recipe_req(items.plantfibers, 2) ), 1, stations.hands, 1)
-global.recipes[items.pickaxe] = recipe(items.pickaxe, array( recipe_req(items.stone, 2), recipe_req(items.wood, 3), recipe_req(items.plantfibers, 2) ), 1, stations.hands, 1)
-global.recipes[items.hammer] = recipe(items.hammer, array( recipe_req(items.wood, 3), recipe_req(items.iron, 5) ), 1, stations.workbench, 1)
-global.recipes[items.sturdyaxe] = recipe(items.sturdyaxe, array( recipe_req(items.wood, 20), recipe_req(items.iron, 10), recipe_req(items.cloth, 2) ), 1, stations.workbench, 1)
-global.recipes[items.sturdypickaxe] = recipe(items.sturdypickaxe, array( recipe_req(items.wood, 20), recipe_req(items.iron, 18), recipe_req(items.cloth, 3) ), 1, stations.workbench, 1)
-
-global.recipes[items.woodwall] = recipe(items.woodwall, array( recipe_req(items.wood, 25) ), 1, stations.workbench, 2)
-global.recipes[items.woodfloor] = recipe(items.woodfloor, array( recipe_req(items.wood, 25) ), 1, stations.workbench, 2)
-global.recipes[items.furnace] = recipe(items.furnace, array( recipe_req(items.wood, 3), recipe_req(items.stone, 20) ), 1, stations.hands, 4)
-global.recipes[items.researchstation] = recipe(items.researchstation, array( recipe_req(items.wood, 10)), 1, stations.workbench, 4)
-global.recipes[items.workbench] = recipe(items.workbench, array( recipe_req(items.wood, 15)), 1, stations.hands, 4)
-global.recipes[items.bandage] = recipe(items.bandage, array( recipe_req(items.cloth, 2), recipe_req(items.plantfibers, 1) ), 1, stations.hands, 6)
-
-global.recipes[items.plantfibers] = recipe(items.plantfibers, array(recipe_req(items.flax, 3)), 1, stations.hands, 3)
-
 function create_struct()
 {
 	var return_struct =
@@ -173,7 +155,6 @@ function create_item(arg_name)
 	var item = create_item("Hammer")
 	
 	item.item_data.description = "Used for building bases."
-	item.item_data.hand_sprite = s_Hammer
 	item.item_data.item_type = item_types.tool
 }
 
@@ -263,7 +244,6 @@ function create_item(arg_name)
 	item.item_data.damage = 4
 	item.item_data.kb = 1.5
 	item.item_data.sweep = 1
-	item.item_data.hand_sprite = s_Axe
 	item.item_data.description = "Cuts small trees."
 	item.item_data.tier = 3
 }	

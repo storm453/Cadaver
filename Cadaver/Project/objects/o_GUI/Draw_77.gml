@@ -1,6 +1,6 @@
 if (colour_grade)
 {
-
+draw_set_color(c_white)
 	surface_set_target(temp_surface);
 	shader_set(shdr_colour_grade);
 

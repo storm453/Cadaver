@@ -1,3 +1,5 @@
+global.res_fix = display_get_gui_width() / 1920
+
 //day_factor = 1
 global.time += get_delta_time()
 
@@ -14,17 +16,22 @@ if(keyboard_check_pressed(vk_f1))
 
 if(keyboard_check_pressed(vk_f11))
 {
-	if(window_get_fullscreen()) display_set_gui_size(window_get_width(), window_get_height())
-	
 	window_set_fullscreen(!window_get_fullscreen())
+
+	//display_set_gui_maximize(display_get_gui_width() / 1920, display_get_gui_height() / 1080)
+	
 }
 
-day_factor = 1 - brzeczszyszrzkiewicz_curve(global.time * 50)
+display_set_gui_size(window_get_width(), window_get_height())
+
+day_factor = (-cos(global.time * time_speed) * 0.5 + 0.5)
+
+print(day_factor)
 
 //set cursors
 
-window_set_cursor(cr_cross)
-cursor_sprite = noone
+//window_set_cursor(cr_cross)
+//cursor_sprite = noone
 
 //var mouse_item = collision_circle(mouse_x, mouse_y, 15, o_ItemDropped, true, true)
 //var mouse_harv = collision_circle(mouse_x, mouse_y, 5, o_Harvestable, true, true)

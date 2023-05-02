@@ -69,10 +69,10 @@ function render()
 	
 	var parallax = vec2(-mov.x * dist_to_player / 25 * (sprite_width / 32) + sway, mov.y * dist_to_player / 25)
 
-	shader_set(shd_bright)
+	//shader_set(shd_bright)
 	
-	shader_set_uniform_f_array(position_uni, array(x, y + sprite_height_bottom))
-	shader_set_uniform_f(sprite_height_uni, sprite_height)
+	//shader_set_uniform_f_array(position_uni, array(x, y + sprite_height_bottom))
+	//shader_set_uniform_f(sprite_height_uni, sprite_height)
 	
 	draw_sprite_pos(sprite_index, image_index, top_left.x + parallax.x - bounce_effect.x, top_left.y + parallax.y + bounce_effect.y, top_right.x + parallax.x + bounce_effect.x, top_right.y + parallax.y, bottom_right.x + bounce_effect.x + bounce_effect.y, bottom_right.y, bottom_left.x - bounce_effect.x, bottom_left.y, 1)
 	

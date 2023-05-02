@@ -61,3 +61,15 @@ part_type_speed(pt, 0.4, 0.5, 0, 0)
 part_type_direction(pt, 85, 95, 0, 30)
 
 global.pt_fire = pt
+
+//fire
+var pt = part_type_create()
+
+part_type_sprite(pt, s_Shine, false, false, false)
+part_type_life(pt, 60, 120)
+
+part_type_color1(pt, c_white)
+part_type_size(pt, 0.055, 0.075, -0.0005, 0)
+part_type_orientation(pt,0,360,2,0,0);
+
+global.pt_shine = pt

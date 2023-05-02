@@ -1,3 +1,5 @@
+global.res_fix = 0
+
 time_speed = 0.1
 
 draw_set_font(ft_Medium)
@@ -15,4 +17,4 @@ colour_grade = 1
 steepness = 2
 
 window_set_cursor(cr_none)
-//cursor_sprite = s_Cursor
+cursor_sprite = s_Cursor

@@ -1,14 +1,17 @@
-inv = create_inventory(5, 4)
+inv = create_inventory(4, 3)
 
 inv_sx = array_length(inv)
 inv_sy = array_height(inv)
 
+hover_slot = vec2(0, 0)
+
 depth = 0
 
-overlay_alpha = 0
+global.selected = 0
+wheel_scale = 0
 
 show_list = ds_list_create()
- 
+
 ds_list_add(show_list, gui.INVENTORY)
 ds_list_add(show_list, gui.CONTAINER)
 

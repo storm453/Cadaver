@@ -11,11 +11,11 @@ var block_y = display_get_gui_height() * 0.87
 
 if(block_time > 0)
 {
-	ui_draw_rectangle(block_x, block_y, block_bar_width, block_bar_height, c_black, 0.3, false)
+	//ui_draw_rectangle(block_x, block_y, block_bar_width, block_bar_height, c_black, 0.3, false)
 	
-	var block_show = abs(sin(7.854 * block_time)) * block_end
+	//var block_show = abs(sin(7.854 * block_time)) * block_end
 	
-	ui_draw_rectangle(block_x, block_y, block_bar_width * (block_show * (1 / block_end)), block_bar_height, c_aqua, 1, false)
+	//ui_draw_rectangle(block_x, block_y, block_bar_width * (block_show * (1 / block_end)), block_bar_height, c_aqua, 1, false)
 }
 
 display_time -= get_delta_time
@@ -32,7 +32,7 @@ if(distance_to_object(current_multi) <= interact_range)
 	draw_line(multi_line_draw_x, multi_line_draw_y, multi_line_draw_x + multi_line_width, multi_line_draw_y)
 	
 	draw_set_halign(fa_middle)
-	window_text(multi_line_draw_x + multi_line_width / 2, multi_line_draw_y, current_multi.block_data.name, ft_24Bold, c_white)
+	//window_text(multi_line_draw_x + multi_line_width / 2, multi_line_draw_y, current_multi.block_data.name, ft_24Bold, c_white)
 	draw_set_halign(fa_left)
 	
 	if(keyboard_check_pressed(ord("R")))

@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "o_Tree1",
   "spriteId": {
-    "name": "s_Tree1",
-    "path": "sprites/s_Tree1/s_Tree1.yy",
+    "name": "s_Tree2",
+    "path": "sprites/s_Tree2/s_Tree2.yy",
   },
   "solid": false,
   "visible": true,
@@ -29,7 +29,9 @@
   "physicsShapePoints": [],
   "eventList": [],
   "properties": [],
-  "overriddenProperties": [],
+  "overriddenProperties": [
+    {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","propertyId":{"name":"type","path":"objects/o_Harvestable/o_Harvestable.yy",},"objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"resources.tree1",},
+  ],
   "parent": {
     "name": "World",
     "path": "folders/Objects/World.yy",

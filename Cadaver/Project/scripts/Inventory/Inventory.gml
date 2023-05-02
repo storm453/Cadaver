@@ -111,30 +111,6 @@ function inv_move_new(arg_x, arg_y, arg_inv, arg_inv_data, arg_gap_size, shift =
 	}
 }
 
-function draw_item(arg_inv, i, j, arg_x, arg_y, draw_count = 1)
-{
-	if(arg_inv[i,j] != 0)
-	{
-		var item = arg_inv[i,j]
-		var item_offset = 16 * inv_scale / 2
-
-		draw_sprite_ext(s_Items, item.item, arg_x + item_offset, arg_y + item_offset, inv_scale, inv_scale, 0, c_white, 1)
-		
-		if(draw_count)
-		{
-			if(item.amt > 1)
-			{
-				draw_set_halign(fa_left)
-				draw_set_valign(fa_top)
-				draw_set_color(0xc0f3fe)
-				draw_set_font(ft_Medium)
-			
-				draw_text(arg_x + 4, arg_y + 4, item.amt)
-			}
-		}
-	}	
-}
-
 function draw_inventory(arg_inv, arg_inv_data, arg_x, arg_y, c, slot_a, item_a, inv_check = true, draw_check = true)
 {
 	var mx = device_mouse_x_to_gui(0)
@@ -207,7 +183,7 @@ function draw_inventory_custom(arg_inv, arg_slots_x, arg_slots_y, arg_x, arg_y, 
 
 function add_item_notif(message, spriteindex, timer, arg_type)
 {
-	ds_list_add(o_PlayerUI.item_log, { msg : message, spr_index : spriteindex , time : timer , type : arg_type, cur_y: 0 } )		
+	//ds_list_add(o_PlayerUI.item_log, { msg : message, spr_index : spriteindex , time : timer , type : arg_type, cur_y: 0 } )		
 }
 
 function add_item(arg_inv, arg_item_id, arg_amount)

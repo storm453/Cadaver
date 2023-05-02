@@ -483,7 +483,7 @@ function interpolate(xx, yy)
 function value_noise(xx, yy, octaves, pers, _freq, lac) 
 {
 	var value = 0;
-
+	
 	var freq = _freq; // Frequency of starting octave.
 	var amp = pers;
 

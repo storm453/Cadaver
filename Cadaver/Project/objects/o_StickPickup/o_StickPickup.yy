@@ -3,8 +3,8 @@
   "resourceVersion": "1.0",
   "name": "o_StickPickup",
   "spriteId": {
-    "name": "s_StickPickup",
-    "path": "sprites/s_StickPickup/s_StickPickup.yy",
+    "name": "s_Stick",
+    "path": "sprites/s_Stick/s_Stick.yy",
   },
   "solid": false,
   "visible": true,
@@ -29,6 +29,7 @@
   "physicsShapePoints": [],
   "eventList": [
     {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":0,"collisionObjectId":null,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","isDnD":false,"eventNum":0,"eventType":2,"collisionObjectId":null,},
   ],
   "properties": [],
   "overriddenProperties": [

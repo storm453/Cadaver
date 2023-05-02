@@ -1,48 +1,15 @@
-var mx = device_mouse_x_to_gui(0)
-var my = device_mouse_y_to_gui(0)
+var _inv_marg_x = 40
+var _inv_marg_y = 300
 
-global.hotbar_sel_item = inv[global.hotbar_sel_slot, array_height(inv) - 1]
-		
-//draw hotbar
-var hot_spr_w = sprite_get_width(s_Hotbar) * inv_scale
-var hot_spr_h = sprite_get_height(s_Hotbar) * inv_scale
+var _slot_size = 140 * global.res_fix
+var _slot_pad = 30 * global.res_fix
+var _slot_margin = 80 * global.res_fix
 
-hot_x = display_get_gui_width() / 2 - hot_spr_w / 2
-hot_y = display_get_gui_height() - hot_spr_h
+var _inv_width = (_slot_size * inv_sx) + (_slot_pad * (inv_sx - 1)) * global.res_fix
 
-draw_sprite_ext(s_Hotbar, 0, hot_x, hot_y, inv_scale, inv_scale, 0, c_white, 1)
-
-//draw items
-for(var i = 0; i < array_length(inv); i++)
-{
-	var hot_dx = hot_x + slot_from_top + (i * (slot_size + slot_spacing))
-	var hot_dy = hot_y + slot_from_top
+inv_x = display_get_gui_width() / 2 - (_inv_width) - _slot_margin
+inv_y = _inv_marg_y * global.res_fix
 	
-	if(keyboard_check_pressed(ord(string(i + 1)))) global.hotbar_sel_slot = i
-	
-	if(global.hotbar_sel_slot == i) draw_sprite_ext(s_HotbarSelect, 0, hot_dx, hot_dy, inv_scale, inv_scale, 0, c_white, 1)
-
-	draw_item(inv, i, array_height(inv) - 1, hot_dx, hot_dy)
-}
-
-//transparent black over hotbar
-if(global.current_gui != gui.NONE)
-{
-	if(overlay_alpha < 0.7) overlay_alpha += 0.05	
-}
-else
-{
-	if(overlay_alpha > 0) overlay_alpha -= 0.05	
-}
-
-ui_draw_rectangle(0, 0,display_get_gui_width(), display_get_gui_height(), c_black, overlay_alpha, false)
-
-var inv_spr_w = sprite_get_width(s_Inventory) * inv_scale
-var inv_spr_h = sprite_get_height(s_Inventory) * inv_scale
-
-inv_x = display_get_gui_width() / 2 - inv_spr_w / 2
-inv_y = display_get_gui_height() / 2 - inv_spr_h / 2 + inv_offset
-
 var ok_gui = false
 
 for(var i = 0; i < ds_list_size(show_list); i++)
@@ -50,43 +17,110 @@ for(var i = 0; i < ds_list_size(show_list); i++)
 	if(global.current_gui = show_list[|i]) ok_gui = true
 }
 
+hover_slot = vec2(-1, -1)
+
+function do_slot(_x, _y, _size, _i, _j)
+{
+	var _mx = device_mouse_x_to_gui(0)
+	var _my = device_mouse_y_to_gui(0)
+	
+	var _alpha = 0.3
+	
+	if(point_in_rectangle(_mx, _my, _x, _y, _x + _size, _y + _size))
+	{
+		_alpha = 0.4
+		
+		hover_slot.x = _i
+		hover_slot.y = _j
+		
+		inv_click_logic(_i, _j)
+	}
+	
+	ui_draw_rectangle(_x, _y, make_rectangle(_size, _size, c_black, _alpha, false))
+	
+	if(inv[_i, _j] != 0)
+	{
+		var _item_scale = (_size / sprite_get_width(s_Items))
+		
+		//slot isnt empty
+		draw_sprite_ext(s_Items, inv[_i, _j].item, _x, _y, _item_scale, _item_scale, 0, c_white, 1)
+		
+		draw_set_font(ft_ItemAmount)
+		draw_set_alpha(1)
+		draw_set_color(c_white)
+		draw_text(_x + 5, _y, inv[_i, _j].amt)
+	}
+}
+
 if(ok_gui)
 {
-	window_text(inv_x, inv_y, "Inventory", ft_Large, color_hex(0xe4d2aa))
-	
 	//draw inventory
-	draw_sprite_ext(s_Inventory, 0, inv_x, inv_y, inv_scale, inv_scale, 0, c_white, 1)
-	
-	//inv logic
-	for(var i = 0; i < array_length(inv); i++)
+	for(var i = 0; i < inv_sx; i++)
 	{
-		for(var j = 0; j < array_height(inv); j++)
+		for(var j = 0; j < inv_sy - 1; j++)
 		{
-			var position_y = 2 * inv_scale
+			var _slot_x = inv_x + (i * (_slot_size + _slot_pad))
+			var _slot_y = inv_y + (j * (_slot_size + _slot_pad))
 			
-			if(j < array_height(inv) - 1)
-			{
-				position_y = 0
-			}
+			do_slot(_slot_x, _slot_y, _slot_size, i, j)
+		}
+	}
+	for(var i = 0; i < inv_sx; i++)
+	{
+		var _slot_x = inv_x + (i * (_slot_size + _slot_pad))
+		var _slot_y = inv_y + ((inv_sy - 0.5) * (_slot_size + _slot_pad))
+		
+		do_slot(_slot_x, _slot_y, _slot_size, i, j)
+	}
+	
+	inv_x = display_get_gui_width() / 2 + _slot_margin
+
+	if(hover_slot.x != -1)
+	{
+		if(inv[hover_slot.x, hover_slot.y] != 0)
+		{
+			var _hover_item = inv[hover_slot.x, hover_slot.y].item
+			var _hover_item_name = global.items_list[_hover_item].name
+			var _hover_item_amount = inv[hover_slot.x, hover_slot.y].amt
+			var _hover_item_name_height = string_height_font(_hover_item_name, ft_CurrentUI) * global.res_fix
+			var _hover_item_description = global.items_list[_hover_item].item_data.description
 			
-			var slots_dx = inv_x + slot_from_top + (i * (slot_size + slot_spacing))
-			var slots_dy = inv_y + slot_from_top + (j * (slot_size + slot_spacing)) + position_y
+			draw_set_color(c_white)
+			draw_set_alpha(1)
 			
-			draw_item(inv, i, j, slots_dx, slots_dy)
+			draw_set_font(ft_CurrentUI)
+			draw_text(inv_x, inv_y, _hover_item_name)
 			
-			//main inv, no hotbar
-			if(point_in_rectangle(mx, my, slots_dx, slots_dy, slots_dx + slot_size, slots_dy + slot_size))
-			{
-				inv_click_logic(i, j)
-				
-				draw_sprite_ext(s_GeneralSelected, 0, slots_dx, slots_dy, inv_scale, inv_scale, 0, c_white, 0.2)
-				
-				//draw item info above
-				if(inv[i,j] != 0)
-				{
-					draw_text(inv_x, inv_y - 200, string(inv[i,j].item))
-				}
-			}
+			draw_set_halign(fa_right)
+			draw_text(inv_x + _inv_width, inv_y, string(_hover_item_amount) + "x")
+			draw_set_halign(fa_left)
+			
+			var _hover_item_line_width = 2
+			
+			inv_y += _hover_item_name_height
+
+			draw_line_width(inv_x, inv_y, inv_x + _inv_width, inv_y, _hover_item_line_width)
+			
+			inv_x += pad
+			inv_y += _hover_item_line_width + pad
+			
+			var _hover_icon_scale = 10 * global.res_fix
+			var _hover_icon_space = sprite_get_width(s_Items) * _hover_icon_scale
+			
+			draw_sprite_ext(s_Items, _hover_item, inv_x, inv_y, _hover_icon_scale, _hover_icon_scale, 0, c_white, 1)
+			
+			inv_x += _hover_icon_space + pad
+			
+			var _desc_box_width = _inv_width - (pad * 3) - _hover_icon_space
+			var _desc_box_height = _hover_icon_space
+			
+			ui_draw_rectangle(inv_x, inv_y, make_rectangle(_desc_box_width, _desc_box_height, c_black, 1, false, s_BarBack))
+			
+			draw_set_color(c_white)
+			draw_set_alpha(1)
+			draw_set_font(ft_Description)
+			
+			draw_text_ext(inv_x + pad, inv_y + pad, _hover_item_description, pad + string_height_font("A", ft_Description), _desc_box_width - (pad * 2))
 		}
 	}
 }

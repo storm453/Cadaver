@@ -5,6 +5,8 @@ ds_list_add(o_RenderManager.entities, self)
 
 #macro interact_range 10
 
+global.temperature = 45
+
 outline_init()
 
 walk_speed = 50 
@@ -60,7 +62,7 @@ spawn_y = y
 //@Field(x, float)
 //@Field(y, float)
 
-hp = 100; //@Field(hp, float)
+hp = 65; //@Field(hp, float)
 energy = 100; //@Field(energy, float)
 
 energy_time = 0
@@ -198,6 +200,11 @@ function render()
 	
 	draw_self()
 
+	if(o_PlayerInventory.inv[global.selected, o_PlayerInventory.inv_sy - 1] != 0)
+	{
+		draw_sprite_ext(s_Items, o_PlayerInventory.inv[global.selected, o_PlayerInventory.inv_sy - 1].item, x, y, 1, 1, 0, c_white, 1)	
+	}
+	
 	//move col x & y
 	py = y - 10
 

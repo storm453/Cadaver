@@ -3,17 +3,28 @@ z = 0
 anim_alpha = 0
 anim_y = 0
 
+particles = part_system_create()
+
+part_system_depth(particles, -bbox_bottom)
+
+alarm[0] = 60
+
 function render()
 {
 	draw_self();
 	
 	var player_dis = distance_to_object(o_Player)
 	
-	if(player_dis <= 7)
+	var _key_x = x
+	var _key_y = y + anim_y
+		
+	draw_sprite_ext(s_KeyE, 0, _key_x, _key_y, 1, 1, 0, c_white, anim_alpha)
+	
+	if(player_dis <= 10)
 	{
 		if(anim_alpha < 1) anim_alpha += 0.05
 		
-		if(anim_y > -8) anim_y -= 0.5
+		if(anim_y > -18) anim_y--
 		
 		if(keyboard_check_pressed(ord("E")))
 		{
@@ -24,11 +35,9 @@ function render()
 	}
 	else
 	{
-		if(anim_alpha > 0) anim_alpha -= 0.2
-		if(anim_y < 0) anim_y += 0.25
+		if(anim_y < 0) anim_y++
+		if(anim_alpha > 0) anim_alpha -= 0.1
 	}
-	
-	draw_sprite_ext(e_key, 0, x + 4.5, y + anim_y, 0.2, 0.2, 0, c_white, anim_alpha)	
 }
 
 

@@ -1,10 +1,14 @@
 {
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "o_Floor",
   "spriteId": {
     "name": "s_Floor",
     "path": "sprites/s_Floor/s_Floor.yy",
   },
   "solid": false,
   "visible": true,
+  "managed": true,
   "spriteMaskId": null,
   "persistent": false,
   "parentObjectId": {
@@ -30,8 +34,4 @@
     "name": "Buildings",
     "path": "folders/Objects/Buildings.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "o_Floor",
-  "tags": [],
-  "resourceType": "GMObject",
 }

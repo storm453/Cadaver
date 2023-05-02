@@ -1,4 +1,12 @@
+depth = 1
+
 global.open_instance = noone
+
+#macro edge_pad 15
+#macro pad 5
+
+icons[0] = { label: "Inventory", icon: s_Backpack, key: s_KeyTab }
+icons[1] = { label: "Crafting", icon: s_Tools, key: s_KeyC }
 
 //buttons at top to navigate to craft, inventory, and profile
 tabnav = ds_list_create()
@@ -15,91 +23,10 @@ ds_list_add(tabnav_buttons, { text: "Inventory", ui: gui.INVENTORY } )
 ds_list_add(tabnav_buttons, { text: "Profile", ui: gui.CONTAINER } )
 ds_list_add(tabnav_buttons, { text: "Injections", ui: gui.CONTAINER } )
 
-//possible stations requirements for crafting items
-enum stations
-{
-	hands,
-	workbench
-}
-
 //guis to draw hud
 draw_hud = ds_list_create()
 
 ds_list_add(draw_hud, gui.NONE)
-
-/// CRAFTING
-craft_selcat = 0
-craft_categories = ds_list_create()
-
-ds_list_add(craft_categories, "Weapons")
-ds_list_add(craft_categories, "Tools")
-ds_list_add(craft_categories, "Buildings")
-ds_list_add(craft_categories, "Resources")
-ds_list_add(craft_categories, "Items")
-ds_list_add(craft_categories, "Food")
-ds_list_add(craft_categories, "Ammunition")
-ds_list_add(craft_categories, "Traps")
-
-//CRAFTING RECIPES
-craft_recipes = array(0)
-craft_selrec = 0
-
-//recipes
-
-//weapons
-craft_recipes[0] = ds_list_create()
-
-//tools
-craft_recipes[1] = ds_list_create()
-ds_list_add(craft_recipes[1], global.recipes[items.stonehatchet])
-ds_list_add(craft_recipes[1], global.recipes[items.pickaxe])
-
-//buildings
-craft_recipes[2] = ds_list_create()
-ds_list_add(craft_recipes[2], global.recipes[items.workbench])
-ds_list_add(craft_recipes[2], global.recipes[items.researchstation])
-
-//resources
-craft_recipes[3] = ds_list_create()
-ds_list_add(craft_recipes[3], global.recipes[items.plantfibers])
-
-//items
-craft_recipes[4] = ds_list_create()
-
-//food
-craft_recipes[5] = ds_list_create()
-
-//ammunition
-craft_recipes[6] = ds_list_create()
-
-//traps
-craft_recipes[7] = ds_list_create()
-
-gridx = 10
-gridy = 4
-			
-cel_size = 100
-cel_gap = 15
-			
-dw = (gridx * cel_size) + (gridx - 1) * cel_gap
-dh = (gridy * cel_size) + (gridy - 1) * cel_gap
-			
-dx = display_get_gui_width() / 2 - dw / 2
-dy = display_get_gui_height() / 2 - dh / 2
-
-//no exit if in these uis
-no_exit = ds_list_create()
-
-ds_list_add(no_exit, gui.CONTAINER)
-
-//recipes 
-//global.recipe_amount = 4
-//global.recipes = array_create(global.recipe_amount)
-
-//for(var i = 0; i < global.recipe_amount; i++)
-//{
-//	global.recipes[i] = ds_list_create()	
-//}
 
 enum gui
 {
@@ -110,11 +37,6 @@ enum gui
 }
 
 global.current_gui = gui.NONE
-
-hp_show = 0;
-energy_show = 0;
-
-item_log = ds_list_create()
 
 #macro main_color color_hex(0x9babb2)
 #macro button_color color_hex(0xc7b08b)

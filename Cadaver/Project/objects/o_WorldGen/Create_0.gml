@@ -6,9 +6,9 @@ global.infect_seed_y = random(100000)
 #macro chunk_size 64
 #macro tile_size 16
 
-#macro gen_deep_start 0.0
-#macro gen_deep_end 0.25
-#macro gen_shallow_start 0.25
+#macro gen_tree 1000
+
+#macro gen_shallow_start 0.0
 #macro gen_shallow_end 0.35
 #macro gen_shore_start 0.35
 #macro gen_shore_end 0.4

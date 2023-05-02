@@ -1,4 +1,5 @@
 z = -bbox_bottom
+//global.temperature -= 0.5
 
 //check list movable if player should be able to move in this gui state
 var move = true
@@ -14,7 +15,7 @@ for(var i = 0; i < ds_list_size(list_movable); i++)
 //NIPUT
 in_x = keyboard_check(ord("D")) - keyboard_check(ord("A"))
 in_y = keyboard_check(ord("S")) - keyboard_check(ord("W"))
-	
+
 shift = keyboard_check(vk_shift);	
 attack = mouse_check_button_pressed(mb_left)
 attack_held = mouse_check_button(mb_left)
@@ -336,9 +337,6 @@ for(var i = 0; i < instance_number(o_Multiblock); i++)
 	else
 	{
 		var current_distance = distance_to_object(current_multi)
-
-		print(round(current_distance))
-		print(round(distance_check))
 
 		if(distance_check < current_distance)
 		{

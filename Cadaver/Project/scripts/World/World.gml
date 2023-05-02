@@ -34,14 +34,9 @@ function enemy_create(arg_hp = 10, arg_armor = 0, arg_knock_res = 0)
 	return { hp: arg_hp, protection: 1 - (0.045 * arg_armor), knock_resistance: 1 - (0.05 * arg_knock_res), arg_knock_x : 0, arg_knock_y: 0, hit : 0 }	
 }
 
-function extra_data()
-{
-	return { station: stations.hands }
-}
-
 function create_multiblock(arg_name, arg_gui, arg_item)
 {
-	return { name: arg_name, to_gui: arg_gui, block_item: arg_item, misc: extra_data() }
+	return { name: arg_name, to_gui: arg_gui, block_item: arg_item }
 }
 
 function spawn_enemy(radius_min, radius_max, obj)
