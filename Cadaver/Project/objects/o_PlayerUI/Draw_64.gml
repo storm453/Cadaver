@@ -57,8 +57,8 @@ if(do_hud)
 	}
 	
 	//now we draw health bar
-	var _bar_width = 350 * global.res_fix
-	var _bar_height = 28 * global.res_fix
+	var _bar_width = 600 * global.res_fix
+	var _bar_height = 45 * global.res_fix
 	
 	var _bar_x = display_get_gui_width() / 2 - (_bar_width / 2)
 	var _bar_y = edge_pad

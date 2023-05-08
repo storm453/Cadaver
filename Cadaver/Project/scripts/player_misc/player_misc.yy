@@ -1,12 +1,11 @@
 {
-  "isDnD": false,
+  "resourceType": "GMScript",
+  "resourceVersion": "1.0",
+  "name": "player_misc",
   "isCompatibility": false,
+  "isDnD": false,
   "parent": {
     "name": "Misc",
     "path": "folders/Scripts/Player/Misc.yy",
   },
-  "resourceVersion": "1.0",
-  "name": "player_misc",
-  "tags": [],
-  "resourceType": "GMScript",
 }
