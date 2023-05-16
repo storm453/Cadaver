@@ -1,4 +1,0 @@
-function infected_idle()
-{
-	
-}

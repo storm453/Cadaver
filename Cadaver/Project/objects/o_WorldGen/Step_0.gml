@@ -3,7 +3,7 @@ py = o_Player.y
 	
 if(keyboard_check_pressed(ord("L")))
 {
-	chunk_load++	
+	//chunk_load++	
 }
 
 for(var i = 0; i < ds_list_size(chunk_list); i++)

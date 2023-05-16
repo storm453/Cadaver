@@ -1,4 +1,3 @@
-//@Declare(o_Player)
 ds_list_add(o_RenderManager.entities, self)
 
 //light = instance_create_layer(x, y, "Instances", o_Light)
@@ -146,10 +145,6 @@ resource_drops[resources.tree1] = array
 (
 	{ tool: items.sturdyaxe, drops: array( make_drop(items.wood, 0, 50) ) }
 )
-
-enemies_list = ds_list_create()
-
-ds_list_add(enemies_list, o_Infected)
 
 anim = 0
 

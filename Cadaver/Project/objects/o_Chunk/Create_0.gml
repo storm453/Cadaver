@@ -5,14 +5,19 @@ idy = 0
 
 objects = ds_list_create()
 
+pois = ds_list_create()
+
 function render()
 {
 	bfSubmit(buffer)
 	
-	//mp_grid_draw(path_grid)
+	if(global.db_path) mp_grid_draw(path_grid)
 	
-	//ui_draw_rectangle(x, y, chunk_size, chunk_size, c_red, 0.3, 1)
-	//ui_draw_string(x + 5, y + 5, string(idx) + " ," + string(idy), ft_17)
+	if(global.db_chunk)
+	{
+		draw_set_color(c_red)
+		draw_rectangle(x, y, x +chunk_size, y + chunk_size, 1)
+	}
 }
 
 function init_chunk(loc_x, loc_y)
@@ -60,7 +65,7 @@ function init_chunk(loc_x, loc_y)
 		{
 			var tile_x = idx * chunk_size + i * 16
 			var tile_y = idy * chunk_size + j * 16
-
+			
 			var current_noise = value_noise(tile_x, tile_y, 1, 0.5, 0.001, 2.1042)
 			
 			var grass_noise = value_noise(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 1, 0.5, 0.001, 2.1042)
@@ -153,6 +158,12 @@ function init_chunk(loc_x, loc_y)
 			
 			//draw tile
 			bfDraw(buffer, idx * chunk_size + i * tile_size, idy * chunk_size + j * tile_size, tile_size, tile_size, 10, spr, 0, c_white, 1)	
+			
+			if(rand(tile_x, tile_y) * (chunk_size * chunk_size / (tile_size * tile_size)) < 1 / 40)
+			{
+				o_Console.cprint("Tried to spawn shringe on " + string(grid[# i, j]))
+				if(grid[# i, j] == tile.grass) instance_create_layer(tile_x, tile_y, "Instances", o_Shrine)	
+			}
 		}
 	}
 	

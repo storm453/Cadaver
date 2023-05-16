@@ -20,5 +20,5 @@ if(keyboard_check_pressed(ord("C")))
 if(keyboard_check_pressed(ord("U")))
 {
 	//sledgehammer researched
-	ds_list_add(craft_recipes[0], recipe(items.sledgehammer, array( recipe_req(items.wood, 5), recipe_req(items.iron, 15) ), 1 ) )
+	//ds_list_add(craft_recipes[0], recipe(items.sledgehammer, array( recipe_req(items.wood, 5), recipe_req(items.iron, 15) ), 1 ) )
 }

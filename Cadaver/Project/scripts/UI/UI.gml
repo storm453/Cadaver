@@ -177,14 +177,14 @@ function draw_text_outline(xx, yy, outline_color, color, str, font)
 	draw_set_font(font)
 	
 	draw_set_color(outline_color);  
-	draw_text(xx + 2, yy + 2, str);  
-	draw_text(xx - 2, yy - 2, str);  
-	draw_text(xx, yy + 2, str);  
-	draw_text(xx + 2, yy, str);  
-	draw_text(xx, yy - 2, str);  
-	draw_text(xx - 2, yy, str);  
-	draw_text(xx - 2, yy + 2, str);  
-	draw_text(xx + 2, yy - 2, str);  
+	draw_text(xx + 1, yy + 1, str);  
+	draw_text(xx - 1, yy - 1, str);  
+	draw_text(xx, yy + 1, str);  
+	draw_text(xx + 1, yy, str);  
+	draw_text(xx, yy - 1, str);  
+	draw_text(xx - 1, yy, str);  
+	draw_text(xx - 1, yy + 1, str);  
+	draw_text(xx + 1, yy - 1, str);  
 	
 	draw_set_color(color);  
 	draw_text(xx, yy, str);  	

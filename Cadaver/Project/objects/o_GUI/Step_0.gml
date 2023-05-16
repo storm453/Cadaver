@@ -26,8 +26,6 @@ display_set_gui_size(window_get_width(), window_get_height())
 
 day_factor = (-cos(global.time * time_speed) * 0.5 + 0.5)
 
-print(day_factor)
-
 //set cursors
 
 //window_set_cursor(cr_cross)

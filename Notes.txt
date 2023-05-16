@@ -1,0 +1,13 @@
+- World
+	- POIs
+		- Poission sampling (place randomly , atleast x apart from each other)
+		- Broken fences, abandoned camps, some loot there
+	- Paths
+		- Generate some random paths between some POIs (pick two randomly and put a path between them
+		if it overlaps an existing path cancel it)
+		- Randomly offset points of path
+
+- Enemies
+	- Ranged enemy
+	- Emergent behavior (if an enemy hits another enemy, or enemy hits a tree)
+	- Attack system (give position its trying to attack, a point in the world (radius n stuff))

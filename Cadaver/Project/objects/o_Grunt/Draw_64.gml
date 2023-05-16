@@ -1,0 +1,8 @@
+if(global.db_enemy)
+{
+	var ui = room_to_gui(x, y - sprite_height / 2)
+	
+	draw_set_halign(fa_center)
+	draw_text_outline(ui.x, ui.y, c_black, c_lime, "Pathing: " + string(following), ft_24);
+	draw_set_halign(fa_left)
+}
