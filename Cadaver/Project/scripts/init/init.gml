@@ -65,11 +65,46 @@ global.pt_fire = pt
 //fire
 var pt = part_type_create()
 
-part_type_sprite(pt, s_Shine, false, false, false)
-part_type_life(pt, 60, 120)
+part_type_sprite(pt, s_Rain, 0, false, 0)
 
+part_type_life(pt, 300, 600)
+
+part_type_alpha1(pt, 0.1)
+part_type_blend(pt, bm_add)
+part_type_color1(pt, color_hex(0xd6f8ff))
+part_type_size(pt, 0.1, 0, -0.00005, 0)
+
+part_type_speed(pt, 0.4, 1, 0, 0)
+part_type_direction(pt, 270, 270, 0, 0)
+part_type_gravity(pt, 0.1, 270)
+part_type_orientation(pt, 0, 0, 0, 0, true)
+
+global.pt_rain = pt
+
+var pt = part_type_create()
+
+part_type_shape(pt, pt_shape_cloud)
+part_type_life(pt, 30, 60)
+
+part_type_alpha1(pt, 0.1)
+part_type_blend(pt, bm_add)
+part_type_color1(pt, color_hex(0xd6f8ff))
+part_type_size(pt, 0.1, 0, -0.005, 0)
+
+part_type_speed(pt, 0.2, 0.5, 0, 0)
+part_type_direction(pt, 0, 360, 0, 0)
+part_type_gravity(pt, 0.001, 270)
+
+global.pt_splash = pt
+
+var pt = part_type_create()
+
+part_type_shape(pt, pt_shape_sphere)
+part_type_life(pt, 300, 600)
+
+part_type_alpha3(pt, 0, 0.1, 0)
+part_type_blend(pt, bm_add)
 part_type_color1(pt, c_white)
-part_type_size(pt, 0.055, 0.075, -0.0005, 0)
-part_type_orientation(pt,0,360,2,0,0);
+part_type_size(pt, 0.05, 0.05, 0, 0)
 
-global.pt_shine = pt
+global.pt_dust = pt

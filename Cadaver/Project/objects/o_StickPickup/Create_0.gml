@@ -1,4 +1,6 @@
-z = 0
+event_inherited()
+
+custom_render = true
 
 anim_alpha = 0
 anim_y = 0
@@ -9,7 +11,7 @@ part_system_depth(particles, -bbox_bottom)
 
 alarm[0] = 60
 
-function render()
+function my_render()
 {
 	draw_self();
 	
@@ -39,6 +41,3 @@ function render()
 		if(anim_alpha > 0) anim_alpha -= 0.1
 	}
 }
-
-
-ds_list_add(o_RenderManager.entities, self)

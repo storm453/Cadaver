@@ -63,7 +63,7 @@ if(do_hud)
 	var _bar_x = display_get_gui_width() / 2 - (_bar_width / 2)
 	var _bar_y = edge_pad
 	
-	var _hp_width = (o_Player.hp / 100) * _bar_width
+	var _hp_width = (o_Player.hp / 10) * _bar_width
 	
 	ui_draw_rectangle(_bar_x, _bar_y, make_rectangle(_bar_width, _bar_height, c_white, 1, false, s_BarBack))
 	ui_draw_rectangle(_bar_x, _bar_y, make_rectangle(_hp_width, _bar_height, c_white, 1, false, s_HPBar))
@@ -75,11 +75,26 @@ if(do_hud)
 	draw_set_alpha(1)
 	draw_set_font(ft_Time)
 	
-	draw_text_outline(_time_x, _time_y, color_hex(0x696f80), c_white, "Day 1", ft_Time)
+	var _day = floor(global.time / 60 / 24)
+	
+	draw_text_outline(_time_x, _time_y, color_hex(0x696f80), c_white, "Day " + string(_day + 1), ft_Time)
 	
 	_time_y += string_height_font("Day", ft_Time) + 4
 	
-	draw_text_outline(_time_x, _time_y, color_hex(0x696f80), color_hex(0xeecb90), "10:42 AM", ft_Time)
+	var _hours = floor(global.time / 60) % 24
+	var _minutes = floor(global.time % 60)
+	
+	function pad_left(_string, _length, _fill)
+	{
+		for(var i = string_length(_string); i < _length; i++)
+		{
+			_string = _fill + _string
+		}
+		
+		return _string
+	}
+	
+	draw_text_outline(_time_x, _time_y, color_hex(0x696f80), color_hex(0xeecb90), pad_left(string(_hours), 2, "0") + ":" + pad_left(string(_minutes), 2, "0"), ft_Time)
 }
 
 function current_ui(_string)
@@ -100,4 +115,8 @@ if(global.current_gui == gui.INVENTORY)
 if(global.current_gui == gui.CRAFT)
 {
 	current_ui("Crafting")
+}
+if(global.current_gui == gui.CONTAINER)
+{
+	current_ui(global.open_instance.block_data.name)
 }

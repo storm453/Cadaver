@@ -43,3 +43,5 @@ for(var i = 0; i < _corners; i++)
 		draw_sprite_ext(s_Items, inv[i, inv_sy - 1].item, _player_x, _player_y, wheel_scale, wheel_scale, 90 + (90 * i), c_white, 1)	
 	}
 }
+
+global.hotbar_data = inv[global.selected, inv_sy - 1]

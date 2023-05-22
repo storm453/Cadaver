@@ -28,3 +28,8 @@ function enemy_movement(_speed = 1)
 		y += move_dir.y	* _speed
 	}
 }
+
+function enemy_path(_speed = 1)
+{
+	mp_potential_step_object(o_Player.x, o_Player.y, _speed, o_Collision)
+}

@@ -1,9 +1,9 @@
-chunk_load = 4
+chunk_load = 1
 
 global.infect_seed_x = random(100000)
 global.infect_seed_y = random(100000)
 
-#macro chunk_size 64
+#macro chunk_size 256
 #macro tile_size 16
 
 #macro gen_tree 1000

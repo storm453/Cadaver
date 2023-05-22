@@ -1,7 +1,5 @@
 global.res_fix = 0
 
-time_speed = 0.1
-
 draw_set_font(ft_Medium)
 
 temp_surface = surface_create(view_wport[0], view_hport[0])

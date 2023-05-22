@@ -1,5 +1,8 @@
-z = 0
-data = 0
+event_inherited()
+
+custom_render = true
+
+data = { item: items.wood, amt: 3 }
 
 outline_init()
 
@@ -22,12 +25,12 @@ grav = -0.1
 
 up = false
 
-function render()
+function my_render()
 {
 	//pick up and draw contents text
 	if(point_in_rectangle(mouse_x, mouse_y, x - 8, y - 8, x + 8, y + 8))
 	{
-		outline_start(1, c_white)
+		outline_start(2, c_white)
 
 		if(mouse_check_button_pressed(mb_left))
 		{
@@ -51,11 +54,7 @@ function render()
 		outline_end()
 	}
 	
-	//6ui_draw_rectangle(x - 8, y - 8, 16, 16, c_white, 0.5, 0)
-	
 	draw_self()
 
 	outline_end()
 }
-
-ds_list_add(o_RenderManager.entities, self)

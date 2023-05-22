@@ -27,35 +27,6 @@ function init_chunk(loc_x, loc_y)
 	
 	random_set_seed(rand(idx, idy) * 10000 + global.seed)
 
-	//we need to check if this chunk save already exists
-	//file_name = string(idx) + "_" + string(idy) + ".chunk"
-	//if(file_exists(MAPDIR + file_name))
-	//{
-	//	//file exists load!
-	//	var bf = buffer_load(MAPDIR + file_name)
-		
-	//	var count = buffer_read(bf, buffer_u32)
-		
-	//	for(var i = 0; i < count; i++)
-	//	{
-	//		var uid = buffer_read(bf, buffer_u32)
-	//		var _x  = buffer_read(bf, buffer_f64)
-	//		var _y  = buffer_read(bf, buffer_f64)	
-			
-	//		create_obj_chunk(uid, _x, _y)	
-	//	}
-		
-	//	buffer_delete(bf)
-	//}
-	//else
-	//{
-	//	//it doesnt exist!
-
-	//	//create a file
-	//	var file = file_bin_open(MAPDIR + file_name, 1)
-	//	file_bin_close(file)
-	//}
-
 	grid = ds_grid_create(chunk_size / tile_size, chunk_size / tile_size)
 	buffer = bfCreate()
 	
@@ -162,7 +133,10 @@ function init_chunk(loc_x, loc_y)
 			if(rand(tile_x, tile_y) * (chunk_size * chunk_size / (tile_size * tile_size)) < 1 / 40)
 			{
 				o_Console.cprint("Tried to spawn shringe on " + string(grid[# i, j]))
-				if(grid[# i, j] == tile.grass) instance_create_layer(tile_x, tile_y, "Instances", o_Shrine)	
+				if(grid[# i, j] == tile.grass) 
+				{
+					instance_create_layer(tile_x, tile_y, "Instances", o_Shrine)
+				}
 			}
 		}
 	}
@@ -184,10 +158,11 @@ function init_chunk(loc_x, loc_y)
 			var down_chunk = instance_position(idx * chunk_size, (idy + 1) * chunk_size, o_Chunk)
 			
 			var left = grid[# i - 1, j]
-			
+			var edge_tile = (chunk_size / tile_size) - 1
+
 			if(i == 0)
 			{
-				var gen_noise = value_noise((idx - 1) * chunk_size + 3 * 16, idy * chunk_size + j * 16, 1, 0.5, 0.001, 2.1042)
+				var gen_noise = value_noise((idx - 1) * chunk_size + edge_tile * 16, idy * chunk_size + j * 16, 1, 0.5, 0.001, 2.1042)
 				
 				if(in_range(gen_noise, gen_grass_start, gen_grass_end))
 				{
@@ -199,7 +174,7 @@ function init_chunk(loc_x, loc_y)
 			
 			var right = grid[# i + 1,j]
 			
-			if(i == 3)
+			if(i == edge_tile)
 			{
 				var gen_noise = value_noise((idx + 1) * chunk_size, idy * chunk_size + j * 16, 1, 0.5, 0.001, 2.1042)
 					
@@ -215,7 +190,7 @@ function init_chunk(loc_x, loc_y)
 			
 			if(j == 0)
 			{
-				var gen_noise = value_noise(idx * chunk_size + i * 16, (idy - 1) * chunk_size + 3 * 16, 1, 0.5, 0.001, 2.1042)
+				var gen_noise = value_noise(idx * chunk_size + i * 16, (idy - 1) * chunk_size + edge_tile * 16, 1, 0.5, 0.001, 2.1042)
 				
 				if(in_range(gen_noise, gen_grass_start, gen_grass_end))
 				{
@@ -227,7 +202,7 @@ function init_chunk(loc_x, loc_y)
 			
 			var down = grid[# i, j + 1]
 			
-			if(j == 3)
+			if(j == edge_tile)
 			{
 				var gen_noise = value_noise(idx * chunk_size + i * 16, (idy + 1) * chunk_size, 1, 0.5, 0.001, 2.1042)
 				

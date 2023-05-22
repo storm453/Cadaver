@@ -40,13 +40,7 @@ function render()
 	var bottom_left = vec2(x - sprite_width_left, y + sprite_height_bottom)
 	var bottom_right = vec2(x + sprite_width_right, y + sprite_height_bottom)
 
-	//parallax
-	var middle = vec2(top_left.x + sprite_width / 2, top_left.y + sprite_height / 2)
-
-	var angle_to_player = point_direction(middle.x, middle.y, o_Player.x, o_Player.y)
 	var dist_to_player = distance_to_point(o_Player.x, o_Player.y)
-
-	var side_of_player = (x - o_Player.x) / dist_to_player
 
 	var dif = vec2(o_Player.x - x, o_Player.y - y)
 
@@ -99,14 +93,6 @@ function render()
 		
 		draw_sprite_ext(s_Selector2, 0, bottom_left.x, bottom_left.y, 1, 1, 90, -1, 1)	
 	}
-}
-
-function render_shadow()
-{
-	//draw_sprite_ext(sprite_index, 0, x + sprite_width / 2, y + sprite_height / 2, 0.5, 0.8, 270, c_blue, 0.2 * (- o_GUI.day_factor / 2 + 0.5));	
-	
-	//draw_set_alpha(0.2 * (- o_GUI.day_factor / 2 + 0.5))
-	//draw_circle_color(x + sprite_width / 2, y + sprite_height / 2, 15, c_blue, c_black, false)
 }
 
 ds_list_add(o_RenderManager.entities, self)

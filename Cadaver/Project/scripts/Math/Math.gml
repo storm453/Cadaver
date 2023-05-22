@@ -20,6 +20,14 @@ function get_delta_time() {
 
 ////////
 
+function circle_point(_x, _y, _radius, _angle)
+{
+	var _point_x = _x + (_radius * dcos(_angle))
+	var _point_y = _y - (_radius * dsin(_angle))
+	
+	return vec2(_point_x, _point_y)
+}
+
 function msin(x) {
 	return sin(x / 180 * PI);
 }

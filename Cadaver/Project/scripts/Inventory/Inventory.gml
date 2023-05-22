@@ -11,6 +11,42 @@ function create_inventory(slots_x, slots_y)
 	return inv
 }
 
+function do_slot(_x, _y, _size, _i, _j)
+{
+	var _mx = device_mouse_x_to_gui(0)
+	var _my = device_mouse_y_to_gui(0)
+	
+	var _alpha = 0.3
+	
+	if(point_in_rectangle(_mx, _my, _x, _y, _x + _size, _y + _size))
+	{
+		_alpha = 0.4
+		
+		if(object_index == o_PlayerInventory)
+		{
+			hover_slot.x = _i
+			hover_slot.y = _j
+		}
+		
+		inv_click_logic(_i, _j)
+	}
+	
+	ui_draw_rectangle(_x, _y, make_rectangle(_size, _size, c_black, _alpha, false))
+	
+	if(inv[_i, _j] != 0)
+	{
+		var _item_scale = (_size / sprite_get_width(s_Items))
+		
+		//slot isnt empty
+		draw_sprite_ext(s_Items, inv[_i, _j].item, _x, _y, _item_scale, _item_scale, 0, c_white, 1)
+		
+		draw_set_font(ft_ItemAmount)
+		draw_set_alpha(1)
+		draw_set_color(c_white)
+		draw_text(_x + 5, _y, inv[_i, _j].amt)
+	}
+}
+
 function inv_click_logic(arg_i = i, arg_j = j)
 {
 	if(mouse_check_button_pressed(mb_left))

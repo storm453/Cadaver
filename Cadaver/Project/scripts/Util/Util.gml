@@ -1,30 +1,30 @@
-//function split_string(string, delimiter)
-//{
-//	container[0] = "";
-//	previous_position = 1;
-//	container_index = 0;
-
-//	for (i = 1; i < string_length(string); i++) 
-//	{
-//	    // If the character at the current location is equivalent to the delimiter
-//	    if(string_char_at(string, i) == delimiter)
-//		{
-//	        container[container_index] = "";
+function damage_circle(_x, _y, _radius, _damage)
+{
+	var _circle_hit = ds_list_create()
+	var _hit = false
+		
+	collision_circle_list(_x, _y, _radius, o_WorldParent, false, true, _circle_hit, false)
+		
+	for(var i = 0; i < ds_list_size(_circle_hit); i++)
+	{
+		var _current_hit = _circle_hit[|i]
 			
-//	        letters = i - previous_position;
-			
-//	        for(j = 0; j < letters; j++)
-//			{
-//	            container[container_index] += string_char_at(string, previous_position + j);
-//	        }
+		if(_current_hit.damagable == true)
+		{
+			_current_hit.hp -= _damage	
+			_hit = true
+		}
+		if(_current_hit.handle_damage == true)
+		{
+			with(_current_hit)
+			{
+				on_damage(other.id)	
+			}
+		}
+	}
 	
-//	        container_index += 1;
-//	        previous_position = i;
-//		}
-//	}
-	
-//	return container;
-//}
+	return _hit
+}
 
 function room_to_gui(_x, _y)
 {
@@ -47,34 +47,17 @@ function room_to_gui(_x, _y)
 	return vec2(guix, guiy)
 }
 
-function string_split(base, delimiter)
+function make_enum()
 {
-	var inline=false;                               // inside a block quote?
-	var queue=ds_list_create();                    // Contains the individual words
-	var tn="";                                      // temporary substring
+	return { names: array_create() }
+}
 
-	base=base+delimiter;                            // lazy way of ensuring the last term in the list does not get skipped
+function add_enum(_enum, _name)
+{
+	var _length = array_length(_enum.names)
 
-	for (var i=1; i<=string_length(base); i++){     // for each character in the string:
-	    var c=string_char_at(base, i);              //      Current character
-	    if (string_char_at(base, i-1)=="\\"){        //      If the previous character is a backslash, bypass the other checks
-	        tn=string_copy(tn, 1, string_length(tn)-1);     // and remove the backslash
-	        tn=tn+c;
-	    } else if (c=="\""){                         //      If double quotation mark:
-	        if (inline){                            //          If already inside a block, end the block
-	            inline=false;
-	        } else {                                //          If not already inside a block, start a block
-	            inline=true;
-	        }
-	    } else if (c==delimiter&&!inline){          //      Delimiter met and not inside a block, enqueue and reset the substring
-	        ds_list_add(queue, tn);
-	        tn="";
-	    } else {                                    // Just an ordinary character, add it to the substring
-	        tn=tn+c;
-	    }
-	}
-
-	return queue;
+	array_push(_enum.names, _name)
+	variable_struct_set(_enum, _name, _length)
 }
 
 function array_height(arr)
@@ -108,6 +91,19 @@ function instance_nearest_notme(obj)
     
     instance_activate_object(self);
     return n;
+}
+
+function move_towards_point(_x, _y, _speed)
+{
+	var _diff_x = _x - x
+	var _diff_y = _y - y
+	
+	var _norm = sqrt(_diff_x * _diff_x + _diff_y * _diff_y)
+	
+	var _add_x = (_diff_x / _norm) * _speed
+	var _add_y = (_diff_y / _norm) * _speed
+	
+	return vec2(_add_x, _add_y)
 }
 
 function move_towards(target)

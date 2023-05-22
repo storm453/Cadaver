@@ -1,29 +1,28 @@
 z = -bbox_bottom
-//global.temperature -= 0.5
 
-//check list movable if player should be able to move in this gui state
 var move = true
 
-for(var i = 0; i < ds_list_size(list_movable); i++)
+for(var i = 0; i < array_length(disable_move); i++)
 {
-	if(global.current_gui == list_movable[|i])
+	if(global.current_gui == disable_move[i])
 	{
 		move = false
 	}
 }
 
-//NIPUT
+mouse_angle = point_direction(x, y - 20, mouse_x, mouse_y)
+
+attack_circle = circle_point(x, y - 20, attack_distance, mouse_angle)
+
 in_x = keyboard_check(ord("D")) - keyboard_check(ord("A"))
 in_y = keyboard_check(ord("S")) - keyboard_check(ord("W"))
 
 shift = keyboard_check(vk_shift);	
 attack = mouse_check_button_pressed(mb_left)
-attack_held = mouse_check_button(mb_left)
+dash = keyboard_check_pressed(vk_space)
 
-//change sprite index based on state
 sprite_index = sprites_array[state]
 
-//image_xscale and sacaling
 var sign_mouse = sign(mouse_x - x)
 
 if(sign_mouse == 0) 
@@ -31,205 +30,205 @@ if(sign_mouse == 0)
 	sign_mouse = 1
 }
 
-if(in_x != 0 && sign(in_x) != sign_mouse) 
-{
-	image_speed = -1
-}
-else {
-	image_speed = 1
-}
-	
 if(sign_mouse != 0)
 {
 	image_xscale = sign_mouse;	
 }
 
-if(keyboard_check_pressed(ord("I")))
-{
-	instance_create_layer(mouse_x, mouse_y, "World", o_Infected)
-}
-
-//animation exceptions here
-
 if(!move) exit;
 
-sel_breakable = noone
-
-function check_if_attack()
+function goto_state(_state)
 {
+	state = _state
 	
+	switch(_state)
+	{
+		case(player_state.dash):
+		{
+			dash_dir = point_direction(0, 0, in_x, -in_y)
+			dash_speed = 5
+			state_timer_next = player_state.idle
+			state_timer = 0.3
+			state_timer_enabled = true
+		}
+		break;
+		
+		case(player_state.attack):
+		{
+			image_index = 0
+			swing_scale = 1.5
+		}
+		break;
+	}
 }
 
-function check_if_block()
+if(swing_scale > 1) swing_scale -= 0.05
+
+if(state_timer_enabled)
 {
-	if(mouse_check_button_pressed(mb_right))
+	if(state_timer > 0)
 	{
-		state = player_state.block	
+		state_timer -= get_delta_time()	
+	}
+	else
+	{
+		state_timer = 0	
+		state_timer_enabled = false
+		
+		goto_state(state_timer_next)
 	}
 }
 
 attack_cooldown -= get_delta_time()
+if(attack_cooldown <= 0) attack_cooldown = 0
 
-//check what state and run certain code depending on state
-if(state = player_state.idle)
+function check_if_attack()
 {
-	movement()
-	check_if_attack()
-	check_if_block()
-	
-	//if player is moving shift to either walk or run
-	if(vec_length(velocity) > walk_speed / 2) 
+	if(attack)
 	{
-		if(!shift)
+		if(attack_cooldown <= 0)
 		{
-			state = player_state.walk
+			attack_cooldown = attack_cooldown_set
+			
+			goto_state(player_state.attack)
+			
+			if(global.hotbar_data != 0)
+			{
+				var _hotbar_item_data = global.items_list[global.hotbar_data.item].item_data
+				var _hid_type = _hotbar_item_data.item_type
+				var _hid_damage = _hotbar_item_data.damage
+				
+				switch(_hid_type)
+				{
+					case(item_types.melee):
+					{
+						damage_circle(attack_circle.x, attack_circle.y, attack_radius, _hid_damage)
+					}
+					break;
+					
+					case(item_types.ranged):
+					{
+						
+					}
+					break;
+				}
+			}
 		}
-		else
+	}
+}
+
+if(dash)
+{
+	goto_state(player_state.dash)
+}
+
+var _animals = 0
+
+for(var i = 0; i < instance_number(o_WorldParent); i++)
+{
+	var _current_parent = instance_find(o_WorldParent, i)
+	
+	if(_current_parent.is_animal)
+	{
+		_animals++	
+	}
+}
+
+show_debug_message(_animals)
+
+switch(state)
+{
+	case(player_state.idle):
+	{
+		movement()
+		check_if_attack()
+		
+		if(vec_length(velocity) > walk_speed / 2) 
 		{
-			state = player_state.run	
+			if(!shift)
+			{
+				goto_state(player_state.walk)
+			}
+			else
+			{
+				goto_state(player_state.run)	
+			}
+		}	
+	}
+	break;
+	
+	case(player_state.walk):
+	{
+		movement()
+		check_if_attack()
+	
+		if(vec_length(velocity) < walk_speed / 2) 
+		{
+			goto_state(player_state.idle)
 		}
+		if(shift)
+		{
+			goto_state(player_state.run)
+		}	
 	}
-}
-else if(state = player_state.walk)
-{
-	movement()
-	check_if_attack()
-	check_if_block()
+	break;
 	
-	if(vec_length(velocity) < walk_speed / 2) 
+	case(player_state.attack):
 	{
-		state = player_state.idle
-	}
-	if(shift)
-	{
-		state = player_state.run		
-	}
+		movement(0.5)
+	}	
+	break;
 	
-	//if(shift) state = player_state.run
-}
-if(state = player_state.run)
-{
-	movement(2)
+	case(player_state.run):
+	{
+		movement(2)
 	
-	if(!shift) 
-	{
-		state = player_state.walk	
+		if(!shift) 
+		{
+			goto_state(player_state.walk)	
+		}
+		if(vec_length(velocity) < walk_speed / 2) 
+		{
+			goto_state(player_state.idle)	
+		}	
 	}
-	if(vec_length(velocity) < walk_speed / 2) 
-	{
-		state = player_state.idle
-	}
-}
-if(state = player_state.attack)
-{
-	check_if_block()
-}
-if(state = player_state.block)
-{
-	block_time += get_delta_time()	
+	break;
 	
-	if(block_time >= block_end)
+	case(player_state.dash):
 	{
-		block_time = 0
+		part_particles_create(part_sys, x, y, global.pt_fire, 5)
 		
-		state = player_state.idle
-	}
-}
-
-//music per biome
-var near_x = floor(o_Player.x / chunk_size) * chunk_size
-var near_y = floor(o_Player.y / chunk_size) * chunk_size
-
-var chunk = instance_nearest(near_x, near_y, o_Chunk)
-	
-var block = chunk.grid[# floor((x - chunk.x) / tile_size), floor((y - chunk.y) / tile_size)]
-	
-//music manager	
-if(block == tile.water)
-{
-	sprite_index = s_PlayerSwim
-}
-	
-function volume(arg_x)
-{
-	if(arg_x < 3)
-	{
-		return arg_x / 3;	
-	}
-	else
-	{
-		return 1;	
-	}
-}
-
-if(songs[block] == current_song)
-{
-	audio_state += (get_delta_time()) * 2
+		x += dcos(dash_dir) * dash_speed
+		y += dsin(dash_dir) * dash_speed
 		
-	if(audio_state > 10) audio_state = 10
-}
-else
-{
-	audio_state -= (get_delta_time()) * 2
-		
-	if(audio_state <= 0) 
-	{
-		audio_state = 0
-
-		old_block = playing_block
-
-		array_set(song_position, old_block, floor(song_playtime))
-
-		audio_stop_sound(current_song)
+		dash_speed -= 0.2
 	}
+	break;
 }
-
-song_playtime += get_delta_time()
-
-if(audio_state == 0)
-{
-	current_song = songs[block]	
-		
-	var change = audio_play_sound(current_song, 0, 1)
-
-	playing_block = block
-
-	song_playtime = 0
-
-	audio_sound_set_track_position(change, song_position[block])
-}
-	
-audio_sound_gain(current_song, volume(audio_state), 0)
-
-rotation = lerp(rotation, 90, 0.1)
-melee_rot = lerp(melee_rot, 0, 0.1)
-
-tool_cooldown--
 
 part_system_depth(part_sys, -20)
 
-//kill player if low health
-if(hp <= 0) state = player_state.dead
-
-//opening up objects with 'E'
-
-for(var i = 0; i < instance_number(o_Multiblock); i++)
+//get closest interacatable block to us
+for(var i = 0; i < instance_number(o_WorldParent); i++)
 {
-	var cur_multiblock = instance_find(o_Multiblock, i)
+	var cur_multiblock = instance_find(o_WorldParent, i)
 	
 	var distance_check = distance_to_object(cur_multiblock)
 
-	if(current_multi == noone)
+	if(cur_multiblock.type == parent_type.interactable)
 	{
-		current_multi = cur_multiblock
-	}
-	else
-	{
-		var current_distance = distance_to_object(current_multi)
-
-		if(distance_check < current_distance)
+		if(current_multi == noone)
 		{
 			current_multi = cur_multiblock
+		}
+		else
+		{
+			var current_distance = distance_to_object(current_multi)
+
+			if(distance_check < current_distance)
+			{
+				current_multi = cur_multiblock
+			}
 		}
 	}
 }
@@ -243,11 +242,11 @@ if(keyboard_check_pressed(ord("E")))
 		if(global.open_instance == noone)
 		{
 			scan_distance = distance_to_object(scan)
-				
-			if(scan_distance < 10)
+			
+			if(scan_distance < interact_range)
 			{
 				global.open_instance = scan
-				global.current_gui = global.open_instance.block_data.to_gui
+				global.current_gui = global.open_instance.block_data.to
 			}
 		}
 	}

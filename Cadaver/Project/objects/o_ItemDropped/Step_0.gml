@@ -1,6 +1,5 @@
-z = -bbox_bottom
+event_inherited()
 
-//movement
 x += spd * dx
 my += spd * dy
 

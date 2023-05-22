@@ -1,5 +1,20 @@
-z = -bbox_bottom
+if(auto_z) z = -bbox_bottom
 
-var bottom_y = y + (sprite_get_height(sprite_index) - sprite_get_yoffset(sprite_index))
+if(damagable)
+{
+	if(hp <= 0)
+	{
+		instance_destroy()	
+	}
+}
 
-depth = -bottom_y
+if(is_animal)
+{
+	var _distance = (o_Camera.x_size * o_Camera.zoom) * 2
+	var _player = distance_to_object(o_Player)
+	
+	if(_player >= _distance)
+	{
+		instance_destroy()	
+	}
+}

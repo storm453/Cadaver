@@ -3,7 +3,7 @@
   "resourceVersion": "1.0",
   "name": "o_Plants2",
   "eventList": [
-    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,},
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
   ],
   "managed": true,
   "overriddenProperties": [
@@ -15,8 +15,8 @@
     "path": "folders/Objects/World.yy",
   },
   "parentObjectId": {
-    "name": "o_Harvestable",
-    "path": "objects/o_Harvestable/o_Harvestable.yy",
+    "name": "o_Collision",
+    "path": "objects/o_Collision/o_Collision.yy",
   },
   "persistent": false,
   "physicsAngularDamping": 0.1,

@@ -14,19 +14,17 @@ function cprint(_message)
 {
 	var _lines = string_split(_message, "\n")
 	
-	for(var i = 0; i < ds_list_size(_lines); i++)
+	for(var i = 0; i < array_length(_lines); i++)
 	{
-		ds_list_add(output, _lines[|i])
+		ds_list_add(output, _lines[i])
 	}
-	
-	ds_list_destroy(_lines)
 }
 
 function parse_command(_string)
 {
 	var _parts = string_split(_string, " ")
 	
-	switch(_parts[|0])
+	switch(_parts[0])
 	{
 		case("god"):
 		{
@@ -35,10 +33,16 @@ function parse_command(_string)
 		}
 		break;
 		
-		case("db_enemy"):
+		case("itemdrop"):
+		{
+			instance_create_layer(o_Player.x, o_Player.y, "World", o_ItemDropped)	
+		}
+		break;
+		
+		case("db_entity"):
 		{
 			global.db_enemy = !global.db_enemy
-			cprint("db_enemy " + (global.db_enemy ? "ON" : "OFF"))
+			cprint("db_entity " + (global.db_enemy ? "ON" : "OFF"))
 		}
 		break;
 		
@@ -58,10 +62,8 @@ function parse_command(_string)
 		
 		default:
 		{
-			cprint("Unknown command " + "'" + string(_parts[|0]) + "'")
+			cprint("Unknown command " + "'" + string(_parts[0]) + "'")
 		}
 		break;
 	}
-	
-	ds_list_destroy(_parts)
 }
