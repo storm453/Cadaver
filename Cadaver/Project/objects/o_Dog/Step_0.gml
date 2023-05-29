@@ -58,7 +58,6 @@ switch(state)
 			var _amt_r = irandom_range(-move_distance, move_distance)
 			var _amt_f = irandom_range(0, move_distance)
 			
-			
 			move_target.x = x + _right_x * _amt_r + _facing_x * _amt_f
 			move_target.y = y + _right_y * _amt_r + _facing_y * _amt_f  
 		}
@@ -92,16 +91,16 @@ switch(state)
 			//flee
 			var _flee = move_towards(angry)
 			
-			velocity.x = -_flee.x * 4
-			velocity.y = -_flee.y * 4
+			velocity.x = -_flee.x * 240
+			velocity.y = -_flee.y * 240
 		}
 	}
 	break;
 	
 	case(dog_state.pounce):
 	{
-		velocity.x *= 1.02
-		velocity.y *= 1.02
+		velocity.x += velocity.x * 4 * get_delta_time()
+        velocity.y += velocity.y * 4 * get_delta_time()
 		
 		var _circle_hit = damage_circle(x, y, 30, 1)
 		
@@ -124,6 +123,13 @@ switch(state)
 		}
 	}
 	break;
+
+	case(dog_state.charge):
+	{
+		velocity.x *= 1 - 0.1 * 60 * get_delta_time()	
+		velocity.y *= 1 - 0.1 * 60 * get_delta_time()
+	}
+	break;
 }	
 
 sprite_index = dog_sprites[state]
@@ -137,12 +143,6 @@ if(state != dog_state.pounce)
 		velocity.x += (_move.x * dog_speed - velocity.x) * acc * get_delta_time()
 		velocity.y += (_move.y * dog_speed - velocity.y) * acc * get_delta_time()
 	}
-}
-
-if(state != dog_state.charge)
-{
-	x += velocity.x
-	y += velocity.y
 }
 
 if (velocity.x != 0) image_xscale = sign(-velocity.x)

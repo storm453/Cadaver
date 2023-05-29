@@ -11,14 +11,24 @@ instance_create_layer(x, y, "Meta", o_Camera)
 player_state = make_enum()
 
 is_animal = false
+is_parasite = false
 
-handle_damage = false
+hit_alpha = 0
+
+handle_damage = true
+
+function on_damage()
+{
+	hit_alpha = 1.4	
+}
 
 add_enum(player_state, "idle")
 add_enum(player_state, "walk")
 add_enum(player_state, "attack")
 add_enum(player_state, "run")
 add_enum(player_state, "dash")
+add_enum(player_state, "death")
+add_enum(player_state, "dead")
 
 state = player_state.idle
 
@@ -31,6 +41,8 @@ sprites_array[player_state.walk] = s_PlayerWalk
 sprites_array[player_state.run] = s_PlayerRun
 sprites_array[player_state.dash] = s_PlayerDash
 sprites_array[player_state.attack] = s_PlayerAttack
+sprites_array[player_state.death] = s_PlayerDeath
+sprites_array[player_state.dead] = s_PlayerDead
 
 disable_move = []
 
@@ -43,7 +55,14 @@ damagable = true
 hp = 10
 energy = 10
 
+knockback_target = noone
+knockback_velocity = vec2(0, 0)
+
+velocity_dampen = 5
+
 current_multi = noone
+
+iframes_set = 20
 
 attack_circle = vec2(0, 0)
 attack_distance = 15
@@ -62,13 +81,20 @@ swing_scale = 1.5
 
 part_sys = part_system_create()
 
-part_system_depth(part_sys, -20)
+part_system_automatic_draw(part_sys, false)
 
 function render()
 {
-	part_system_depth(part_sys, 1000)
-
-	draw_self()
+	part_system_drawit(part_sys)
+	
+	if(state == player_state.dash)
+	{
+		draw_sprite_ext(sprite_index, 0, x, y, 1, 1, 0, c_aqua, 1)
+	}
+	else
+	{
+		draw_self()
+	}
 	
 	if(global.db_enemy)
 	{

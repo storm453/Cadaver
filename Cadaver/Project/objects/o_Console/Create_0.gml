@@ -26,16 +26,16 @@ function parse_command(_string)
 	
 	switch(_parts[0])
 	{
+		case("scroll"):
+		{
+			o_Camera.scroll = !o_Camera.scroll
+		}
+		break;
+		
 		case("god"):
 		{
 			global.db_god = !global.db_god
 			cprint("godmode " + (global.db_god ? "ON" : "OFF"))
-		}
-		break;
-		
-		case("itemdrop"):
-		{
-			instance_create_layer(o_Player.x, o_Player.y, "World", o_ItemDropped)	
 		}
 		break;
 		
@@ -46,17 +46,10 @@ function parse_command(_string)
 		}
 		break;
 		
-		case("db_chunk"):
+		case("db_world"):
 		{
 			global.db_chunk = !global.db_chunk
-			cprint("db_chunk " + (global.db_chunk ? "ON" : "OFF"))
-		}
-		break;
-		
-		case("db_path"):
-		{
-			global.db_path = !global.db_path
-			cprint("db_path " + (global.db_path ? "ON" : "OFF"))
+			cprint("db_world " + (global.db_chunk ? "ON" : "OFF"))
 		}
 		break;
 		

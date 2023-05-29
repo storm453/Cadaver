@@ -31,9 +31,8 @@ state_timer_next = bird_state.loiter
 
 is_animal = true
 
-velocity = vec2(0, 0)
 acc = 1
-bird_speed = 2
+bird_speed = 120
 height = 40
 
 loiter_distance = 200
@@ -170,10 +169,7 @@ function step()
 			}
 		}
 		break;
-	}	
-
-	x += velocity.x	
-	y += velocity.y
+	}
 
 	image_xscale = sign(-velocity.x)
 	

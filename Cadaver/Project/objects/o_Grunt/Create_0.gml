@@ -8,6 +8,14 @@ custom_render = true
 
 grunt_state = make_enum()
 
+grunt_speed = 100
+acc = 25
+target_velocity = vec2(0, 0)
+
+dash_timer = 0
+
+is_parasite = true
+
 add_enum(grunt_state, "idle")
 add_enum(grunt_state, "move")
 add_enum(grunt_state, "path")
@@ -17,24 +25,27 @@ add_enum(grunt_state, "rest")
 
 state = grunt_state.idle
 
-state_timer_enabled = false
-state_timer = 0
-state_timer_next = grunt_state.idle
-
 path = path_add()
 path_timer = 0
 
-attack_distance = 120
+attack_distance = 60
 attack_circle_points = 0
-attack_radius = 15
+attack_radius = 10
 follow_distance = 240
-attack_speed = 3
+attack_speed = 400
 
 player_last_seen = vec2(0, 0)
 
 function my_render()
 {
-	draw_self();
+	if(state != grunt_state.charge)
+	{
+		draw_self();	
+	}
+	else
+	{
+		draw_sprite_ext(s_Grunt, 0, x, y, 1 + random(0.1), 1 + random(0.1), 0, c_lime, 1)	
+	}
 	
 	if(state != grunt_state.rest)
 	{
@@ -57,6 +68,9 @@ function my_render()
 		draw_set_color(c_lime)
 		draw_set_alpha(1)
 		draw_line_width(x, y - sprite_height / 2, o_Player.x, o_Player.y, 3)
+		
+		draw_set_color(c_red)
+		draw_circle(attack_circle_points.x, attack_circle_points.y, attack_radius, true)
 		
 		draw_set_color(c_black)
 		draw_set_alpha(1)

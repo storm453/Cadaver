@@ -13,6 +13,8 @@ function damage_circle(_x, _y, _radius, _damage)
 		{
 			_current_hit.hp -= _damage	
 			_hit = true
+			
+			_current_hit.knockback_target = self
 		}
 		if(_current_hit.handle_damage == true)
 		{
@@ -24,6 +26,47 @@ function damage_circle(_x, _y, _radius, _damage)
 	}
 	
 	return _hit
+}
+
+function nearest_parent_flag()
+{
+	var _nearest = noone
+
+	for(var i = 0; i < instance_number(o_WorldParent); i++)
+	{
+		var _parent = instance_find(o_WorldParent, i)
+		
+		var _parent_distance = distance_to_object(_parent)
+		
+		var _flags = true
+
+		for(var j = 0; j < argument_count; j++)
+		{
+			if(variable_instance_get(_parent, argument[j]) != true)
+			{
+				_flags = false
+			}
+		}
+
+		if(_flags)
+		{
+			if(_nearest == noone)
+			{
+				_nearest = _parent
+			}
+			else
+			{
+				var _nearest_distance = distance_to_object(_nearest)
+				
+				if(_parent_distance < _nearest_distance)
+				{
+					_nearest = _parent	
+				}
+			}
+		}
+	}
+
+	return _nearest
 }
 
 function room_to_gui(_x, _y)

@@ -18,8 +18,8 @@ var shake_offset_y = random_range(-1, 1) * shake;
 //camera_set_view_pos(camera, x + shake_offset_x - 100, y + shake_offset_y - 100);
 shake *= shake_damp;
 
-var scroll = mouse_wheel_down() - mouse_wheel_up();
-//target_zoom += scroll / 2
+var _scroll = mouse_wheel_down() - mouse_wheel_up();
+if(scroll) target_zoom += _scroll / 2
 
 target_zoom = clamp(target_zoom, min_zoom, max_zoom);
 

@@ -10,6 +10,8 @@ for(var i = 0; i < array_length(disable_move); i++)
 	}
 }
 
+//part_system_depth(part_sys, -99)
+
 mouse_angle = point_direction(x, y - 20, mouse_x, mouse_y)
 
 attack_circle = circle_point(x, y - 20, attack_distance, mouse_angle)
@@ -122,20 +124,6 @@ if(dash)
 	goto_state(player_state.dash)
 }
 
-var _animals = 0
-
-for(var i = 0; i < instance_number(o_WorldParent); i++)
-{
-	var _current_parent = instance_find(o_WorldParent, i)
-	
-	if(_current_parent.is_animal)
-	{
-		_animals++	
-	}
-}
-
-show_debug_message(_animals)
-
 switch(state)
 {
 	case(player_state.idle):
@@ -181,6 +169,7 @@ switch(state)
 	
 	case(player_state.run):
 	{
+		check_if_attack()
 		movement(2)
 	
 		if(!shift) 
@@ -196,7 +185,7 @@ switch(state)
 	
 	case(player_state.dash):
 	{
-		part_particles_create(part_sys, x, y, global.pt_fire, 5)
+		part_particles_create(part_sys, x, y, pt_epic, 12)
 		
 		x += dcos(dash_dir) * dash_speed
 		y += dsin(dash_dir) * dash_speed
@@ -205,8 +194,6 @@ switch(state)
 	}
 	break;
 }
-
-part_system_depth(part_sys, -20)
 
 //get closest interacatable block to us
 for(var i = 0; i < instance_number(o_WorldParent); i++)
@@ -232,6 +219,28 @@ for(var i = 0; i < instance_number(o_WorldParent); i++)
 		}
 	}
 }
+
+if(hp <= 0)
+{
+	hp = 10
+	goto_state(player_state.death)	
+}
+
+if(knockback_target != noone)
+{
+	var _knock = move_towards(knockback_target)
+	
+	knockback_velocity.x += -_knock.x * 200
+	knockback_velocity.y += -_knock.y * 200
+	
+	knockback_target = noone
+}
+
+x += knockback_velocity.x * get_delta_time()
+y += knockback_velocity.y * get_delta_time()
+
+knockback_velocity.x += knockback_velocity.x * -velocity_dampen * get_delta_time()
+knockback_velocity.y += knockback_velocity.y * -velocity_dampen * get_delta_time()
 
 var scan = current_multi
 

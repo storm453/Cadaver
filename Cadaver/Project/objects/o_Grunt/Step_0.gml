@@ -30,9 +30,9 @@ function goto_state(_state)
 		
 		case(grunt_state.attack):
 		{
-			attack_speed = 3
+			dash_timer = 0
 			state_timer_next = grunt_state.rest
-			state_timer = 2
+			state_timer = 0.4
 			state_timer_enabled = true
 		}
 		break;
@@ -44,21 +44,6 @@ function goto_state(_state)
 			state_timer_enabled = true
 		}
 		break;
-	}
-}
-
-if(state_timer_enabled)
-{
-	if(state_timer > 0)
-	{
-		state_timer -= get_delta_time()	
-	}
-	else
-	{
-		state_timer = 0	
-		state_timer_enabled = false
-		
-		goto_state(state_timer_next)
 	}
 }
 
@@ -75,7 +60,10 @@ switch(state)
 	
 	case(grunt_state.move):
 	{
-		enemy_movement()
+		target_velocity = move_towards(o_Player)
+		
+		target_velocity.x *= grunt_speed
+		target_velocity.y *= grunt_speed
 		
 		if(_player_distance > follow_distance)
 		{
@@ -113,21 +101,23 @@ switch(state)
 	
 	case(grunt_state.attack):
 	{
+		dash_timer += get_delta_time()
+		
 		var _diff_x = player_last_seen.x - x
 		var _diff_y = player_last_seen.y - y
 		
 		var _norm = sqrt(_diff_x * _diff_x + _diff_y * _diff_y)
 		
-		var _add_x = _diff_x / _norm * attack_speed
+		var _add_x = _diff_x / _norm * attack_speed 
 		var _add_y = _diff_y / _norm * attack_speed
 		
 		if(!place_meeting(x + _add_x, y, o_Collision))
 		{
-			x += _add_x
+			target_velocity.x = _add_x
 		}
 		if(!place_meeting(x, y + _add_y, o_Collision))
 		{
-			y += _add_y
+			target_velocity.y = _add_y
 		}
 		
 		var _did_damage = damage_circle(attack_circle_points.x, attack_circle_points.y, attack_radius, 1)
@@ -136,8 +126,33 @@ switch(state)
 		{
 			goto_state(grunt_state.rest)
 		}
-		
-		if(attack_speed > 0) attack_speed -= 0.02
 	}
 	break;
+	
+	case(grunt_state.rest):
+	{
+		target_velocity.x *= 1 - 0.3 * 60 * get_delta_time()
+		target_velocity.y *= 1 - 0.3 * 60 * get_delta_time()	
+	}
+	break;
+	
+	case(grunt_state.charge):
+	{
+		target_velocity.x *= 1 - 0.1 * 60 * get_delta_time()	
+		target_velocity.y *= 1 - 0.1 * 60 * get_delta_time()
+	}	
+	break;
 }
+
+var _acc = acc
+
+if(state == grunt_state.attack)
+{
+	if(dash_timer > 0.05)
+	{
+		_acc = 1
+	}
+}
+
+velocity.x += (target_velocity.x - velocity.x) * _acc * get_delta_time()
+velocity.y += (target_velocity.y - velocity.y) * _acc * get_delta_time()

@@ -5,10 +5,6 @@ custom_render = true
 anim_alpha = 0
 anim_y = 0
 
-particles = part_system_create()
-
-part_system_depth(particles, -bbox_bottom)
-
 alarm[0] = 60
 
 function my_render()

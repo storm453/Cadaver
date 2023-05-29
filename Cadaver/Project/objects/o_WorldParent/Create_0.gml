@@ -11,7 +11,26 @@ type = parent_type.world
 
 handle_damage = false
 
+iframes = 0
+iframes_set = 0
+
 is_animal = false
+is_parasite = false
+
+infected = false
+infectable = false
+
+knockback = 0
+knockback_velocity = vec2(0, 0)
+knockback_target = noone
+
+particles = part_system_create()
+
+part_system_automatic_draw(particles, false)
+
+state_timer_enabled = false
+state_timer = 0
+state_timer_next = 0
 
 block_data = create_interactable("NULL", gui.INVENTORY)
 damagable = false
@@ -21,7 +40,9 @@ hp_bar = false
 custom_render = false
 auto_z = true
 
-//harvestable variables
+velocity = vec2(0, 0)
+velocity_dampen = 5
+
 sway = 0
 sway_time = 0
 
@@ -124,6 +145,13 @@ function render()
 			}
 		}
 	}
+	
+	if(infected)
+	{
+		draw_sprite_ext(sprite_index, image_angle, x, y, 1, 1, 0, c_lime, 1)
+	}
+
+	part_system_drawit(particles)
 }
 
 ds_list_add(o_RenderManager.entities, self)

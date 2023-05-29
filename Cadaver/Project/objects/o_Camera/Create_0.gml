@@ -3,6 +3,8 @@
 target      = o_Player;
 scroll_speed = 0.1;
 
+scroll = false
+
 x_size = 256;
 y_size = 128;
 

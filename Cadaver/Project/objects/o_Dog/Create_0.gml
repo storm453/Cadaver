@@ -6,6 +6,7 @@ handle_damage = true
 hp_bar = true
 
 is_animal = true
+infectable = true
 
 function on_damage(_attacker)
 {
@@ -40,9 +41,8 @@ dog_sprites[dog_state.fof] = s_DogWalk
 dog_sprites[dog_state.charge] = s_DogCharge
 dog_sprites[dog_state.pounce] = s_DogPounce
 
-velocity = vec2(0, 0)
 acc = 6
-dog_speed = 1.5
+dog_speed = 90
 
 pounce_distance = 50
 pounce_timer = 0
