@@ -15,15 +15,23 @@ function goto_state(_state)
 		case(lace_state.charge):
 		{
 			state_timer_next = lace_state.attack
-			state_timer = 1
+			state_timer = charge_time
 			state_timer_enabled = true
 		}
 		break;
 		
 		case(lace_state.attack):
 		{
-			state_timer_next = lace_state.chase
-			state_timer = 0.8
+			state_timer_next = lace_state.rest
+			state_timer = attack_time
+			state_timer_enabled = true
+		}
+		break;
+
+		case(lace_state.rest):
+		{
+			state_timer_next = lace_state.roam
+			state_timer = 1
 			state_timer_enabled = true
 		}
 		break;
@@ -98,6 +106,13 @@ switch(state)
 	}
 	break;
 
+	case(lace_state.rest):
+	{
+		target_velocity.x *= 0.1
+		target_velocity.y *= 0.1
+	}
+	break;
+
 	case(lace_state.attack):
 	{
 		target_velocity.x = dcos(player_angle) * 200
@@ -105,11 +120,11 @@ switch(state)
 
 		var _attack_circle = circle_point(x, y, 10, player_angle)
 
-		var _attack = damage_circle(_attack_circle.x, _attack_circle.y, 15, 1)
+		var _attack = damage_circle(_attack_circle.x, _attack_circle.y, 15, 4)
 
 		if(_attack)
 		{
-			goto_state(lace_state.chase)
+			goto_state(lace_state.rest)
 		}
 	}
 	break;

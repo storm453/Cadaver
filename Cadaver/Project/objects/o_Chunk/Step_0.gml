@@ -37,7 +37,7 @@ if(!point_in_rectangle(_mob_x, _mob_y, _cam_x, _cam_y, _cam_x + (o_Camera.x_size
 		{
 			case(0):
 			{
-				if(chance(0.0005)) instance_create_layer(_mob_x, _mob_y, "World", o_Thread)
+				if(chance(0.001)) instance_create_layer(_mob_x, _mob_y, "World", o_Thread)
 			}
 			break;
 		

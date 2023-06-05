@@ -20,6 +20,7 @@ handle_damage = true
 function on_damage()
 {
 	hit_alpha = 1.4	
+	goto_state(player_state.hit)
 }
 
 add_enum(player_state, "idle")
@@ -29,6 +30,7 @@ add_enum(player_state, "run")
 add_enum(player_state, "dash")
 add_enum(player_state, "death")
 add_enum(player_state, "dead")
+add_enum(player_state, "hit")
 
 state = player_state.idle
 
@@ -43,6 +45,7 @@ sprites_array[player_state.dash] = s_PlayerDash
 sprites_array[player_state.attack] = s_PlayerAttack
 sprites_array[player_state.death] = s_PlayerDeath
 sprites_array[player_state.dead] = s_PlayerDead
+sprites_array[player_state.hit] = s_PlayerHurt
 
 disable_move = []
 
@@ -54,6 +57,10 @@ global.temperature = 45
 damagable = true
 hp = 10
 energy = 10
+
+hit_state_next = 0
+hit_state_was_timer_enabled = 0
+hit_state_timer = 0
 
 knockback_target = noone
 knockback_velocity = vec2(0, 0)
@@ -77,6 +84,7 @@ acceleration = 50
 velocity = vec2(0, 0);
 
 mouse_angle = 0
+attack_angle = 0
 swing_scale = 1.5
 
 part_sys = part_system_create()
@@ -105,8 +113,9 @@ function render()
 	
 	if(state == player_state.attack)
 	{
-		var _swing_point = circle_point(x, y - 20, attack_distance * 1.5, mouse_angle)
+		var _swing_point = circle_point(x, y - 20, attack_distance * 1.5, attack_angle)
+		var _swing_alpha = 
 		
-		draw_sprite_ext(s_Swing, 0, _swing_point.x, _swing_point.y, swing_scale, swing_scale, mouse_angle, c_white, 1)
+		draw_sprite_ext(s_Swing, 0, _swing_point.x, _swing_point.y, 1, 1, attack_angle, c_white, 1)
 	}
 }

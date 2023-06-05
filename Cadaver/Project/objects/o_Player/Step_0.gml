@@ -41,8 +41,6 @@ if(!move) exit;
 
 function goto_state(_state)
 {
-	state = _state
-	
 	switch(_state)
 	{
 		case(player_state.dash):
@@ -61,7 +59,18 @@ function goto_state(_state)
 			swing_scale = 1.5
 		}
 		break;
+
+		case(player_state.hit):
+		{
+			hit_state_was_timer_enabled = state_timer_enabled	
+			state_timer_enabled = false
+
+			hit_state_timer = 0.6
+			hit_state_next = state
+		}
 	}
+
+	state = _state
 }
 
 if(swing_scale > 1) swing_scale -= 0.05
@@ -86,6 +95,8 @@ if(attack_cooldown <= 0) attack_cooldown = 0
 
 function check_if_attack()
 {
+	attack_angle = mouse_angle
+	
 	if(attack)
 	{
 		if(attack_cooldown <= 0)
@@ -191,6 +202,22 @@ switch(state)
 		y += dsin(dash_dir) * dash_speed
 		
 		dash_speed -= 0.2
+	}
+	break;
+
+	case(player_state.hit):
+	{
+		if(hit_state_timer > 0)
+		{
+			hit_state_timer -= get_delta_time()	
+		}
+		else
+		{
+			hit_state_timer = 0
+			state_timer_enabled = hit_state_was_timer_enabled
+			
+			state = hit_state_next
+		}
 	}
 	break;
 }
