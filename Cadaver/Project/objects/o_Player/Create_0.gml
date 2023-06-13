@@ -31,6 +31,8 @@ add_enum(player_state, "dash")
 add_enum(player_state, "death")
 add_enum(player_state, "dead")
 add_enum(player_state, "hit")
+add_enum(player_state, "rest")
+add_enum(player_state, "raise")
 
 state = player_state.idle
 
@@ -46,6 +48,8 @@ sprites_array[player_state.attack] = s_PlayerAttack
 sprites_array[player_state.death] = s_PlayerDeath
 sprites_array[player_state.dead] = s_PlayerDead
 sprites_array[player_state.hit] = s_PlayerHurt
+sprites_array[player_state.raise] = s_PlayerRaise
+sprites_array[player_state.rest] = s_PlayerRest
 
 disable_move = []
 
@@ -72,11 +76,13 @@ current_multi = noone
 iframes_set = 20
 
 attack_circle = vec2(0, 0)
-attack_distance = 15
+attack_distance = 25
 attack_radius = 15
 
 attack_cooldown = 0
 attack_cooldown_set = 0.6
+attack_time = 0.25
+attacked = false
 
 walk_speed = 50 
 dash_speed = 4
@@ -114,7 +120,14 @@ function render()
 	if(state == player_state.attack)
 	{
 		var _swing_point = circle_point(x, y - 20, attack_distance * 1.5, attack_angle)
-		var _swing_alpha = 
+		var _swing_alpha = 1 - 1 * (state_timer / attack_time)
+		
+		draw_sprite_ext(s_Swing, 0, _swing_point.x, _swing_point.y, 1, 1, attack_angle, c_white, _swing_alpha)
+	}
+       
+	if(state == player_state.rest)
+	{
+		var _swing_point = circle_point(x, y - 20, attack_distance * 1.5, attack_angle)
 		
 		draw_sprite_ext(s_Swing, 0, _swing_point.x, _swing_point.y, 1, 1, attack_angle, c_white, 1)
 	}

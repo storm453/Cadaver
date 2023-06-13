@@ -43,6 +43,8 @@ chase_distance = 120
 charge_distance = 50
 charge_time = 1
 
+attack_time = 0.5
+
 lace_speed = 30
 acc = 10
 

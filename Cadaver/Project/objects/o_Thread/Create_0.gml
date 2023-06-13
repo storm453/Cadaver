@@ -3,10 +3,9 @@ event_inherited()
 thread_choice = make_enum()
 
 add_enum(thread_choice, "coil")
-add_enum(thread_choice, "infect")
 add_enum(thread_choice, "lace")
 
-choice = choose(thread_choice.coil, thread_choice.infect, thread_choice.lace)
+choice = choose(thread_choice.coil, thread_choice.lace)
 
 part = part_system_create()
 
@@ -14,7 +13,6 @@ thread_state = make_enum()
 
 add_enum(thread_state, "roam")
 add_enum(thread_state, "flee")
-add_enum(thread_state, "infect")
 add_enum(thread_state, "coil")
 
 state = thread_state.roam
@@ -39,7 +37,6 @@ parent_hp(2)
 function on_damage()
 {
 	state = thread_state.flee
-	evolve_timer = 0
 }
 
 function new_roam()

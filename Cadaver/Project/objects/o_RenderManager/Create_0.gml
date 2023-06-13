@@ -8,7 +8,7 @@ function render_game()
 	gpu_set_alphatestenable(true)
 	
 	for(var i = 0; i < ds_list_size(terrain); i++)
-	{
+	{	
 		terrain[|i].render()
 	}
 	

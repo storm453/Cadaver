@@ -148,7 +148,7 @@ function render()
 	
 	if(infected)
 	{
-		draw_sprite_ext(sprite_index, image_angle, x, y, 1, 1, 0, c_lime, 1)
+		draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, 0, c_lime, 1)
 	}
 
 	part_system_drawit(particles)

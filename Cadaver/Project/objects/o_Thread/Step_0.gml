@@ -5,7 +5,18 @@ var _to_infect = nearest_parent_flag("infectable")
 var _infectant_distance = distance_to_object(_to_infect)
 var _roam_distance = distance_to_point(roam_position.x, roam_position.y)
 var _player_distance = distance_to_object(o_Player)
-var _roam_point = point_in_circle(roam_position.x, roam_position.y, o_Player.x, o_Player.y, flee_distance)
+var _roam_point = point_in_circle(roam_position.x, roam_position.y, o_Player.x, o_Player.y, flee_distance + 10)
+
+if(choice == thread_choice.lace)
+{
+	evolve_timer += get_delta_time()
+
+	if(evolve_timer >= 60)
+	{
+		instance_destroy()
+		instance_create_layer(x, y, "World", o_Lace)
+	}
+}
 
 switch(state)
 {
@@ -39,25 +50,6 @@ switch(state)
 				{
 					state = thread_state.flee
 				}
-
-				evolve_timer += get_delta_time()
-		
-				part_particles_create(part, x, y - 2, pt_grow, 1)
-
-				if(evolve_timer >= 20)
-				{
-					instance_destroy()
-					instance_create_layer(x, y, "World", o_Lace)
-				}
-			}
-			break;
-			
-			case(thread_choice.infect):
-			{
-				if(_infectant_distance < 30)
-				{
-					state = thread_state.infect	
-				}
 			}
 			break;
 		}
@@ -68,8 +60,8 @@ switch(state)
 	{
 		var _player = move_towards(o_Player)
 		
-		target_velocity.x = -_player.x * thread_speed * 2
-		target_velocity.y = -_player.y * thread_speed * 2
+		target_velocity.x = -_player.x * thread_speed
+		target_velocity.y = -_player.y * thread_speed
 		
 		if(_player_distance >= flee_distance)
 		{
@@ -91,26 +83,6 @@ switch(state)
 		{
 			instance_create_layer(x, y, "World", o_Coil)
 			instance_destroy()
-		}
-	}
-	break;
-	
-	case(thread_state.infect):
-	{
-		if(_to_infect != noone)
-		{
-			var _infect = move_towards(_to_infect)
-		
-			target_velocity.x = _infect.x * thread_speed * 2
-			target_velocity.y = _infect.y * thread_speed * 2
-		
-			var _infect_distance = distance_to_object(_to_infect)
-		
-			if(_infect_distance <= 5)
-			{
-				_to_infect.infected = true
-				instance_destroy()
-			}
 		}
 	}
 	break;

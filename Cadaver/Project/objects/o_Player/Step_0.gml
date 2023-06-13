@@ -20,7 +20,7 @@ in_x = keyboard_check(ord("D")) - keyboard_check(ord("A"))
 in_y = keyboard_check(ord("S")) - keyboard_check(ord("W"))
 
 shift = keyboard_check(vk_shift);	
-attack = mouse_check_button_pressed(mb_left)
+attack = mouse_check_button(mb_left)
 dash = keyboard_check_pressed(vk_space)
 
 sprite_index = sprites_array[state]
@@ -56,7 +56,10 @@ function goto_state(_state)
 		case(player_state.attack):
 		{
 			image_index = 0
-			swing_scale = 1.5
+			
+			state_timer_next = player_state.rest
+			state_timer_enabled = true
+			state_timer = attack_time
 		}
 		break;
 
@@ -67,6 +70,19 @@ function goto_state(_state)
 
 			hit_state_timer = 0.6
 			hit_state_next = state
+		}
+
+		case(player_state.rest):
+		{
+			state_timer_next = player_state.raise
+			state_timer_enabled = true
+			state_timer = 0.4
+		}
+		break;
+
+		case(player_state.raise):
+		{
+			//image_index = 0
 		}
 	}
 
@@ -101,8 +117,10 @@ function check_if_attack()
 	{
 		if(attack_cooldown <= 0)
 		{
-			attack_cooldown = attack_cooldown_set
+			//attack_cooldown = attack_cooldown_set
 			
+			attacked = false
+
 			goto_state(player_state.attack)
 			
 			if(global.hotbar_data != 0)
@@ -115,7 +133,7 @@ function check_if_attack()
 				{
 					case(item_types.melee):
 					{
-						damage_circle(attack_circle.x, attack_circle.y, attack_radius, _hid_damage)
+						
 					}
 					break;
 					
@@ -134,6 +152,8 @@ if(dash)
 {
 	goto_state(player_state.dash)
 }
+
+image_speed = 1
 
 switch(state)
 {
@@ -175,7 +195,8 @@ switch(state)
 	case(player_state.attack):
 	{
 		movement(0.5)
-	}	
+		image_speed = (image_number - 1) / attack_time
+	}
 	break;
 	
 	case(player_state.run):
@@ -218,6 +239,28 @@ switch(state)
 			
 			state = hit_state_next
 		}
+	}
+	break;
+
+	case(player_state.rest):
+	{
+		movement(0.5)
+
+		if(attacked == false)
+		{
+			var _damage = damage_circle(attack_circle.x, attack_circle.y, attack_radius, 1)
+			
+			if(_damage) 
+			{
+				attacked = true
+			}
+		}
+	}
+	break;
+
+	case(player_state.raise):
+	{
+		movement(0.5)
 	}
 	break;
 }
