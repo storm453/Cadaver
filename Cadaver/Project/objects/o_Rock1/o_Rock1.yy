@@ -13,8 +13,8 @@
     "path": "folders/Objects/World.yy",
   },
   "parentObjectId": {
-    "name": "o_Harvestable",
-    "path": "objects/o_Harvestable/o_Harvestable.yy",
+    "name": "o_WorldParent",
+    "path": "objects/o_WorldParent/o_WorldParent.yy",
   },
   "persistent": false,
   "physicsAngularDamping": 0.1,

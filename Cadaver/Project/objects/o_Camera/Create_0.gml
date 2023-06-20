@@ -1,7 +1,7 @@
 //@Declare(o_Camera)
 //@Global(1)
 target      = o_Player;
-scroll_speed = 0.1;
+scroll_speed = 6;
 
 scroll = false
 
@@ -14,8 +14,8 @@ y = target.y;
 last_x = x
 last_y = y
 
-zoom       = 1.75
-target_zoom = 1.75;
+zoom       = 2.25
+target_zoom = 2.25;
 min_zoom = 0.5;
 max_zoom = 100;
 

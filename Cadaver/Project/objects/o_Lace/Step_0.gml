@@ -4,11 +4,10 @@ image_xscale = -sign(velocity.x)
 
 var _player_distance = distance_to_object(o_Player)
 
-sprite_index = sprites_array[state]
-
 function goto_state(_state)
 {
 	state = _state
+	set_animation(animation_array[state])
 	
 	switch(_state)
 	{
@@ -38,13 +37,14 @@ function goto_state(_state)
 	}
 }
 
+step_animation()
+
 switch(state)
 {
 	case(lace_state.idle):
 	{
-		target_velocity.x *= 0.4
-		target_velocity.y *= 0.4
-
+		delta_dampen(target_velocity, 0.4)
+		
 		if(chance(idle_chance))
 		{
 			goto_state(lace_state.roam)
@@ -99,8 +99,7 @@ switch(state)
 
 	case(lace_state.charge):
 	{
-		target_velocity.x *= 0.4
-		target_velocity.y *= 0.4
+		delta_dampen(target_velocity, 0.4)
 
 		player_angle = point_direction(x, y, o_Player.x, o_Player.y)
 	}
@@ -108,8 +107,7 @@ switch(state)
 
 	case(lace_state.rest):
 	{
-		target_velocity.x *= 0.1
-		target_velocity.y *= 0.1
+		delta_dampen(target_velocity, 0.1)
 	}
 	break;
 

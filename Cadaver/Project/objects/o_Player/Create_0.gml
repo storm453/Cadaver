@@ -1,8 +1,12 @@
 ds_list_add(o_RenderManager.entities, self)
 
+animation = 0
+
 z = 0
 
 type = parent_type.world
+
+alarm[0] = 180
 
 #macro interact_range 10
 
@@ -14,6 +18,10 @@ is_animal = false
 is_parasite = false
 
 hit_alpha = 0
+infect_alpha = 0
+
+infectable = true
+infected = false
 
 handle_damage = true
 
@@ -40,16 +48,22 @@ state_timer_enabled = false
 state_timer = 0
 state_timer_next = player_state.idle
 
-sprites_array[player_state.idle] = s_Player
-sprites_array[player_state.walk] = s_PlayerWalk
-sprites_array[player_state.run] = s_PlayerRun
-sprites_array[player_state.dash] = s_PlayerDash
-sprites_array[player_state.attack] = s_PlayerAttack
-sprites_array[player_state.death] = s_PlayerDeath
-sprites_array[player_state.dead] = s_PlayerDead
-sprites_array[player_state.hit] = s_PlayerHurt
-sprites_array[player_state.raise] = s_PlayerRaise
-sprites_array[player_state.rest] = s_PlayerRest
+attack_time = 0.25
+
+animation_array[player_state.idle] = make_animation(s_Player, 5)
+animation_array[player_state.walk] = make_animation(s_PlayerWalk, 8)
+animation_array[player_state.run] = make_animation(s_PlayerRun, 10)
+animation_array[player_state.dash] = make_animation(s_PlayerDash, 0)
+animation_array[player_state.attack] = make_animation(s_PlayerAttack, 15)
+animation_array[player_state.death] = make_animation(s_PlayerDeath, 12)
+animation_array[player_state.dead] = make_animation(s_PlayerDead, 0)
+animation_array[player_state.hit] = make_animation(s_PlayerHurt, 6)
+animation_array[player_state.raise] = make_animation(s_PlayerRaise, 5)
+end_animation(animation_array[player_state.raise], function(){ goto_state(player_state.idle)} )
+//trigger_animation(animation_array[player_state.raise], 3, function(){ state = player_state.idle } )
+animation_array[player_state.rest] = make_animation(s_PlayerRest, 0)
+
+set_animation(animation_array[state])
 
 disable_move = []
 
@@ -81,11 +95,11 @@ attack_radius = 15
 
 attack_cooldown = 0
 attack_cooldown_set = 0.6
-attack_time = 0.25
 attacked = false
 
 walk_speed = 50 
-dash_speed = 4
+dash_speed_set = 240
+dash_speed = dash_speed_set
 acceleration = 50
 velocity = vec2(0, 0);
 

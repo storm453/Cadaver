@@ -5,7 +5,7 @@ custom_render = true
 anim_alpha = 0
 anim_y = 0
 
-alarm[0] = 60
+particles_emitter = new advanced_part_emitter(particles, x - 8, x - 2, y - 3, y + 2, aps_shape.rectangle, aps_distr.linear);
 
 function my_render()
 {

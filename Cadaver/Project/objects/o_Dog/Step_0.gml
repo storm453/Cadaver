@@ -1,11 +1,19 @@
 event_inherited()
 
+set_animation(dog_animation[state])
+
+step_animation()
+
 if !instance_exists(angry) && angry != noone
 {
 	move_target = vec2(x, y)
 	angry = noone
-	fof_chosen = false
 	state = dog_state.idle
+}
+
+if(move_target == noone)
+{
+	move_target = vec2(x, y)
 }
 
 var _move_distance = distance_to_point(move_target.x, move_target.y)
@@ -19,11 +27,6 @@ switch(state)
 		if(chance(0.005))
 		{
 			state = dog_state.move
-		}
-		
-		if(angry != noone)
-		{
-			state = dog_state.fof		
 		}
 	}
 	break;
@@ -99,40 +102,33 @@ switch(state)
 	
 	case(dog_state.pounce):
 	{
-		velocity.x += velocity.x * 4 * get_delta_time()
-        velocity.y += velocity.y * 4 * get_delta_time()
+		var _angry = move_towards(angry)
+
+		velocity.x = _angry.x * 200
+		velocity.y = _angry.y * 200
 		
 		var _circle_hit = damage_circle(x, y, 30, 1)
 		
 		if(_circle_hit)
 		{
-			state = dog_state.fof	
+			state = dog_state.idle
 		}
 		
-		if !instance_exists(angry) 
-		{
-			move_target = vec2(x, y)
-			angry = noone
-		}
-
 		pounce_timer += get_delta_time()
 		
-		if(pounce_timer > 1)
+		if(pounce_timer > 0.4)
 		{
-			state = dog_state.fof	
+			state = dog_state.idle
 		}
 	}
 	break;
 
 	case(dog_state.charge):
 	{
-		velocity.x *= 1 - 0.1 * 60 * get_delta_time()	
-		velocity.y *= 1 - 0.1 * 60 * get_delta_time()
+		delta_dampen(velocity, 0.9)
 	}
 	break;
 }	
-
-sprite_index = dog_sprites[state]
 
 if(state != dog_state.pounce)
 {

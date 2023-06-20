@@ -9,5 +9,5 @@ else
 	var ty = target.y
 }
 
-x += ((tx) - x) * scroll_speed;
-y += ((ty) - y) * scroll_speed;
+x += ((tx) - x) * scroll_speed * get_delta_time();
+y += ((ty) - y) * scroll_speed * get_delta_time();

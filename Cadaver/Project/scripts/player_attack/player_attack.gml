@@ -61,8 +61,8 @@ function player_attack()
 
 							attack_list[|i].enemy_data.hp -= damage * attack_list[|i].enemy_data.protection
 							
-							part_particles_create(part_sys, attack_list[|i].x, attack_list[|i].y - 10, global.pt_blood, 5)	
-						
+							//part_particles_create(part_sys, attack_list[|i].x, attack_list[|i].y - 10, global.pt_blood, 5)	
+							
 							var dir = move_towards(attack_list[|i]);
 
 							attack_list[|i].enemy_data.arg_knock_x += dir.x * kb * attack_list[|i].enemy_data.knock_resistance

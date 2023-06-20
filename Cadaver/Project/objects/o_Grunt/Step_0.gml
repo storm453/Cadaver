@@ -131,15 +131,13 @@ switch(state)
 	
 	case(grunt_state.rest):
 	{
-		target_velocity.x *= 1 - 0.3 * 60 * get_delta_time()
-		target_velocity.y *= 1 - 0.3 * 60 * get_delta_time()	
+		delta_dampen(target_velocity, 0.7)
 	}
 	break;
 	
 	case(grunt_state.charge):
 	{
-		target_velocity.x *= 1 - 0.1 * 60 * get_delta_time()	
-		target_velocity.y *= 1 - 0.1 * 60 * get_delta_time()
+		delta_dampen(target_velocity, 0.9)
 	}	
 	break;
 }

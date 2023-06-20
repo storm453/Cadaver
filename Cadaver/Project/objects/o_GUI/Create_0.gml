@@ -16,3 +16,7 @@ steepness = 2
 
 window_set_cursor(cr_none)
 cursor_sprite = s_Cursor
+
+//graphing 
+history = array_create(256, 0)
+history_head = 0

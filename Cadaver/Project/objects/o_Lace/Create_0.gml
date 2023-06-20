@@ -11,12 +11,14 @@ add_enum(lace_state, "rest")
 
 state = lace_state.roam
 
-sprites_array[lace_state.idle] = s_Lace
-sprites_array[lace_state.roam] = s_LaceWalk
-sprites_array[lace_state.chase] = s_LaceWalk
-sprites_array[lace_state.charge] = s_Lace
-sprites_array[lace_state.attack] = s_LaceAttack
-sprites_array[lace_state.rest] = s_Lace
+animation_array[lace_state.idle] = make_animation(s_Lace, 5)
+animation_array[lace_state.roam] = make_animation(s_LaceWalk, 12)
+animation_array[lace_state.chase] = make_animation(s_LaceWalk, 12)
+animation_array[lace_state.charge] = make_animation(s_Lace, 5)
+animation_array[lace_state.attack] = make_animation(s_LaceAttack, 10)
+animation_array[lace_state.rest] = make_animation(s_Lace, 5)
+
+set_animation(animation_array[state])
 
 is_damagable = true
 parent_hp(3)
@@ -42,8 +44,7 @@ idle_chance = 0.001
 chase_distance = 120
 charge_distance = 50
 charge_time = 1
-
-attack_time = 0.5
+attack_time = 0.8
 
 lace_speed = 30
 acc = 10

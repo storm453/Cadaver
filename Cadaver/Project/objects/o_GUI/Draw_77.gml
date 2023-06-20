@@ -2,8 +2,21 @@ if (colour_grade)
 {
 draw_set_color(c_white)
 	surface_set_target(temp_surface);
+	
+	gpu_set_blendmode(bm_subtract);
+		
+	with (o_Player)
+	{	
+		//draw_set_alpha(1)
+		//draw_set_color(c_white)
+		//draw_circle(x - _cx, y - _cy, 100, false)
+		draw_sprite_ext(s_light, 0, x, y, 1, 0.6, 0, c_white, o_GUI.day_factor - 0.3) 
+	}
+	
+	gpu_set_blendmode(bm_normal)
+	
 	shader_set(shdr_colour_grade);
-
+	
 	var texture_slot_day = shader_get_sampler_index(shdr_colour_grade, "u_lut_day");
 	
 	texture_set_stage(texture_slot_day, texture_lut_day);

@@ -10,20 +10,19 @@ infectable = true
 
 function on_damage(_attacker)
 {
-	angry = _attacker
-	
-	if(!fof_chosen)
+	if(angry == noone)
 	{
-		fof_chosen = true
-		fight = choose(false, true)
+		state = dog_state.fof
 	}
+
+	angry = _attacker
 }
 
 dog_state = make_enum()
 
 angry = noone
 fof_chosen = false
-fight = false
+fight = choose(true, false)
 
 add_enum(dog_state, "idle")
 add_enum(dog_state, "move")
@@ -35,11 +34,14 @@ state = dog_state.idle
 
 dog_sprites = []
 
-dog_sprites[dog_state.idle] = s_Dog
-dog_sprites[dog_state.move] = s_DogWalk
-dog_sprites[dog_state.fof] = s_DogWalk
-dog_sprites[dog_state.charge] = s_DogCharge
-dog_sprites[dog_state.pounce] = s_DogPounce
+dog_animation[dog_state.idle] = make_animation(s_Dog, 0)
+dog_animation[dog_state.move] = make_animation(s_DogWalk, 12)
+dog_animation[dog_state.fof] = make_animation(s_DogWalk, 12)
+dog_animation[dog_state.charge] = make_animation(s_DogCharge, 5)
+end_animation(dog_animation[dog_state.charge], function(){ state = dog_state.pounce; pounce_timer = 0 } )
+dog_animation[dog_state.pounce] = make_animation(s_DogPounce, 10)
+
+custom_render = true
 
 acc = 6
 dog_speed = 90
@@ -49,3 +51,19 @@ pounce_timer = 0
 
 move_distance = 200
 move_target = vec2(x, y)
+
+function my_render()
+{
+	if(state == dog_state.charge)
+	{
+		var _random_x = image_xscale + random(0.1)
+		var _random_y = image_yscale + random(0.1)
+
+		draw_sprite_ext(sprite_index, image_index, x, y, _random_x, _random_y, 0, c_white, 1)
+		draw_sprite_ext(sprite_index, image_index, x, y, _random_x, _random_y, 0, c_red, 0.2)
+	}
+	else
+	{
+		draw_self()
+	}
+}

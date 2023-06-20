@@ -82,17 +82,6 @@ function render()
 		
 		shader_reset()
 	}
-	
-	if(o_Player.sel_breakable == id)
-	{
-		draw_sprite_ext(s_Selector2, 0, top_left.x, top_left.y, 1, 1, 0, -1, 1)	
-		
-		draw_sprite_ext(s_Selector2, 0, top_right.x, top_right.y, 1, 1, -90, -1, 1)	
-		
-		draw_sprite_ext(s_Selector2, 0, bottom_right.x, bottom_right.y, 1, 1, 180, -1, 1)	
-		
-		draw_sprite_ext(s_Selector2, 0, bottom_left.x, bottom_left.y, 1, 1, 90, -1, 1)	
-	}
 }
 
 ds_list_add(o_RenderManager.entities, self)

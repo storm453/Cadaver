@@ -447,18 +447,65 @@ function noise( x )
                         hash(v3_add(i,v3(1,1,1))),f.x),f.y),f.z);
 }
 
+function squirrel3(_x, _seed)
+{
+	var _bitnoise1 = 0x7a4d
+	var _bitnoise2 = 0x1da4
+	var _bitnoise3 = 0xc4e9
+	
+	var _mangled = _x
+	
+	_mangled *= _bitnoise1
+	_mangled += _seed
+	_mangled ^= (_mangled >> 8)
+	_mangled += _bitnoise2
+	_mangled ^= (_mangled << 8)
+	_mangled *= _bitnoise3
+	_mangled ^= (_mangled >> 8)
+	
+	return _mangled
+}
+
+global.hello = [208,34,231,213,32,248,233,56,161,78,24,140,71,48,140,254,245,255,247,247,40,
+185,248,251,245,28,124,204,204,76,36,1,107,28,234,163,202,224,245,128,167,204,
+9,92,217,54,239,174,173,102,193,189,190,121,100,108,167,44,43,77,180,204,8,81,
+70,223,11,38,24,254,210,210,177,32,81,195,243,125,8,169,112,32,97,53,195,13,
+203,9,47,104,125,117,114,124,165,203,181,235,193,206,70,180,174,0,167,181,41,
+164,30,116,127,198,245,146,87,224,149,206,57,4,192,210,65,210,129,240,178,105,
+228,108,245,148,140,40,35,195,38,58,65,207,215,253,65,85,208,76,62,3,237,55,89,
+232,50,217,64,244,157,199,121,252,90,17,212,203,149,152,140,187,234,177,73,174,
+193,100,192,143,97,53,145,135,19,103,13,90,135,151,199,91,239,247,33,39,145,
+101,120,99,3,186,86,99,41,237,203,111,79,220,135,158,42,30,154,120,67,87,167,
+135,176,183,191,253,115,184,21,233,58,129,233,142,39,128,211,118,137,139,255,
+114,20,218,113,154,27,127,246,250,1,8,198,250,209,92,222,173,21,88,102,219]
+
+function my_mod(_a, _b)
+{
+	var _r = _a % _b
+	
+	return _r < 0?_r+_b: _r
+}
 
 function noise2d(xx, yy) 
 {
-	modnum = argument0 + argument1 * 65536; 
-
-	var seed = global.seed + modnum;
-
-	random_set_seed(seed);
-
-	irnum = random_range(0,1); // Can be (0.3 <=> 0.5, 1) for pre-island gen. Will give you less small islands.
-
-	return irnum;
+	//var _bitnoise1 = int64(0xB5297a4d)
+	//var _bitnoise2 = int64(0x68E31da4)
+	//var _bitnoise3 = int64(0x1B56c4e9)
+	
+	//var _mangled = int64(xx + yy * 9532933)
+	
+	//_mangled *= _bitnoise1
+	//_mangled += int64(global.seed)
+	//_mangled ^= (_mangled >> 8)
+	//_mangled += _bitnoise2
+	//_mangled ^= (_mangled << 8)
+	//_mangled *= _bitnoise3
+	//_mangled ^= (_mangled >> 8)
+	
+	//return (_mangled % (1 << 30)) / (1 << 30)
+	
+	var tmp = global.hello[my_mod(yy + global.seed, 256)];
+	return global.hello[my_mod(tmp + xx, 256)] / 256;
 }
 
 function interpolate(xx, yy) 
@@ -474,22 +521,22 @@ function interpolate(xx, yy)
 	var c = noise2d(XIndex, YIndex + 1);
 	var d = noise2d(XIndex + 1, YIndex + 1);  
 
-	var ftx = remX * pi;
-	var fx = (1 - cos(ftx)) / 2;    
-
+	//var ftx = remX * pi;
+	var fx = remX//(1 - cos(ftx)) / 2;    
+	
 	var i1 = a * (1 - fx) + b * fx;
 	var i2 = c * (1 - fx) + d * fx;
 
-	var fty = remY * pi;
-	var fy = (1 - cos(fty)) / 2;
-
+	//var fty = remY * pi;
+	var fy = remY//(1 - cos(fty)) / 2;
+	
 	var interpolated = i1 * (1 - fy) + i2 * fy;
 
 	return interpolated;
 }
 
 function value_noise(xx, yy, octaves, pers, _freq, lac) 
-{
+{ 
 	var value = 0;
 	
 	var freq = _freq; // Frequency of starting octave.

@@ -1,5 +1,7 @@
 if(auto_z) z = -bbox_bottom
 
+particles.step()
+
 if(state_timer_enabled)
 {
 	if(state_timer > 0)
@@ -44,15 +46,15 @@ if(is_parasite)
 	}	
 }
 
-if(infected)
-{
-	var _to_infect = nearest_parent_flag("infectable")
+// if(infected)
+// {
+// 	var _to_infect = nearest_parent_flag("infectable")
 
-	if(distance_to_object(_to_infect) <= 10)
-	{
-		_to_infect.infected = true
-	}
-}
+// 	if(distance_to_object(_to_infect) <= 10)
+// 	{
+// 		_to_infect.infected = true
+// 	}
+// }
 
 if(knockback_target != noone)
 {

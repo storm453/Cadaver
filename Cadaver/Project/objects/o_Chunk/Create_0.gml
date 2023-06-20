@@ -3,21 +3,101 @@ z = 999 - y
 idx = 0
 idy = 0
 
-objects = ds_list_create()
+visited = false
+older = noone
+newer = noone
 
-pois = ds_list_create()
+objects = [];
+
+enum biome_type
+{
+	desert,
+	savannah,
+	rainforest,
+	plains,
+	forest,
+	marsh,
+	tundra,
+	snow,
+	taiga,
+	waterbody
+}
+
+function pick_biome(_temp, _humi)
+{
+	_temp = (1 - cos(pi * _temp)) / 2
+	_humi = (1 - cos(pi * _humi)) / 2
+
+	if(_humi > 0.9) && (_temp < 0.9)
+	{
+		return biome_type.waterbody
+	}
+
+	var _low_scan = 0.4
+	var _med_scan = 0.6
+
+	if(_temp < _low_scan)
+	{
+		if(_humi < _low_scan)
+		{
+			return biome_type.tundra
+		}
+		else if(_humi < _med_scan)
+		{
+			return biome_type.snow
+		}
+		else
+		{
+			return biome_type.taiga
+		}
+	}
+	else if(_temp < _med_scan)
+	{
+		if(_humi < _low_scan)
+		{
+			return biome_type.plains
+		}
+		else if(_humi < _med_scan)
+		{
+			return biome_type.forest
+		}
+		else
+		{
+			return biome_type.marsh
+		}
+	}
+	else
+	{
+		if(_humi < _low_scan)
+		{
+			return biome_type.desert
+		}
+		else if(_humi < _med_scan)
+		{
+			return biome_type.savannah
+		}
+		else
+		{
+			return biome_type.rainforest
+		}
+	}
+}
 
 function render()
 {
 	bfSubmit(buffer)
-	
-	if(global.db_path) mp_grid_draw(path_grid)
-	
-	if(global.db_chunk)
-	{
-		draw_set_color(c_red)
-		draw_rectangle(x, y, x +chunk_size, y + chunk_size, 1)
-	}
+}
+
+function rand01()
+{
+	return (squirrel3(_incrementer++, _my_seed) % (1 << 30)) / (1 << 30);
+}
+
+function chunk_object(_x, _y, _object)
+{
+	var _obj = instance_create_layer(_x, _y, "World", _object)
+
+	array_push(objects, _obj)
 }
 
 function init_chunk(loc_x, loc_y)
@@ -25,240 +105,145 @@ function init_chunk(loc_x, loc_y)
 	idx = loc_x
 	idy = loc_y
 	
-	random_set_seed(rand(idx, idy) * 10000 + global.seed)
-
-	grid = ds_grid_create(chunk_size / tile_size, chunk_size / tile_size)
+	//random_set_seed(rand(idx, idy) * 10000 + global.seed)
+	
+	//grid = ds_grid_create(chunk_size / tile_size, chunk_size / tile_size)
 	buffer = bfCreate()
 	
-	for(var i = 0; i < chunk_size / 16; i++)
+	_my_seed = global.seed + (77643221 * (idx *chunk_size) + 826303 * (idy * chunk_size))
+	_incrementer = 0;
+
+	for(var j = 0; j < chunk_size / 16; j++)
 	{
-		for(var j = 0; j < chunk_size / 16; j++)
+		for(var i = 0; i < chunk_size / 16; i++)
 		{
 			var tile_x = idx * chunk_size + i * 16
 			var tile_y = idy * chunk_size + j * 16
 			
-			var current_noise = value_noise(tile_x, tile_y, 1, 0.5, 0.001, 2.1042)
+			var _octaves = 8
+			var _frequency = 0.0001
 			
-			var grass_noise = value_noise(idx * chunk_size + i * 16, idy * chunk_size + j * 16, 1, 0.5, 0.001, 2.1042)
+			var _temp_noise = value_noise(tile_x, tile_y, _octaves, 0.5, _frequency, 2.1042)
+			var _humi_noise = value_noise(tile_x + 13241237, tile_y + 13241237, _octaves, 0.5, _frequency, 2.1042)
 			
-			var spr = s_BasicQuarry
+			var _temp_color = make_color_rgb(255 * _temp_noise, 0, 255 * _humi_noise)
 			
-			if(in_range(current_noise, gen_dirt_start, gen_dirt_end))
-			{
-				spr = s_TileDirt
-				ds_grid_set(grid, i, j, tile.dirt)
-			}
-			else if(in_range(current_noise, gen_grass_start, gen_grass_end))
-			{
-				spr = s_TileGrass
-				ds_grid_set(grid, i, j, tile.grass)
+			bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, s_ChunkTest, 0, _temp_color, 0.5)
 
-				//spawn grass
-				if(in_range(current_noise, gen_grass_start + 0.009, gen_grass_end - 0.009))
+			var _biome = pick_biome(_temp_noise, _humi_noise)
+			var _tile_sprite = s_Patch
+			var _tile_object = noone
+
+			switch(_biome)
+			{
+				case(biome_type.desert):
 				{
-					var tree = 0
-						
-					for(var lx = -1; lx <= 1; lx++)
-					{
-						for(var ly = -1; ly <= 1; ly++)
-						{
-							if(rand(idx * chunk_size / tile_size + i + 17000 + lx + 1, idy * chunk_size / tile_size + j + 17000 + ly + 1) < 0.01)
-							{
-								tree = 1
-							}
-						}
-					}
-
-					if(!tree)
-					{
-						for(var lx = 0; lx < tile_size; lx += 4)
-						{
-							for(var ly = 0; ly < tile_size; ly += 4)
-							{
-								var grass_rand_x = rand(idx * chunk_size + i * tile_size + lx, idy * chunk_size + j * tile_size + ly) * tile_size
-								var grass_rand_y = rand(idy * chunk_size + j * tile_size + ly, idx * chunk_size + i * tile_size + lx + 5000) * tile_size
-								
-								var stochastic = rand(idx * chunk_size + i * tile_size + lx, idy * chunk_size + j * tile_size + ly - 500000)
-
-								stochastic = power(stochastic,1/4)
-									
-								var grass_color = clamp(200 + grass_noise * 3 * 30 + 15, 0, 255)
-
-								if(grass_noise > stochastic) && (grass_noise > 0.2)
-								{
-									bfDraw(buffer, idx * chunk_size + i * tile_size + grass_rand_x + lx, idy * chunk_size + j * tile_size + grass_rand_y + ly, ((rand(i,j) > 0.5) ? 1 : -1) * 16, 16, 0, s_Plants2, 0, make_color_rgb(grass_color, grass_color, grass_color), 1)
-								}
-							}
-						}
-					}
+					_tile_sprite = s_TileSand
+					_tile_object = o_StickPickup
 				}
-				
-				if(rand(idx * chunk_size / tile_size + i + 17000, idy * chunk_size / tile_size + j + 17000) < 0.01)
+				break;
+
+				case(biome_type.savannah):
 				{
-					create_obj_chunk(o_Tree1, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
-						
-					for(var k = 0; k < 32; k++)
-					{
-						var leaf_x = rand(idx * chunk_size + i * tile_size, idy * chunk_size + j * tile_size + k) * 2 - 1
-						var leaf_y = rand(idy * chunk_size + j * tile_size, idx * chunk_size + i * tile_size + 100000 + k) * 2 - 1
-							
-						var leaf_spread = 30
-							
-						//bfDraw(buffer, idx * chunk_size + i * tile_size + leaf_x * leaf_spread - tile_size / 2, idy * chunk_size + j * tile_size + leaf_y * leaf_spread - tile_size / 2, 16, 16, 0, s_Leaves, 0, choose(color_hex(0xc2d64f), color_hex(0xb77862)), 1)
-					}
+					_tile_sprite = s_TileSavannah
+					_tile_object = o_Plants1
+				}
+				break;
+
+				case(biome_type.rainforest):
+				{
+					_tile_sprite = s_TileMoss
+					_tile_object = o_Plants3
+				}
+				break;
+
+				case(biome_type.plains):
+				{
+					_tile_sprite = s_TileGrass
+					_tile_object = o_Rock1
+				}
+				break;
+
+				case(biome_type.forest):
+				{
+					_tile_sprite = s_TileForest
+					_tile_object = o_Tree1
+				}
+				break;
+
+				case(biome_type.marsh):
+				{
+					_tile_sprite = s_TileSwamp
+					_tile_object = o_Plants3
+				}
+				break;
+
+				case(biome_type.tundra):
+				{
+					_tile_sprite = s_TileDirt
+					_tile_object = o_StickPickup
+				}
+				break;
+
+				case(biome_type.snow):
+				{
+					_tile_sprite = s_TileSnow
+					_tile_object = o_Rock1
+				}
+				break;
+
+				case(biome_type.taiga):
+				{
+					_tile_sprite = s_TileTaiga
+					_tile_object = o_Henge1
+				}
+				break;
+
+				case(biome_type.waterbody):
+				{
+					_tile_sprite = s_TileWater
+					_tile_object = noone
+				}
+				break;
+			}
+
+			bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, _tile_sprite, 0, c_white, 1)
+
+			neighbors = array_create(9, 0)
+
+			for (var k = -1; k <= 1; ++k) 
+			{
+				for (var l = -1; l <= 1; ++l) 
+				{
+					neighbors[(k+1)+(l+1)*3] = value_noise((tile_x + tile_size * k), (tile_y + tile_size * l), 1, 0.5, 0.5, 2.1042)
 				}
 			}
-			else if(in_range(current_noise, gen_shore_start, gen_shore_end))
+
+			var _heighest = 0
+
+			for(var k = 1; k < array_length(neighbors); k++)
 			{
-				spr = s_TileSand
-				ds_grid_set(grid, i, j, tile.sand)
-				
-				if(rand(idx * chunk_size / tile_size + i + 20000, idy * chunk_size / tile_size + j + 20000) < 0.005)
+				if(neighbors[_heighest] < neighbors[k])
 				{
-					//create_obj_chunk(o_RockPickup, idx * chunk_size + (i * 16), idy * chunk_size + (j * 16))	
+					_heighest = k
 				}
 			}
-			else if(in_range(current_noise, gen_shallow_start, gen_shallow_end))
+
+			if(_heighest == (1 + 1 * 3))
 			{
-				spr = s_TileWater
-				ds_grid_set(grid, i, j, tile.water)
-			}
-			
-			//debug: draw noise
-			//bfDraw(buffer, idx * chunk_size + i * 16, idy * chunk_size + j * 16, 16, 16, 0, s_ChunkTest, 0, current_noise * 255, 0.5)
-			
-			//draw tile
-			bfDraw(buffer, idx * chunk_size + i * tile_size, idy * chunk_size + j * tile_size, tile_size, tile_size, 10, spr, 0, c_white, 1)	
-			
-			if(rand(tile_x, tile_y) * (chunk_size * chunk_size / (tile_size * tile_size)) < 1 / 40)
-			{
-				o_Console.cprint("Tried to spawn shringe on " + string(grid[# i, j]))
-				if(grid[# i, j] == tile.grass) 
+				if(value_noise(tile_x, tile_y, 1, 0.5, 0.5, 2.1042) > 0.99)
 				{
-					instance_create_layer(tile_x, tile_y, "Instances", o_Shrine)
+					if(_tile_object != noone) chunk_object(tile_x, tile_y, _tile_object)
 				}
 			}
 		}
 	}
 	
 	//setup pathfinding grid
-	path_grid = mp_grid_create(idx * chunk_size - chunk_size, idy * chunk_size - chunk_size, (chunk_size * 3) / tile_size, (chunk_size * 3) / tile_size, tile_size, tile_size)
+	//path_grid = mp_grid_create(idx * chunk_size - chunk_size, idy * chunk_size - chunk_size, (chunk_size * 3) / tile_size, (chunk_size * 3) / tile_size, tile_size, tile_size)
 			
-	mp_grid_add_instances(path_grid, o_Collision, 0)
+	//mp_grid_add_instances(path_grid, o_Collision, 0)
 	
-	//borders
-	for(var i = 0; i < chunk_size / tile_size; i++)
-	{
-		for(var j = 0; j < chunk_size / tile_size; j++)
-		{
-			//get chunks around
-			var left_chunk = instance_position((idx - 1) * chunk_size, idy * chunk_size, o_Chunk)
-			var right_chunk = instance_position((idx + 1) * chunk_size, idy * chunk_size, o_Chunk)
-			var up_chunk = instance_position(idx * chunk_size, (idy - 1) * chunk_size, o_Chunk)
-			var down_chunk = instance_position(idx * chunk_size, (idy + 1) * chunk_size, o_Chunk)
-			
-			var left = grid[# i - 1, j]
-			var edge_tile = (chunk_size / tile_size) - 1
-
-			if(i == 0)
-			{
-				var gen_noise = value_noise((idx - 1) * chunk_size + edge_tile * 16, idy * chunk_size + j * 16, 1, 0.5, 0.001, 2.1042)
-				
-				if(in_range(gen_noise, gen_grass_start, gen_grass_end))
-				{
-					left = tile.grass
-				}
-				
-				//if(in_range(infect_noise, 0, 0.45)) left = tile.infected
-			}
-			
-			var right = grid[# i + 1,j]
-			
-			if(i == edge_tile)
-			{
-				var gen_noise = value_noise((idx + 1) * chunk_size, idy * chunk_size + j * 16, 1, 0.5, 0.001, 2.1042)
-					
-				if(in_range(gen_noise, gen_grass_start, gen_grass_end))
-				{
-					right = tile.grass
-				}
-
-				//if(in_range(infect_noise, 0, 0.45)) right = tile.infected
-			}
-			
-			var up = grid[# i, j - 1]
-			
-			if(j == 0)
-			{
-				var gen_noise = value_noise(idx * chunk_size + i * 16, (idy - 1) * chunk_size + edge_tile * 16, 1, 0.5, 0.001, 2.1042)
-				
-				if(in_range(gen_noise, gen_grass_start, gen_grass_end))
-				{
-					up = tile.grass
-				}
-
-				//if(in_range(infect_noise, 0, 0.45)) up = tile.infected
-			}
-			
-			var down = grid[# i, j + 1]
-			
-			if(j == edge_tile)
-			{
-				var gen_noise = value_noise(idx * chunk_size + i * 16, (idy + 1) * chunk_size, 1, 0.5, 0.001, 2.1042)
-				
-				if(in_range(gen_noise, gen_grass_start, gen_grass_end))
-				{
-					down = tile.grass
-				}
-
-				//if(in_range(infect_noise, 0, 0.45)) down = tile.infected
-			}
-			
-			//dirt
-			if(grid[# i,j] == tile.dirt)
-			{
-				var rand_index = round(rand(idx * chunk_size + i * tile_size + 27000, idy * chunk_size + j * tile_size + 15000)) * 2
-				
-				if(left == tile.grass)
-				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_GrassEdgeH, rand_index, c_white, 1)
-				}
-				if(right == tile.grass)
-				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size) + tile_size, idy * chunk_size + (j * tile_size), -tile_size, tile_size, 9, s_GrassEdgeH, rand_index, c_white, 1)
-				}
-				if(up == tile.grass)
-				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_GrassEdgeV, rand_index, c_white, 1)
-				}
-				if(down == tile.grass)
-				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size) + tile_size, tile_size, -tile_size, 9, s_GrassEdgeV, rand_index, c_white, 1)
-				}	
-			}
-			//shore / sand
-			if(grid[# i,j] == tile.sand)
-			{
-				if(left == tile.grass)
-				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_GrassEdgeH, 0, c_white, 1)
-				}
-				if(right == tile.grass)
-				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size) + tile_size, idy * chunk_size + (j * tile_size), -tile_size, tile_size, 9, s_GrassEdgeH, 0, c_white, 1)
-				}
-				if(up == tile.grass)
-				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size), tile_size, tile_size, 9, s_GrassEdgeV, 0, c_white, 1)
-				}
-				if(down == tile.grass)
-				{
-					bfDraw(buffer, idx * chunk_size + (i * tile_size), idy * chunk_size + (j * tile_size) + tile_size, tile_size, -tile_size, 9, s_GrassEdgeV, 0, c_white, 1)
-				}
-			}
-		}
-	}
-
 	bfFinish(buffer)
 }
 

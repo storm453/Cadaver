@@ -1,8 +1,18 @@
 //@Declare(o_RenderManager)
 //@Global(0)
 
+#macro aa_factor 1.5
+
 function render_game()
 {
+	view_wport[0] = display_get_width() * aa_factor
+	view_hport[0] = display_get_height() * aa_factor
+
+	if (view_wport[0] != surface_get_width(application_surface)) || (view_hport[0] != surface_get_height(application_surface)) 
+	{
+   		surface_resize(application_surface, view_wport[0],view_hport[0]);
+	}
+
 	gpu_set_zwriteenable(true)
 	gpu_set_ztestenable(true)
 	gpu_set_alphatestenable(true)

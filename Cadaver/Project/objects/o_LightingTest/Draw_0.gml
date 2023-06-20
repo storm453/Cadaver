@@ -27,14 +27,17 @@ else
 		surface_set_target(surf);
 		
 		draw_set_color(c_black);
-		draw_set_alpha(0.7 * o_GUI.day_factor);
+		draw_set_alpha(o_GUI.day_factor);
 		draw_rectangle(0, 0, _cw, _ch, 0);
 		
 		gpu_set_blendmode(bm_subtract);
 		
-		with (o_Light)
+		with (o_Player)
 		{	
-			draw_sprite_ext(s_light, 0, x - _cx, y - _cy, 1 * range + random(0.05), 0.6 * range + random(0.05), 0, c_yellow, 1 * o_GUI.day_factor) 
+			//draw_set_alpha(1)
+			//draw_set_color(c_white)
+			//draw_circle(x - _cx, y - _cy, 100, false)
+			draw_sprite_ext(s_light, 0, x - _cx, y - _cy, 1, 0.6, 0, c_white, o_GUI.day_factor - 0.3) 
 		}
 		
 		gpu_set_blendmode(bm_normal);

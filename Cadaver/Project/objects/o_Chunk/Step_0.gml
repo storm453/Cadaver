@@ -1,21 +1,19 @@
-var _parent_list = ds_list_create()
-		
-collision_rectangle_list(x, y, x + chunk_size, y + chunk_size, o_WorldParent, false, true, _parent_list, false)
+//collision_rectangle_list(x, y, x + chunk_size, y + chunk_size, o_WorldParent, false, true, _parent_list, false)
 
 var _animals = 0
 var _parasites = 0
 
-for(var i = 0; i < ds_list_size(_parent_list); i++)
-{
-	if(_parent_list[|i].is_animal)
-	{
-		_animals++	
-	}
-	if(_parent_list[|i].is_parasite)
-	{
-		_parasites++
-	}
-}
+// for(var i = 0; i < ds_list_size(_parent_list); i++)
+// {
+// 	if(_parent_list[|i].is_animal)
+// 	{
+// 		_animals++	
+// 	}
+// 	if(_parent_list[|i].is_parasite)
+// 	{
+// 		_parasites++
+// 	}
+// }
 
 var _mob_x = x + random(chunk_size)
 var _mob_y = y + random(chunk_size)
@@ -27,7 +25,7 @@ if(!point_in_rectangle(_mob_x, _mob_y, _cam_x, _cam_y, _cam_x + (o_Camera.x_size
 {
 	if(_animals < 2)
 	{
-		if(chance(0.002)) instance_create_layer(_mob_x, _mob_y, "World", choose(o_Bird, o_Dog))
+		//if(chance(0.001)) instance_create_layer(_mob_x, _mob_y, "World", choose(o_Bird, o_Dog))
 	}
 	
 	if(_parasites < 1)
@@ -37,7 +35,7 @@ if(!point_in_rectangle(_mob_x, _mob_y, _cam_x, _cam_y, _cam_x + (o_Camera.x_size
 		{
 			case(0):
 			{
-				if(chance(0.001)) instance_create_layer(_mob_x, _mob_y, "World", o_Thread)
+				//if(chance(0.0005)) instance_create_layer(_mob_x, _mob_y, "World", o_Thread)
 			}
 			break;
 		
@@ -49,5 +47,3 @@ if(!point_in_rectangle(_mob_x, _mob_y, _cam_x, _cam_y, _cam_x + (o_Camera.x_size
 		}
 	}
 }
-
-ds_list_destroy(_parent_list)

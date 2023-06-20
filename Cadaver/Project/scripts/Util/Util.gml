@@ -28,6 +28,24 @@ function damage_circle(_x, _y, _radius, _damage)
 	return _hit
 }
 
+function assert(_x)
+{
+	if(!_x)
+	{
+		throw "Assertion failed."	
+	}
+}
+
+function delta_dampen(_velocity, _amount)
+{
+	var _val = 1 - _amount
+
+	_velocity.x *= 1 - _val * 60 * get_delta_time()	
+	_velocity.y *= 1 - _val * 60 * get_delta_time()
+
+	return _velocity
+}
+
 function nearest_parent_flag()
 {
 	var _nearest = noone

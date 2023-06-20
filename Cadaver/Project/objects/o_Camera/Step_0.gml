@@ -21,6 +21,8 @@ shake *= shake_damp;
 var _scroll = mouse_wheel_down() - mouse_wheel_up();
 if(scroll) target_zoom += _scroll / 2
 
+show_debug_message(target_zoom)
+
 target_zoom = clamp(target_zoom, min_zoom, max_zoom);
 
 camera_set_view_mat(camera, matrix_build(-x + shake_offset_x, -y + shake_offset_y, 10, 0, 0, 0, 1, 1, 1));

@@ -11,6 +11,8 @@ type = parent_type.world
 
 handle_damage = false
 
+animation = 0
+
 iframes = 0
 iframes_set = 0
 
@@ -24,9 +26,10 @@ knockback = 0
 knockback_velocity = vec2(0, 0)
 knockback_target = noone
 
-particles = part_system_create()
+particles = new advanced_part_system()
 
-part_system_automatic_draw(particles, false)
+particles.enabledelta()
+particles_emitter = new advanced_part_emitter(particles, x - 25, x + 25, y - 25, y + 25, aps_shape.ellipse, aps_distr.linear);
 
 state_timer_enabled = false
 state_timer = 0
@@ -148,10 +151,10 @@ function render()
 	
 	if(infected)
 	{
-		draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, 0, c_lime, 1)
+		if(!is_parasite) draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, 0, c_lime, 0.1)
 	}
 
-	part_system_drawit(particles)
+	particles.draw()
 }
 
 ds_list_add(o_RenderManager.entities, self)

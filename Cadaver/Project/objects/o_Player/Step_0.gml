@@ -1,5 +1,7 @@
 z = -bbox_bottom
 
+image_speed = 0
+
 var move = true
 
 for(var i = 0; i < array_length(disable_move); i++)
@@ -23,7 +25,7 @@ shift = keyboard_check(vk_shift);
 attack = mouse_check_button(mb_left)
 dash = keyboard_check_pressed(vk_space)
 
-sprite_index = sprites_array[state]
+step_animation()
 
 var sign_mouse = sign(mouse_x - x)
 
@@ -46,7 +48,7 @@ function goto_state(_state)
 		case(player_state.dash):
 		{
 			dash_dir = point_direction(0, 0, in_x, -in_y)
-			dash_speed = 5
+			dash_speed = dash_speed_set
 			state_timer_next = player_state.idle
 			state_timer = 0.3
 			state_timer_enabled = true
@@ -82,11 +84,12 @@ function goto_state(_state)
 
 		case(player_state.raise):
 		{
-			//image_index = 0
+			
 		}
 	}
 
 	state = _state
+	set_animation(animation_array[state])
 }
 
 if(swing_scale > 1) swing_scale -= 0.05
@@ -153,8 +156,6 @@ if(dash)
 	goto_state(player_state.dash)
 }
 
-image_speed = 1
-
 switch(state)
 {
 	case(player_state.idle):
@@ -195,7 +196,6 @@ switch(state)
 	case(player_state.attack):
 	{
 		movement(0.5)
-		image_speed = (image_number - 1) / attack_time
 	}
 	break;
 	
@@ -217,12 +217,12 @@ switch(state)
 	
 	case(player_state.dash):
 	{
-		part_particles_create(part_sys, x, y, pt_epic, 12)
+		//part_particles_create(part_sys, x, y, pt_epic, 12)
 		
-		x += dcos(dash_dir) * dash_speed
-		y += dsin(dash_dir) * dash_speed
+		x += dcos(dash_dir) * dash_speed * get_delta_time()
+		y += dsin(dash_dir) * dash_speed * get_delta_time()
 		
-		dash_speed -= 0.2
+		dash_speed -= 12 * get_delta_time()
 	}
 	break;
 
