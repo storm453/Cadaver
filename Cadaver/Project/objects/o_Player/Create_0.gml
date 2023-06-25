@@ -1,5 +1,3 @@
-ds_list_add(o_RenderManager.entities, self)
-
 animation = 0
 
 z = 0
@@ -9,8 +7,6 @@ type = parent_type.world
 alarm[0] = 180
 
 #macro interact_range 10
-
-instance_create_layer(x, y, "Meta", o_Camera)
 
 player_state = make_enum()
 
@@ -146,3 +142,10 @@ function render()
 		draw_sprite_ext(s_Swing, 0, _swing_point.x, _swing_point.y, 1, 1, attack_angle, c_white, 1)
 	}
 }
+
+
+
+render_next = noone
+render_prev = noone
+
+o_RenderManager.add(self)

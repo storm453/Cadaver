@@ -1,0 +1,42 @@
+{
+  "resourceType": "GMObject",
+  "resourceVersion": "1.0",
+  "name": "o_Grass",
+  "eventList": [
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
+  ],
+  "managed": true,
+  "overriddenProperties": [
+    {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"propertyId":{"name":"hp","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"3",},
+    {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"propertyId":{"name":"type","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"1",},
+  ],
+  "parent": {
+    "name": "World",
+    "path": "folders/Objects/World.yy",
+  },
+  "parentObjectId": {
+    "name": "o_Collision",
+    "path": "objects/o_Collision/o_Collision.yy",
+  },
+  "persistent": false,
+  "physicsAngularDamping": 0.1,
+  "physicsDensity": 0.5,
+  "physicsFriction": 0.2,
+  "physicsGroup": 1,
+  "physicsKinematic": false,
+  "physicsLinearDamping": 0.1,
+  "physicsObject": false,
+  "physicsRestitution": 0.1,
+  "physicsSensor": false,
+  "physicsShape": 1,
+  "physicsShapePoints": [],
+  "physicsStartAwake": true,
+  "properties": [],
+  "solid": false,
+  "spriteId": {
+    "name": "s_Grass",
+    "path": "sprites/s_Grass/s_Grass.yy",
+  },
+  "spriteMaskId": null,
+  "visible": true,
+}

@@ -1,3 +1,0 @@
-thread:
-
-spawn into the world

@@ -25,6 +25,59 @@ enum tile
 current_chunks = 0
 check_list = ds_list_create()
 load_queue = ds_list_create()
+chunk_lut  = ds_grid_create(2 * chunk_load + 1, 2 * chunk_load + 1)
+chunk_lut2 = ds_grid_create(2 * chunk_load + 1, 2 * chunk_load + 1)
+
+function resize_chunk_lut()
+{
+	ds_grid_destroy(chunk_lut)
+	ds_grid_destroy(chunk_lut2)
+	
+	chunk_lut  = ds_grid_create(2 * chunk_load + 1, 2 * chunk_load + 1)
+	chunk_lut2  = ds_grid_create(2 * chunk_load + 1, 2 * chunk_load + 1)
+
+	for(var j = -chunk_load; j <= chunk_load; j++)
+	{
+		for(var i = -chunk_load; i <= chunk_load; i++)
+		{
+			chunk_lut[# i + chunk_load, j + chunk_load] = noone
+			chunk_lut2[# i + chunk_load, j + chunk_load] = noone
+		}
+	}
+	
+	while(current_chunks > 0)
+	{
+		var px = o_Player.x
+		var py = o_Player.y
+		
+		var _to_destroy = oldest_chunk
+	
+		var p_locx = floor(px / chunk_size)
+		var p_locy = floor(py / chunk_size)
+	
+		if(_to_destroy.idx - p_locx >= -chunk_load) && (_to_destroy.idx - p_locx <= chunk_load) && (_to_destroy.idy - p_locy >= -chunk_load) && (_to_destroy.idy - p_locy <= chunk_load)
+		{
+			chunk_lut[# (_to_destroy.idx - p_locx + chunk_load), (_to_destroy.idy - p_locy + chunk_load)] = noone
+		}
+	
+		if(oldest_chunk.newer != noone)
+		{
+			oldest_chunk.newer.older = noone
+		}
+		
+		oldest_chunk = oldest_chunk.newer
+	
+		if(oldest_chunk != noone)assert(oldest_chunk.older == noone)
+	
+		instance_destroy(_to_destroy, true)
+		current_chunks--
+	}
+}
+
+resize_chunk_lut()
+
+previous_p_locx = 0
+previous_p_locy = 0
 
 function check_chunk(i, j)
 {
@@ -62,21 +115,18 @@ function check_chunk(i, j)
 
 function lookup_chunk(idx, idy)
 {
-	var _it = newest_chunk
+	var p_locx = floor(px / chunk_size)
+	var p_locy = floor(py / chunk_size)
 	
-	while(_it != noone)
-	{
-		var chunk = _it
-		
-		if(chunk.idx == idx) && (chunk.idy == idy)
-		{
-			return chunk;
-		}
-		
-		_it = _it.older
+	var _x = idx - p_locx
+	var _y = idy - p_locy
+	
+	if(_x >= -chunk_load) && (_x <= chunk_load) && (_y >= -chunk_load) && (_y <= chunk_load)
+	{ 
+		return chunk_lut[# _x + chunk_load, _y + chunk_load]
 	}
 	
-	return noone;
+	return noone
 }
 
 function visit_chunk(chunk_visited)
@@ -86,7 +136,7 @@ function visit_chunk(chunk_visited)
 		if(newest_chunk == chunk_visited)
 		{
 			newest_chunk = chunk_visited.older
-		}	
+		}
 		
 		chunk_visited.older.newer = chunk_visited.newer
 	}

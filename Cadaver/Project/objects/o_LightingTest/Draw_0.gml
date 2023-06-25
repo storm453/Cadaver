@@ -37,7 +37,8 @@ else
 			//draw_set_alpha(1)
 			//draw_set_color(c_white)
 			//draw_circle(x - _cx, y - _cy, 100, false)
-			draw_sprite_ext(s_light, 0, x - _cx, y - _cy, 1, 0.6, 0, c_white, o_GUI.day_factor - 0.3) 
+			//draw_sprite_ext(s_light, 0, x - _cx, y - _cy, 1, 0.6, 0, c_white, o_GUI.day_factor - 0.3) 
+			draw_circle_color(x - _cx, y - _cy, 100, c_red, c_black, false)
 		}
 		
 		gpu_set_blendmode(bm_normal);

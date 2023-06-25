@@ -39,7 +39,7 @@ for(var i = 0; i < 1; i++)
 	//var _max_speed = 6 * get_delta_time()
 	
 	//part_type_speed(global.pt_dust, _min_speed, _max_speed, false, false)
-	if(dust) advanced_part_particles_create(particles, _dust_x, _dust_y, global.particle_dust, 1)
+	//advanced_part_particles_create(particles, _dust_x, _dust_y, global.particle_dust, 1)
 }
 
 timer += get_delta_time()

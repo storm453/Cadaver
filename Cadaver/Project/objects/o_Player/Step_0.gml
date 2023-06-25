@@ -265,31 +265,6 @@ switch(state)
 	break;
 }
 
-//get closest interacatable block to us
-for(var i = 0; i < instance_number(o_WorldParent); i++)
-{
-	var cur_multiblock = instance_find(o_WorldParent, i)
-	
-	var distance_check = distance_to_object(cur_multiblock)
-
-	if(cur_multiblock.type == parent_type.interactable)
-	{
-		if(current_multi == noone)
-		{
-			current_multi = cur_multiblock
-		}
-		else
-		{
-			var current_distance = distance_to_object(current_multi)
-
-			if(distance_check < current_distance)
-			{
-				current_multi = cur_multiblock
-			}
-		}
-	}
-}
-
 if(hp <= 0)
 {
 	hp = 10

@@ -31,7 +31,7 @@ if(!point_in_rectangle(_mob_x, _mob_y, _cam_x, _cam_y, _cam_x + (o_Camera.x_size
 	if(_parasites < 1)
 	{
 		//spawn parasites
-		switch(global.phase)
+		switch(_parasites)
 		{
 			case(0):
 			{

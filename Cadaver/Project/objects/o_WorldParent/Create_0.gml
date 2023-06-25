@@ -26,10 +26,10 @@ knockback = 0
 knockback_velocity = vec2(0, 0)
 knockback_target = noone
 
-particles = new advanced_part_system()
+//particles = new advanced_part_system()
 
-particles.enabledelta()
-particles_emitter = new advanced_part_emitter(particles, x - 25, x + 25, y - 25, y + 25, aps_shape.ellipse, aps_distr.linear);
+//particles.enabledelta()
+//particles_emitter = new advanced_part_emitter(particles, x - 25, x + 25, y - 25, y + 25, aps_shape.ellipse, aps_distr.linear);
 
 state_timer_enabled = false
 state_timer = 0
@@ -94,44 +94,15 @@ function render()
 			
 				case(parent_type.harvestable):
 				{
-					var sprite_width_left = sprite_get_xoffset(sprite_index)
-					var sprite_height_top = sprite_get_yoffset(sprite_index)
-
-					var sprite_width_right = sprite_width - sprite_width_left
-					var sprite_height_bottom = sprite_height - sprite_height_top
+					shader_set(sh_parallax)
 	
-					var top_left = vec2(x - sprite_width_left, y - sprite_height_top)
-					var top_right = vec2(x + sprite_width_right, y - sprite_height_top)
-
-					var bottom_left = vec2(x - sprite_width_left, y + sprite_height_bottom)
-					var bottom_right = vec2(x + sprite_width_right, y + sprite_height_bottom)
-
-					var dist_to_player = distance_to_point(o_Player.x, o_Player.y)
-
-					var dif = vec2(o_Player.x - x, o_Player.y - y)
-
-					var dif_h = sqrt(dif.x * dif.x + dif.y * dif.y)
-
-					var mov = vec2(dif.x / dif_h, dif.y / dif_h)
+					shader_set_uniform_f(shader_get_uniform(sh_parallax, "fBbox"), bbox_bottom)
+					shader_set_uniform_f(shader_get_uniform(sh_parallax, "fObjVecOf"), (bbox_right + bbox_left)/2, (bbox_bottom))
+					shader_set_uniform_f(shader_get_uniform(sh_parallax, "fBboxHeight"), (bbox_bottom-bbox_top));
 	
-					sway_time += get_delta_time()
+					draw_self()
 	
-					sway = sin(sway_time)
-	
-					var bounce_effect = vec2(0,0)
-	
-					if(bounce > 0)
-					{
-						bounce_effect = vec2(bounce / 3, bounce / 2)
-		
-						bounce--
-					}
-	
-					var parallax = vec2(-mov.x * dist_to_player / 25 * (sprite_width / 32) + sway, mov.y * dist_to_player / 25)
-
-					parallax.x *= 1.4
-			
-					draw_sprite_pos(sprite_index, image_index, top_left.x + parallax.x - bounce_effect.x, top_left.y + parallax.y + bounce_effect.y, top_right.x + parallax.x + bounce_effect.x, top_right.y + parallax.y, bottom_right.x + bounce_effect.x + bounce_effect.y, bottom_right.y, bottom_left.x - bounce_effect.x, bottom_left.y, 1)
+					shader_reset()
 				}
 				break;
 			
@@ -154,7 +125,16 @@ function render()
 		if(!is_parasite) draw_sprite_ext(sprite_index, image_index, x, y, image_xscale, image_yscale, 0, c_lime, 0.1)
 	}
 
-	particles.draw()
+	//articles.draw()
 }
 
-ds_list_add(o_RenderManager.entities, self)
+//ds_list_add(o_RenderManager.entities, self)
+render_next = noone
+render_prev = noone
+
+next = noone
+prev = noone
+
+o_Game.world_add(self)
+
+o_RenderManager.add(self)

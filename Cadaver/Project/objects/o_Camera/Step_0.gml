@@ -1,3 +1,17 @@
+if(global.current_gui == gui.NONE)
+{
+	var tx = lerp(target.x, mouse_x, 0.2);
+	var ty = lerp(target.y, mouse_y, 0.2);
+}
+else
+{
+	var tx = target.x
+	var ty = target.y
+}
+
+x += ((tx) - x) * scroll_speed * get_delta_time();
+y += ((ty) - y) * scroll_speed * get_delta_time();
+
 var divider = display_get_gui_height() /128;
 
 if(instance_exists(o_Player)) target = o_Player
@@ -20,8 +34,6 @@ shake *= shake_damp;
 
 var _scroll = mouse_wheel_down() - mouse_wheel_up();
 if(scroll) target_zoom += _scroll / 2
-
-show_debug_message(target_zoom)
 
 target_zoom = clamp(target_zoom, min_zoom, max_zoom);
 
