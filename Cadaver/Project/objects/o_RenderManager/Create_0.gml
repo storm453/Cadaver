@@ -47,27 +47,47 @@ function render_game()
 			}
 		}
 		
-		//for (var i = 0; i < ds_list_size(render_list); i++) 
-		//{
-		//	var closest = i;
-		
-		//	for (var j = i + 1; j < ds_list_size(render_list); j++) 
-		//	{
-		//		if (render_list[|closest].z < render_list[|j].z) 
-		//		{
-		//			closest = j;
-		//	    }
-		//	 }
+		//for (var i = render_first; 
+        //    i != noone;
+        //    i = i.render_next) 
+        //{
+        //    var closest = i;
 
-		//	 var a = render_list[|closest];
-		//	 render_list[|closest] = render_list[|i];
-		//	 render_list[|i] = a;
-		//}
+        //    for (var j = i.render_next;
+        //        j != noone; 
+        //        j = j.render_next) {
+        //        if (closest.z < j.z) {
+        //            closest = j;
+        //        }
+        //    }
+
+        //    var closest_next = closest.render_next;
+        //    var closest_prev = closest.render_prev;
+        //    var i_next       = i.render_next;
+        //    var i_prev       = i.render_prev;
+
+        //    closest.render_prev = (closest == i_prev) ? i_prev.render_prev : i_prev;
+        //    closest.render_next = (closest == i_next) ? i_next.render_next : i_next;
+            
+        //    i.render_prev = (i == closest_prev) ? closest_prev.render_prev : closest_prev;
+        //    i.render_next = (i == closest_next) ? closest_next.render_next : closest_next;
+
+        //    if (render_last == i)
+        //        render_last = closest;
+        //    if (render_last == closest)
+        //        render_last = i;
+
+        //    if (render_first == i)
+        //        render_first = closest;
+        //    if (render_first == closest)
+        //        render_first = i;
+        //}
 
 		for(var i = render_first; i != noone; i = i.render_next)
 		{
 			if(point_in_rectangle(i.x, i.y, _cx - _cx_dist, _cy - _cy_dist, _cx + _cx_dist, _cy + _cy_dist))
 			{
+				show_debug_message(i.z)
 				i.render()
 			}
 		}
