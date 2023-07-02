@@ -121,7 +121,7 @@ function init_chunk(loc_x, loc_y)
 	var _ty = idy * chunk_size
 	
 	var _octaves = 8
-	var _frequency = 0.0001
+	var _frequency = 0.0003
 	
 	temp_corners[0] = value_noise(_tx, _ty, _octaves, 0.5, _frequency, 2.1042)
 	temp_corners[1] = value_noise(_tx + chunk_size, _ty, _octaves, 0.5, _frequency, 2.1042)
@@ -178,18 +178,20 @@ function init_chunk(loc_x, loc_y)
 				case(biome_type.rainforest):
 				{
 					_tile_sprite = s_TileMoss
+					_tile_object = o_TreeJungle
+					_spawn_chance = 0.99
 				}
 				break;
 
 				case(biome_type.plains):
 				{
-					_tile_sprite = s_TileForest
+					_tile_sprite = s_TilePlains
 				}
 				break;
 
 				case(biome_type.forest):
 				{
-					_tile_sprite = s_TileGrass
+					_tile_sprite = s_TileForest
 					_tile_object = choose(o_Tree2, o_Bush, o_Tree1)
 				}
 				break;
@@ -197,8 +199,8 @@ function init_chunk(loc_x, loc_y)
 				case(biome_type.marsh):
 				{
 					_tile_sprite = s_TileSwamp
-					_tile_object = o_TreeSwamp
-					_spawn_chance = 0.993
+					_tile_object = choose(o_TreeSwamp, o_TreeFallenSwamp)
+					_spawn_chance = 0.99
 				}
 				break;
 
@@ -266,15 +268,9 @@ function init_chunk(loc_x, loc_y)
 
 			if(_biome == biome_type.forest)
 			{
-				repeat(1)
+				if(rand01() > 0.8)
 				{
-					var tile_x = idx * chunk_size + i * 16
-					var tile_y = idy * chunk_size + j * 16
-					
-					var _grass_x = tile_x //+ (tile_size / 2) * rand01()
-					var _grass_y = tile_y //+ (tile_size / 2) * rand01()
-						
-					bfDraw(buffer, _grass_x, _grass_y, 16, 16, 0, s_Grass, 0, _color, 1)
+					bfDraw(buffer, tile_x, tile_y, 16, 16, 0, s_Grass, 0, _color, 1)
 				}
 			}
 			if(_biome == biome_type.desert)
@@ -289,7 +285,14 @@ function init_chunk(loc_x, loc_y)
 			{
 				if(rand01() > 0.9)
 				{
-					//bfDraw(buffer, tile_x, tile_y, 16, 16, 0, s_GrassSwamp, choose(0, 1), _color, 1)
+					bfDraw(buffer, tile_x, tile_y, 16, 16, 0, s_FoliageSwamp, choose(0, 1, 2, 3, 4, 5), _color, 1)
+				}
+			}
+			if(_biome == biome_type.plains)
+			{
+				if(rand01() > 0.9)
+				{
+					bfDraw(buffer, tile_x, tile_y, 16, 16, 0, s_Grass, 0, _color, 1)
 				}
 			}
 		}

@@ -13,8 +13,8 @@ uniform float fBboxHeight;
 varying vec2 v_vTexcoord;
 varying vec4 v_vColour;
 
-float XstrengthOf = 0.002;
-float YstrengthOf = 0.001;
+float XstrengthOf = 0.001;
+float YstrengthOf = 0.0005;
 float yWeightOf = 2.0;
 
 //light options

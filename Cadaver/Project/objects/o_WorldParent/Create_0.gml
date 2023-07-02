@@ -65,6 +65,8 @@ function damage_info()
 
 function render()
 {
+	//draw_text(x, y, z)
+	
 	if(hp_bar)
 	{
 		var _hp_bar_width = 20 * (hp / max_hp)
