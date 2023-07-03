@@ -185,13 +185,13 @@ function init_chunk(loc_x, loc_y)
 
 				case(biome_type.plains):
 				{
-					_tile_sprite = s_TilePlains
+					_tile_sprite = s_TileGrass
 				}
 				break;
 
 				case(biome_type.forest):
 				{
-					_tile_sprite = s_TileForest
+					_tile_sprite = s_TileGrass
 					_tile_object = choose(o_Tree2, o_Bush, o_Tree1)
 				}
 				break;
@@ -207,18 +207,22 @@ function init_chunk(loc_x, loc_y)
 				case(biome_type.tundra):
 				{
 					_tile_sprite = s_TileDirt
+					_tile_object = o_TreeTundra
+					_spawn_chance = 0.993
 				}
 				break;
 
 				case(biome_type.snow):
 				{
 					_tile_sprite = s_TileSnow
+					_tile_object = o_TreeSnow
 				}
 				break;
 
 				case(biome_type.taiga):
 				{
 					_tile_sprite = s_TileTaiga
+					_tile_object = o_TreeTundra
 				}
 				break;
 

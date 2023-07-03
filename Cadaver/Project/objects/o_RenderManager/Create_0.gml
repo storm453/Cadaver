@@ -87,7 +87,6 @@ function render_game()
 		{
 			if(point_in_rectangle(i.x, i.y, _cx - _cx_dist, _cy - _cy_dist, _cx + _cx_dist, _cy + _cy_dist))
 			{
-				show_debug_message(i.z)
 				i.render()
 			}
 		}
