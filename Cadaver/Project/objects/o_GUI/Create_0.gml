@@ -8,7 +8,7 @@ texture_lut_day = sprite_get_texture(spr_lut, 0);
 texture_lut_night = sprite_get_texture(spr_night, 0);
 
 day_factor = 0
-global.time = 720;
+global.time = 630;
 
 colour_grade = false
 

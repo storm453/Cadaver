@@ -22,7 +22,8 @@ in_x = keyboard_check(ord("D")) - keyboard_check(ord("A"))
 in_y = keyboard_check(ord("S")) - keyboard_check(ord("W"))
 
 shift = keyboard_check(vk_shift);	
-attack = mouse_check_button(mb_left)
+attack_light = mouse_check_button(mb_left)
+attack_heavy = mouse_check_button(mb_right)
 dash = keyboard_check_pressed(vk_space)
 
 step_animation()
@@ -50,42 +51,10 @@ function goto_state(_state)
 			dash_dir = point_direction(0, 0, in_x, -in_y)
 			dash_speed = dash_speed_set
 			state_timer_next = player_state.idle
-			state_timer = 0.3
+			state_timer = dash_time
 			state_timer_enabled = true
 		}
 		break;
-		
-		case(player_state.attack):
-		{
-			image_index = 0
-			
-			state_timer_next = player_state.rest
-			state_timer_enabled = true
-			state_timer = attack_time
-		}
-		break;
-
-		case(player_state.hit):
-		{
-			hit_state_was_timer_enabled = state_timer_enabled	
-			state_timer_enabled = false
-
-			hit_state_timer = 0.6
-			hit_state_next = state
-		}
-
-		case(player_state.rest):
-		{
-			state_timer_next = player_state.raise
-			state_timer_enabled = true
-			state_timer = 0.4
-		}
-		break;
-
-		case(player_state.raise):
-		{
-			
-		}
 	}
 
 	state = _state
@@ -116,38 +85,13 @@ function check_if_attack()
 {
 	attack_angle = mouse_angle
 	
-	if(attack)
+	if(attack_light)
 	{
-		if(attack_cooldown <= 0)
-		{
-			//attack_cooldown = attack_cooldown_set
-			
-			attacked = false
-
-			goto_state(player_state.attack)
-			
-			if(global.hotbar_data != 0)
-			{
-				var _hotbar_item_data = global.items_list[global.hotbar_data.item].item_data
-				var _hid_type = _hotbar_item_data.item_type
-				var _hid_damage = _hotbar_item_data.damage
-				
-				switch(_hid_type)
-				{
-					case(item_types.melee):
-					{
-						
-					}
-					break;
-					
-					case(item_types.ranged):
-					{
-						
-					}
-					break;
-				}
-			}
-		}
+		goto_state(player_state.punch_light)
+	}
+	if(attack_heavy)
+	{
+		goto_state(player_state.punch_heavy)
 	}
 }
 
@@ -193,16 +137,10 @@ switch(state)
 	}
 	break;
 	
-	case(player_state.attack):
-	{
-		movement(0.5)
-	}
-	break;
-	
 	case(player_state.run):
 	{
 		check_if_attack()
-		movement(2)
+		movement(2.3)
 	
 		if(!shift) 
 		{
@@ -211,7 +149,7 @@ switch(state)
 		if(vec_length(velocity) < walk_speed / 2) 
 		{
 			goto_state(player_state.idle)	
-		}	
+		}
 	}
 	break;
 	
@@ -223,44 +161,6 @@ switch(state)
 		y += dsin(dash_dir) * dash_speed * get_delta_time()
 		
 		dash_speed -= 12 * get_delta_time()
-	}
-	break;
-
-	case(player_state.hit):
-	{
-		if(hit_state_timer > 0)
-		{
-			hit_state_timer -= get_delta_time()	
-		}
-		else
-		{
-			hit_state_timer = 0
-			state_timer_enabled = hit_state_was_timer_enabled
-			
-			state = hit_state_next
-		}
-	}
-	break;
-
-	case(player_state.rest):
-	{
-		movement(0.5)
-
-		if(attacked == false)
-		{
-			var _damage = damage_circle(attack_circle.x, attack_circle.y, attack_radius, 1)
-			
-			if(_damage) 
-			{
-				attacked = true
-			}
-		}
-	}
-	break;
-
-	case(player_state.raise):
-	{
-		movement(0.5)
 	}
 	break;
 }
@@ -286,6 +186,31 @@ y += knockback_velocity.y * get_delta_time()
 
 knockback_velocity.x += knockback_velocity.x * -velocity_dampen * get_delta_time()
 knockback_velocity.y += knockback_velocity.y * -velocity_dampen * get_delta_time()
+
+//@TEMP quite slow 4 performance
+for(var i = 0; i < instance_number(o_WorldParent); i++)
+{
+	var cur_multiblock = instance_find(o_WorldParent, i)
+	
+	var distance_check = distance_to_object(cur_multiblock)
+
+	if(cur_multiblock.type == parent_type.interactable)
+	{
+		if(current_multi == noone)
+		{
+			current_multi = cur_multiblock
+		}
+		else
+		{
+			var current_distance = distance_to_object(current_multi)
+
+			if(distance_check < current_distance)
+			{
+				current_multi = cur_multiblock
+			}
+		}
+	}
+}
 
 var scan = current_multi
 

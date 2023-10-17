@@ -38,7 +38,7 @@ height = 40
 loiter_distance = 200
 loiter_target = vec2(x, y)
 loiter_timer = 0
-
+	
 to_tree_target = vec2(0, 0)
 in_tree_timer = 0
 

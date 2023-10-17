@@ -32,10 +32,7 @@
   "physicsStartAwake": true,
   "properties": [],
   "solid": false,
-  "spriteId": {
-    "name": "s_Swing",
-    "path": "sprites/s_Swing/s_Swing.yy",
-  },
+  "spriteId": null,
   "spriteMaskId": null,
   "visible": true,
 }

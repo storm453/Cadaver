@@ -65,7 +65,7 @@
     {"resourceType":"GMImageLayer","resourceVersion":"1.0","name":"a731b351-429f-4261-ad68-7650a6b98af3","blendMode":0,"displayName":"default","isLocked":false,"opacity":100.0,"visible":true,},
   ],
   "nineSlice": null,
-  "origin": 0,
+  "origin": 4,
   "parent": {
     "name": "Inventory",
     "path": "folders/Sprites/Inventory.yy",
@@ -143,8 +143,8 @@
     ],
     "visibleRange": null,
     "volume": 1.0,
-    "xorigin": 0,
-    "yorigin": 0,
+    "xorigin": 8,
+    "yorigin": 8,
   },
   "swatchColours": [
     4278190335,

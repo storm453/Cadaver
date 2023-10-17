@@ -14,59 +14,7 @@ if(do_hud)
 {
 	//draw hud elements in here	
 	
-	//temperature
-	var _therm_scale = 3 * global.res_fix
-	var _therm_size = sprite_get_width(s_Thermometer) * _therm_scale
 	
-	var _therm_x = display_get_gui_width() - edge_pad - (_therm_size / 2)
-	var _therm_y = display_get_gui_height() - edge_pad - (_therm_size / 2)
-	
-	draw_sprite_ext(s_Thermometer, 0, _therm_x, _therm_y, _therm_scale, _therm_scale, 0, c_white, 1)
-	
-	var _therm_needle_dir = (global.temperature / 100) * 360
-	
-	draw_sprite_ext(S_ThermometerNeedle, 0, _therm_x, _therm_y, _therm_scale, _therm_scale, _therm_needle_dir, c_white, 1)
-	
-	//backpack and crafting icons
-	var _icon_scale = 3 * global.res_fix
-	var _icon_size = sprite_get_width(s_Backpack) * _icon_scale
-	var _icon_y_margin = 80 * global.res_fix
-	
-	var _icon_x = edge_pad + _icon_size / 2
-	var _icon_y = display_get_gui_height() - _icon_y_margin
-	
-	var _icon_label_w = 100
-	var _icon_label_h = 25
-	
-	for(var i = 0; i < array_length_1d(icons); i++)
-	{
-		_icon_x += (edge_pad + _icon_size) * i
-		
-		draw_sprite_ext(icons[i].icon, 0, _icon_x, _icon_y, _icon_scale, _icon_scale, 0, c_white, 1)
-		
-		var _label_x = _icon_x - _icon_label_w / 2
-		var _label_y = _icon_y - _icon_size / 2 - _icon_label_h / 2
-		
-		var _icon_label = make_rectangle(_icon_label_w, _icon_label_h, c_white, 1, false, s_PanelGray)
-		ui_draw_title(_label_x, _label_y, _icon_label, make_text(icons[i].label, c_white, ft_IconLabel))
-		
-		var _key_x = _icon_x
-		var _key_y = _icon_y + _icon_size / 2
-		
-		draw_sprite_ext(icons[i].key, 0, _key_x, _key_y, 3, 3, 0, c_white, 1)
-	}
-	
-	//now we draw health bar
-	var _bar_width = 600 * global.res_fix
-	var _bar_height = 45 * global.res_fix
-	
-	var _bar_x = display_get_gui_width() / 2 - (_bar_width / 2)
-	var _bar_y = edge_pad
-	
-	var _hp_width = (o_Player.hp / 10) * _bar_width
-	
-	ui_draw_rectangle(_bar_x, _bar_y, make_rectangle(_bar_width, _bar_height, c_white, 1, false, s_BarBack))
-	ui_draw_rectangle(_bar_x, _bar_y, make_rectangle(_hp_width, _bar_height, c_white, 1, false, s_HPBar))
 	
 	//draw clock
 	var _time_x = edge_pad

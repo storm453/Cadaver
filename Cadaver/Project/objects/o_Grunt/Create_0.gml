@@ -60,7 +60,7 @@ function my_render()
 	
 	if(state == grunt_state.attack)
 	{
-		draw_sprite_ext(s_Swing, 0, attack_circle_points.x, attack_circle_points.y, 1 + random(0.2), 1 + random(0.2), _player_direction, c_white, 1)
+		//draw_sprite_ext(s_Swing, 0, attack_circle_points.x, attack_circle_points.y, 1 + random(0.2), 1 + random(0.2), _player_direction, c_white, 1)
 	}
 	
 	if(global.db_enemy)

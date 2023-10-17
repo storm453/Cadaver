@@ -25,6 +25,7 @@ infectable = false
 knockback = 0
 knockback_velocity = vec2(0, 0)
 knockback_target = noone
+knockback_strength = 80
 
 //particles = new advanced_part_system()
 
@@ -65,8 +66,6 @@ function damage_info()
 
 function render()
 {
-	//draw_text(x, y, z)
-	
 	if(hp_bar)
 	{
 		var _hp_bar_width = 20 * (hp / max_hp)

@@ -2,7 +2,7 @@ global.res_fix = display_get_gui_width() / 1920
 
 room_speed = 999
 
-global.time += get_delta_time() * 60
+global.time += get_delta_time()
 
 if(keyboard_check_pressed(vk_f1)) 
 {

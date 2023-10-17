@@ -2,6 +2,7 @@ global.db_enemy = false
 global.db_god = false
 global.db_path = false
 global.db_chunk = false
+global.db_fps = false
 
 open = false
 typing = ""

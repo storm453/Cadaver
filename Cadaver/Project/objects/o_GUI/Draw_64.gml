@@ -19,5 +19,8 @@ for(var i = 0; i < array_length(history); i++)
 }
 
 //fps
-draw_text(10, 150, "FPS: " + string(fps))
-draw_text(10, 200, "FPS_REAL" + string(fps_real))
+if(global.db_fps)
+{
+	draw_text(10, 150, "FPS: " + string(fps))
+	draw_text(10, 200, "FPS_REAL" + string(fps_real))
+}

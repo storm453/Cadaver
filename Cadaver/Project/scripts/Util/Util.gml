@@ -1,4 +1,4 @@
-function damage_circle(_x, _y, _radius, _damage)
+function damage_circle(_x, _y, _radius, _damage, _kb_strength = 80)
 {
 	var _circle_hit = ds_list_create()
 	var _hit = false
@@ -15,6 +15,7 @@ function damage_circle(_x, _y, _radius, _damage)
 			_hit = true
 			
 			_current_hit.knockback_target = self
+			_current_hit.knockback_strength = _kb_strength
 		}
 		if(_current_hit.handle_damage == true)
 		{

@@ -302,6 +302,11 @@ function init_chunk(loc_x, loc_y)
 		}
 	}
 	
+	if(rand01() > 0.95)
+	{
+		//instance_create_layer(tile_x, tile_y, "World", o_Shrine)	
+	}
+	
 	// for(var j = 0; j < chunk_size / 16; j++)
 	// {
 	// 	for(var i = 0; i < chunk_size / 16; i++)

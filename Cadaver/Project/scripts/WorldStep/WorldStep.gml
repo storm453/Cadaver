@@ -52,8 +52,8 @@ function WorldStep()
 	{
 		var _knock = move_towards(knockback_target)
 	
-		knockback_velocity.x += -_knock.x * 80
-		knockback_velocity.y += -_knock.y * 80
+		knockback_velocity.x += -_knock.x * knockback_strength
+		knockback_velocity.y += -_knock.y * knockback_strength
 	
 		knockback_target = noone
 	}
