@@ -2,12 +2,15 @@ event_inherited()
 
 //fake 3d
 
-x += spd * dx * 60 *  get_delta_time()
-my += spd * dy * 60 *  get_delta_time()
+if(zz > 0)
+{
+	x += spd * dx * 60 *  get_delta_time()
+	my += spd * dy * 60 *  get_delta_time()
 
-y = my - zz * 60 * get_delta_time()
-zz += vz * 60 *  get_delta_time()
-vz += grav * 60 *  get_delta_time()
+	y = my - ((zz * 60) * get_delta_time())
+	zz += vz * 60 *  get_delta_time()
+	vz += grav * 60 *  get_delta_time()
+}
 
 if(zz < 0)
 {
@@ -37,7 +40,17 @@ else
 
 //move toward player
 
-var _player = move_towards(o_Player)
+var _player_distance = distance_to_object(o_Player)
 
-x += _player.x
-y += _player.y
+if(_player_distance < 100)
+{
+	var _player = move_towards(o_Player)
+
+	velocity.x += (_player.x * hover_speed - velocity.x) * acc * get_delta_time()
+	velocity.y += (_player.y * hover_speed - velocity.y) * acc * get_delta_time()
+	
+	if(_player_distance < 1)
+	{
+		instance_destroy()
+	}
+}

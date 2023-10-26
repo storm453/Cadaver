@@ -2,6 +2,10 @@ event_inherited()
 
 custom_render = true
 
+acc = 1
+hover_speed = 200
+velocity_dampen = 50
+
 data = { item: items.wood, amt: 3 }
 
 outline_init()
