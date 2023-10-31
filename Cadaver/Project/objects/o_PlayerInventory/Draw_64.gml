@@ -93,3 +93,43 @@ if(ok_gui)
 		}
 	}
 }
+
+//draw hotbar
+if(global.current_gui != gui.INVENTORY)
+{
+	var _hb_scale = 100
+	var _hb_gap = 20
+
+	var _hbx = pad
+	var _hby = display_get_gui_height() - pad - _hb_scale
+
+	for(var i = 0; i < 4; i++)
+	{
+		//numbers to select
+		if(keyboard_check_pressed(ord(string(i + 1))))
+		{	
+			global.selected = i
+		}
+		
+		var _hbxi = _hbx + (i * (_hb_scale + _hb_gap))
+	
+		var _slot_alpha = 1
+	
+		if(i == global.selected) _slot_alpha = 0.5
+	
+		ui_draw_rectangle(_hbxi, _hby, make_rectangle(_hb_scale, _hb_scale, c_white, _slot_alpha, false, s_BarBack))
+		
+		var _slot = inv[i, inv_sy - 1]
+		
+		var _item_ds = (_hb_scale / sprite_get_width(s_Items))
+		
+		if(_slot != 0)
+		{
+			draw_sprite_ext(s_Items, _slot.item, _hbxi, _hby, _item_ds, _item_ds, 0, c_white, 1)	
+			
+			draw_text_outline(_hbxi, _hby, color_hex(0x696f80), c_white, _slot.amt, ft_Time)
+		}
+		
+		global.hotbar_data = inv[global.selected, inv_sy - 1]
+	}
+}

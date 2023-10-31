@@ -14,8 +14,6 @@ if(do_hud)
 {
 	//draw hud elements in here	
 	
-	
-	
 	//draw clock
 	var _time_x = edge_pad
 	var _time_y = edge_pad
@@ -63,6 +61,29 @@ if(global.current_gui == gui.INVENTORY)
 if(global.current_gui == gui.CRAFT)
 {
 	current_ui("Crafting")
+	
+	//crafting
+	var _craft_cell_size = 80
+	var _craft_cells_x = 8
+	var _craft_cells_y = 5
+	var _craft_cell_pad = 20
+	
+	var _middle_margin = 300
+	
+	var _craft_x = display_get_gui_width() / 2 - ((_craft_cells_x * _craft_cell_size) + (i - 1 * _craft_cell_pad)) - _middle_margin
+	var _craft_y = 300
+	
+	for(var i = 0; i < _craft_cells_x; i++)
+	{
+		for(var j = 0; j < _craft_cells_y; j++)
+		{
+			var _craft_ix = _craft_x + ((_craft_cell_size + _craft_cell_pad) * i)
+			var _craft_iy = _craft_y + ((_craft_cell_size + _craft_cell_pad) * j)
+			
+			ui_draw_rectangle(_craft_ix, _craft_iy, make_rectangle(_craft_cell_size, _craft_cell_size, c_black, 0.5, false))
+		}
+	}
+	
 }
 if(global.current_gui == gui.CONTAINER)
 {

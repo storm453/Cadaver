@@ -3,8 +3,6 @@ inv = create_inventory(4, 3)
 inv_sx = array_length(inv)
 inv_sy = array_height(inv)
 
-inv[0, inv_sy - 1] = { item: items.sword, amt: 1 }
-
 hover_slot = vec2(0, 0)
 
 depth = 0

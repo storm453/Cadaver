@@ -18,4 +18,4 @@ image_index = choose(0, 1)
 //if(chance(0.5)) array_push(apples, make_apple(x, y - 32))
 //if(chance(0.5)) array_push(apples, make_apple(x - 10, y - 26))
 
-parent_hp(5)
+parent_hp(10)

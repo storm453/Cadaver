@@ -32,6 +32,8 @@ add_enum(player_state, "run")
 add_enum(player_state, "dash")
 add_enum(player_state, "punch_light")
 add_enum(player_state, "punch_heavy")
+add_enum(player_state, "melee_light")
+add_enum(player_state, "melee_heavy")
 
 state = player_state.idle
 
@@ -48,12 +50,20 @@ animation_array[player_state.run] = make_animation(s_PlayerRun, 12)
 animation_array[player_state.dash] = make_animation(s_PlayerDash, 0, dash_time)
 
 animation_array[player_state.punch_light] = make_animation(s_PlayerPunchLight, 12)
-trigger_animation(animation_array[player_state.punch_light], 2, function() { damage_circle(attack_circle.x, attack_circle.y, attack_radius, 1) } )
+trigger_animation(animation_array[player_state.punch_light], 2, function() { damage_circle(attack_circle.x, attack_circle.y, attack_radius, 1, 80) } )
 end_animation(animation_array[player_state.punch_light], function() { goto_state(player_state.idle) } )
 
 animation_array[player_state.punch_heavy] = make_animation(s_PlayerPunchHeavy, 8)
-trigger_animation(animation_array[player_state.punch_heavy], 4, function() { damage_circle(attack_circle.x, attack_circle.y, attack_radius, 2, 250) } )
+trigger_animation(animation_array[player_state.punch_heavy], 4, function() { damage_circle(attack_circle.x, attack_circle.y, attack_radius, 2, 240) } )
 end_animation(animation_array[player_state.punch_heavy], function() { goto_state(player_state.idle) } )
+
+animation_array[player_state.melee_light] = make_animation(s_PlayerAttackLight, 14)
+trigger_animation(animation_array[player_state.melee_light], 3, function() { damage_circle(attack_circle.x, attack_circle.y, attack_radius, 2, 40) } )
+end_animation(animation_array[player_state.melee_light], function() { goto_state(player_state.idle) } )
+
+animation_array[player_state.melee_heavy] = make_animation(s_PlayerAttackHeavy, 8)
+trigger_animation(animation_array[player_state.melee_heavy], 4, function() { damage_circle(attack_circle.x, attack_circle.y, attack_radius, 5, 120) } )
+end_animation(animation_array[player_state.melee_heavy], function() { goto_state(player_state.idle) } )
 
 set_animation(animation_array[state])
 
@@ -117,6 +127,8 @@ function render()
 		draw_set_alpha(0.1)
 		draw_circle(attack_circle.x, attack_circle.y, attack_radius, false)
 	}
+	
+	if(global.hotbar_data != 0) draw_sprite_ext(s_Items, global.hotbar_data.item, x - 8, y - 16, 1, 1, 45, c_white, 1)
 }
 
 

@@ -4,6 +4,9 @@ type = parent_type.harvestable
 
 image_index = choose(0, 1)
 
+velocity_dampen = 10
+knockback_resistance = 0.8
+
 //apples = array_create(3)
 
 //function make_apple(_x, _y)

@@ -192,7 +192,7 @@ function init_chunk(loc_x, loc_y)
 				case(biome_type.forest):
 				{
 					_tile_sprite = s_TileGrass
-					_tile_object = choose(o_Tree2, o_Bush, o_Tree1)
+					_tile_object = choose(o_Tree2, o_Bush, o_Tree1, o_Rock1)
 				}
 				break;
 

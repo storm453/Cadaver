@@ -85,13 +85,31 @@ function check_if_attack()
 {
 	attack_angle = mouse_angle
 	
+	var _light = 0
+	var _heavy = 0
+	
+	if(global.hotbar_data != 0)
+	{
+		//were holding an item
+		if(global.items_list[global.hotbar_data.item].item_data.item_type == item_types.melee)
+		{
+			_light = player_state.melee_light
+			_heavy = player_state.melee_heavy
+		}
+	}
+	else
+	{
+		_light = player_state.punch_light	
+		_heavy = player_state.punch_heavy
+	}
+	
 	if(attack_light)
 	{
-		goto_state(player_state.punch_light)
+		if(_light != 0) goto_state(_light)
 	}
 	if(attack_heavy)
 	{
-		goto_state(player_state.punch_heavy)
+		if(_heavy != 0) goto_state(_heavy)
 	}
 }
 

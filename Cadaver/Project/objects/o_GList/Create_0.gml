@@ -59,7 +59,7 @@ function create_item(arg_name)
 {
 	var item = create_item("Stone")
 	
-	item.item_data.item_type = item_types.ranged
+	item.item_data.item_type = item_types.melee
 	item.item_data.description = "Heavy.. A very useful resource that is used in many different recipes. Pretty solid huh? I know, my joke rocks."
 }
 
@@ -70,9 +70,5 @@ function create_item(arg_name)
 }
 
 {
-	var item = create_item("Sword")
-
-	item.item_data.item_type = item_types.melee
-	item.item_data.description = "A versatile weapon for taking down the infected and chopping unwanted foliage."
-	item.item_data.damage = 1
+	var item = create_item("Sword")	
 }

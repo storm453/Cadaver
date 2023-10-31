@@ -2,7 +2,9 @@
   "resourceType": "GMObject",
   "resourceVersion": "1.0",
   "name": "o_Rock1",
-  "eventList": [],
+  "eventList": [
+    {"resourceType":"GMEvent","resourceVersion":"1.0","name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,},
+  ],
   "managed": true,
   "overriddenProperties": [
     {"resourceType":"GMOverriddenProperty","resourceVersion":"1.0","name":"","objectId":{"name":"o_Harvestable","path":"objects/o_Harvestable/o_Harvestable.yy",},"propertyId":{"name":"hp","path":"objects/o_Harvestable/o_Harvestable.yy",},"value":"10",},
@@ -31,7 +33,10 @@
   "physicsStartAwake": true,
   "properties": [],
   "solid": false,
-  "spriteId": null,
+  "spriteId": {
+    "name": "s_Rock",
+    "path": "sprites/s_Rock/s_Rock.yy",
+  },
   "spriteMaskId": null,
   "visible": true,
 }

@@ -155,7 +155,7 @@ function instance_nearest_notme(obj)
     return n;
 }
 
-function move_towards_point(_x, _y, _speed)
+function move_towards_points(_x, _y, _speed)
 {
 	var _diff_x = _x - x
 	var _diff_y = _y - y

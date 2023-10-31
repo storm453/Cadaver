@@ -26,6 +26,7 @@ knockback = 0
 knockback_velocity = vec2(0, 0)
 knockback_target = noone
 knockback_strength = 80
+knockback_resistance = 1 //0 none, 1 full
 
 //particles = new advanced_part_system()
 
