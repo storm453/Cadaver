@@ -24,7 +24,7 @@ function create_obj_chunk(object, xx, yy)
 
 function create_drop(xx, yy, item, amt)
 {
-	var drop = instance_create_layer(xx, yy, "Instances", o_ItemDropped)
+	var drop = instance_create_layer(xx, yy, "World", o_ItemDropped)
 	
 	drop.data = { item: item, amt: amt }
 }
@@ -48,8 +48,8 @@ function spawn_enemy(radius_min, radius_max, obj)
 	
 	var ex = sin(random_angle) * radius + o_Player.x;
 	var ey = cos(random_angle) * radius + o_Player.y;	
-
-	instance_create_layer(ex, ey, "Instances", obj)
+	
+	instance_create_layer(ex, ey, "World", obj)
 }
 
 function create_light(arg_x, arg_y, range, color, brightness)

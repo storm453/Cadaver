@@ -19,6 +19,7 @@ if(do_hud)
 	var _time_y = edge_pad
 
 	draw_set_alpha(1)
+	
 	draw_set_font(ft_Time)
 	
 	var _day = floor(global.time / 60 / 24)
