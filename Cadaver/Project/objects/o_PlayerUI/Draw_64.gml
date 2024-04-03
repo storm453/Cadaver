@@ -20,8 +20,6 @@ if(do_hud)
 
 	draw_set_alpha(1)
 	
-	draw_set_font(ft_Time)
-	
 	var _day = floor(global.time / 60 / 24)
 	
 	draw_text_outline(_time_x, _time_y, color_hex(0x696f80), c_white, "Day " + string(_day + 1), ft_Time)

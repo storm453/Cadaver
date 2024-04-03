@@ -40,6 +40,7 @@
   ],
   "IncludedFiles": [
     {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"BAHNSCHRIFT.TTF","CopyToMask":-1,"filePath":"datafiles",},
+    {"resourceType":"GMIncludedFile","resourceVersion":"1.0","name":"KodeMono-Regular.ttf","CopyToMask":-1,"filePath":"datafiles",},
   ],
   "isEcma": false,
   "LibraryEmitters": [],
@@ -48,6 +49,7 @@
   },
   "resources": [
     {"id":{"name":"Inventory","path":"scripts/Inventory/Inventory.yy",},},
+    {"id":{"name":"o_Test","path":"objects/o_Test/o_Test.yy",},},
     {"id":{"name":"s_Thread","path":"sprites/s_Thread/s_Thread.yy",},},
     {"id":{"name":"Enemy","path":"scripts/Enemy/Enemy.yy",},},
     {"id":{"name":"s_KeyE","path":"sprites/s_KeyE/s_KeyE.yy",},},

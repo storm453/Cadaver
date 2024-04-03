@@ -30,6 +30,7 @@ function parse_command(_string)
 		case("scroll"):
 		{
 			o_Camera.scroll = !o_Camera.scroll
+			cprint("SCROLL " + (o_Camera.scroll ? "ON" : "OFF"))
 		}
 		break;
 		

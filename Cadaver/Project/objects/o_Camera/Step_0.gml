@@ -33,7 +33,20 @@ var shake_offset_y = random_range(-1, 1) * shake;
 shake *= shake_damp;
 
 var _scroll = mouse_wheel_down() - mouse_wheel_up();
-if(scroll) target_zoom += _scroll / 2
+if(scroll) 
+{
+	target_zoom += _scroll / 2
+	
+	if(keyboard_check(vk_subtract))
+	{
+		target_zoom += 0.01
+	}
+	if(keyboard_check(vk_add))
+	
+	{
+		target_zoon -= 0.01	
+	}
+}
 
 target_zoom = clamp(target_zoom, min_zoom, max_zoom);
 

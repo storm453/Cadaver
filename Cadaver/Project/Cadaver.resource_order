@@ -26,6 +26,7 @@
   ],
   "ResourceOrderSettings": [
     {"name":"Inventory","order":3,"path":"scripts/Inventory/Inventory.yy",},
+    {"name":"o_Test","order":8,"path":"objects/o_Test/o_Test.yy",},
     {"name":"s_Thread","order":12,"path":"sprites/s_Thread/s_Thread.yy",},
     {"name":"Enemy","order":12,"path":"scripts/Enemy/Enemy.yy",},
     {"name":"s_KeyE","order":29,"path":"sprites/s_KeyE/s_KeyE.yy",},
