@@ -13,10 +13,10 @@ if(keyboard_check_pressed(vk_tab) or keyboard_check_pressed(vk_escape))
 }
 
 //open craft
-if(keyboard_check_pressed(ord("C")))
-{
-	global.current_gui = gui.CRAFT	
-}
+//if(keyboard_check_pressed(ord("C")))
+//{
+//	global.current_gui = gui.CRAFT	
+//}
 if(keyboard_check_pressed(ord("U")))
 {
 	//sledgehammer researched
