@@ -1,11 +1,13 @@
 {
-  "resourceType": "GMScript",
-  "resourceVersion": "1.0",
-  "name": "input",
-  "isCompatibility": false,
-  "isDnD": false,
-  "parent": {
-    "name": "Misc",
-    "path": "folders/Scripts/Player/Misc.yy",
+  "$GMScript":"",
+  "%Name":"input",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"input",
+  "parent":{
+    "name":"Misc",
+    "path":"folders/Scripts/Player/Misc.yy",
   },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
 }

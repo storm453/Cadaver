@@ -1,5 +1,5 @@
 {
-  "FolderOrderSettings": [
+  "FolderOrderSettings":[
     {"name":"Objects","order":1,"path":"folders/Objects.yy",},
     {"name":"Buildings","order":1,"path":"folders/Objects/Buildings.yy",},
     {"name":"Inventory","order":2,"path":"folders/Objects/Inventory.yy",},
@@ -24,7 +24,7 @@
     {"name":"Cursor","order":31,"path":"folders/Sprites/UI/Cursor.yy",},
     {"name":"Tiles","order":14,"path":"folders/Sprites/World/Tiles.yy",},
   ],
-  "ResourceOrderSettings": [
+  "ResourceOrderSettings":[
     {"name":"Inventory","order":3,"path":"scripts/Inventory/Inventory.yy",},
     {"name":"s_Thread","order":12,"path":"sprites/s_Thread/s_Thread.yy",},
     {"name":"Enemy","order":12,"path":"scripts/Enemy/Enemy.yy",},

@@ -1,10 +1,12 @@
 {
-  "resourceType": "GMShader",
-  "resourceVersion": "1.0",
-  "name": "shdr_colour_grade",
-  "parent": {
-    "name": "Shaders",
-    "path": "folders/Shaders.yy",
+  "$GMShader":"",
+  "%Name":"shdr_colour_grade",
+  "name":"shdr_colour_grade",
+  "parent":{
+    "name":"Shaders",
+    "path":"folders/Shaders.yy",
   },
-  "type": 1,
+  "resourceType":"GMShader",
+  "resourceVersion":"2.0",
+  "type":1,
 }
