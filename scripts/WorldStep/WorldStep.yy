@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"WorldStep",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"WorldStep",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

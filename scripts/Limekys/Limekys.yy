@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"Limekys",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"Limekys",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

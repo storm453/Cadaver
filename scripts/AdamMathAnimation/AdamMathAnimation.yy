@@ -1,0 +1,13 @@
+{
+  "$GMScript":"",
+  "%Name":"AdamMathAnimation",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"AdamMathAnimation",
+  "parent":{
+    "name":"Scripts",
+    "path":"folders/Scripts.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
