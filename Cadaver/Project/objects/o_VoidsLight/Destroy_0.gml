@@ -1,1 +1,0 @@
-ds_list_delete(o_RenderManager.lights, ds_list_find_index(o_RenderManager.lights, self))
