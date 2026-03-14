@@ -1,2 +1,0 @@
-bright/contrast: -39, -55
-hue/color: 8, 45, 3
